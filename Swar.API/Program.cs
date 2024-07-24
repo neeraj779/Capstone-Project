@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Swar.API.Contexts;
+
 namespace Swar.API
 {
     public class Program
@@ -12,6 +15,12 @@ namespace Swar.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            #region Context
+            builder.Services.AddDbContext<SwarContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+                );
+            #endregion
 
             var app = builder.Build();
 
