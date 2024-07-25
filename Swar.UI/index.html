@@ -31,8 +31,10 @@
         </div>
         <div id="nav-links" class="hidden md:flex space-x-6">
           <a href="home.html" class="hover:text-gray-400">Home</a>
+          <a href="#" class="hover:text-gray-400">Playlist</a>
+          <a href="#" class="hover:text-gray-400">Albums</a>
         </div>
-        <div class="relative flex-1 max-w-xs">
+        <div class="relative flex-1 max-w-xs hidden md:block">
           <input
             type="text"
             class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
@@ -62,11 +64,36 @@
       >
         <div class="flex flex-col items-center py-4 space-y-4">
           <a href="home.html" class="text-white hover:text-gray-400">Home</a>
+          <a href="#" class="text-white hover:text-gray-400">Playlist</a>
+          <a href="#" class="text-white hover:text-gray-400">Albums</a>
         </div>
       </div>
     </nav>
 
-    <div class="mx-auto px-6 md:px-20 py-10">
+    <div class="container mx-auto px-6 md:px-20 py-10">
+      <div class="md:hidden relative max-w-full mb-6">
+        <input
+          type="text"
+          class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
+          placeholder="Search songs, artists..."
+        />
+        <svg
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+          />
+        </svg>
+      </div>
       <div class="grid gap-5">
         <div class="-mb-[3px]">
           <h1 class="font-bold text-lg">
