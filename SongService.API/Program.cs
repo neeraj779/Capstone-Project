@@ -16,6 +16,14 @@ namespace SongService.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://127.0.0.1:3000")
+                                      .WithMethods("GET"));
+            });
+
+
             #region Services
             builder.Services.AddScoped<ISongDataService, SongDataService>();
             builder.Services.AddHttpClient<ISongDataService, SongDataService>();
@@ -31,6 +39,7 @@ namespace SongService.API
             }
 
             app.UseAuthorization();
+            app.UseCors("CorsPolicy");
 
 
             app.MapControllers();
