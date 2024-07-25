@@ -105,14 +105,19 @@ namespace SongService.API.Services
 
         public async Task<string> GetAlbumId(string inputUrl)
         {
-            var response = await _httpClient.GetStringAsync(inputUrl);
+            var response = "";
             try
             {
+                response = await _httpClient.GetStringAsync(inputUrl);
                 return response.Split(new[] { "\"album_id\":\"" }, StringSplitOptions.None)[1].Split('\"')[0];
             }
             catch (IndexOutOfRangeException)
             {
                 return response.Split(new[] { "\"page_id\",\"" }, StringSplitOptions.None)[1].Split('\"')[0];
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidQueryException();
             }
         }
 
@@ -139,14 +144,19 @@ namespace SongService.API.Services
 
         public async Task<string> GetPlaylistId(string inputUrl)
         {
-            var response = await _httpClient.GetStringAsync(inputUrl);
+            var response = "";
             try
             {
+                response = await _httpClient.GetStringAsync(inputUrl);
                 return response.Split(new[] { "\"type\":\"playlist\",\"id\":\"" }, StringSplitOptions.None)[1].Split('\"')[0];
             }
             catch (IndexOutOfRangeException)
             {
                 return response.Split(new[] { "\"page_id\",\"" }, StringSplitOptions.None)[1].Split('\"')[0];
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidQueryException();
             }
         }
 

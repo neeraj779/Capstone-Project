@@ -16,7 +16,7 @@ namespace SongService.API.Controllers
             _songService = songService;
         }
 
-        [HttpGet("SearchSong")]
+        [HttpGet("GetSongsByQuery")]
         public async Task<ActionResult> SearchForSong(string query, bool lyrics = false, bool songData = true)
         {
             try
@@ -48,21 +48,51 @@ namespace SongService.API.Controllers
             }
         }
 
-        [HttpGet("GetAlbum")]
+        [HttpGet("GetAlbumById")]
         public async Task<IActionResult> GetAlbum(string albumId, bool lyrics = false)
         {
             var album = await _songService.GetAlbum(albumId, lyrics);
-            return Ok(album);
+            return Ok(album.ToString());
         }
 
-        [HttpGet("GetPlaylist")]
+        [HttpGet("GetAlbumByLink")]
+        public async Task<IActionResult> GetAlbumByLink(string inputUrl, bool lyrics = false)
+        {
+            try
+            {
+                var albumId = await _songService.GetAlbumId(inputUrl);
+                var album = await _songService.GetAlbum(albumId, lyrics);
+                return Ok(album.ToString());
+            }
+            catch (InvalidQueryException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetPlaylistById")]
         public async Task<IActionResult> GetPlaylist(string listId, bool lyrics = false)
         {
             var playlist = await _songService.GetPlaylist(listId, lyrics);
-            return Ok(playlist);
+            return Ok(playlist.ToString());
         }
 
-        [HttpGet("GetLyrics")]
+        [HttpGet("GetPlaylistByLink")]
+        public async Task<IActionResult> GetPlaylistByLink(string inputUrl, bool lyrics = false)
+        {
+            try
+            {
+                var listId = await _songService.GetPlaylistId(inputUrl);
+                var playlist = await _songService.GetPlaylist(listId, lyrics);
+                return Ok(playlist.ToString());
+            }
+            catch (InvalidQueryException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetLyricsById")]
         public async Task<IActionResult> GetLyrics(string id)
         {
             try
