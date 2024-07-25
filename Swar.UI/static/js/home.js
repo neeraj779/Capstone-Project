@@ -1,7 +1,7 @@
 async function fetchSongs() {
   try {
     const response = await fetch(
-      "http://localhost:5292/api/SongsData/GetPlaylistById?listId=1139074020&lyrics=false"
+      "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1139074020&lyrics=false"
     );
     const data = await response.json();
     const { content_list, songs } = data;
