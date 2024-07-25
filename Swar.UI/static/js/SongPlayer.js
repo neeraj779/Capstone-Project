@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function getSong() {
     try {
       const response = await fetch(
-        `https://songserviceapi.azurewebsites.net/SongsData/GetSongById?id=${songId}&lyrics=true`
+        `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongById?id=${songId}&lyrics=true`
       );
       if (!response.ok) throw new Error("Failed to fetch song data");
       const data = await response.json();
