@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Song Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./static/css/SongPlayer.css" />
+  </head>
+  <body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 py-4 shadow-md">
+      <div class="container mx-auto flex items-center justify-between px-6">
+        <div class="text-2xl font-bold text-white">SWAR</div>
+        <div class="md:hidden flex items-center">
+          <button id="hamburger" class="text-white focus:outline-none">
+            <svg
+              class="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
+        </div>
+        <div id="nav-links" class="hidden md:flex space-x-6">
+          <a href="home.html" class="hover:text-gray-400">Home</a>
+        </div>
+        <div class="relative flex-1 max-w-xs">
+          <input
+            type="text"
+            class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
+            placeholder="Search songs, artists..."
+          />
+          <svg
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="md:hidden absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50 hidden"
+      >
+        <div class="flex flex-col items-center py-4 space-y-4">
+          <a href="home.html" class="text-white hover:text-gray-400">Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mb-3 mt-12">
+      <audio id="audio" class="hidden"></audio>
+      <div class="grid gap-6 px-6">
+        <div class="grid text-center place-content-center gap-3">
+          <img
+            id="song-image"
+            src="https://via.placeholder.com/200"
+            alt="Song Image"
+            class="h-52 w-52 rounded-full object-cover mx-auto"
+          />
+          <h1
+            id="song-title"
+            class="text-lg mx-auto font-bold md:max-w-lg max-w-[260px]"
+          >
+            Song Title
+          </h1>
+          <p id="song-artist" class="text-xs -mt-4 max-w-xl mx-auto">
+            Artist Name
+          </p>
+        </div>
+        <input
+          type="range"
+          id="slider"
+          class="w-full max-w-[400px] mx-auto"
+          min="0"
+          value="0"
+        />
+        <div
+          class="-mt-6 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between"
+        >
+          <span id="current-time" class="text-xs">00:00</span>
+          <span id="duration" class="text-xs">00:00</span>
+        </div>
+        <div class="flex items-center justify-center gap-4">
+          <button
+            id="loop-btn"
+            class="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            <i class="fa-solid fa-repeat"></i>
+          </button>
+          <div class="flex items-center justify-center gap-2">
+            <button
+              id="forward-btn"
+              class="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <button
+              id="play-pause-btn"
+              class="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              <i id="play-icon" class="fa-solid fa-play"></i>
+              <i id="pause-icon" class="fa-solid fa-pause hidden"></i>
+            </button>
+            <button
+              id="backward-btn"
+              class="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+          <button
+            id="download-btn"
+            class="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            <i class="fas fa-download fa-lg"></i>
+          </button>
+        </div>
+        <div class="lyrics-container">
+          <h2 class="text-xl font-semibold mb-2">Lyrics</h2>
+          <p id="song-lyrics" class="text-sm whitespace-pre-line"></p>
+        </div>
+      </div>
+    </div>
+    <script src="./static/js/SongPlayer.js"></script>
+  </body>
+</html>
