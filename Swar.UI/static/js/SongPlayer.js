@@ -104,4 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   downloadBtn.addEventListener("click", downloadSong);
 
   await getSong();
+
+  document.getElementById("hamburger")?.addEventListener("click", () => {
+    document.getElementById("mobile-menu")?.classList.toggle("hidden");
+  });
 });
