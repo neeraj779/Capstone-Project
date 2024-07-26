@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       audio.src = data.media_url;
       document.getElementById("song-title").textContent = data.song;
       document.getElementById("song-artist").textContent =
-        data.singers || "Unknown";
+        data.primary_artists || "Unknown";
       document.getElementById("song-image").src = data.image;
       document.getElementById("song-lyrics").innerHTML =
         data.lyrics || "Lyrics not available";
