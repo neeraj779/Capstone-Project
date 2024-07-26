@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         slider.max = audio.duration;
         durationEl.textContent = formatTime(audio.duration);
       });
+      document.getElementById("skeleton-loader").classList.add("hidden");
+      document.getElementById("content").classList.remove("hidden");
     } catch (error) {
       console.error(error);
     }

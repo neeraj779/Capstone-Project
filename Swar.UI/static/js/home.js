@@ -8,12 +8,17 @@ async function fetchSongs() {
 
     const songMap = new Map(songs.map((song) => [song.id, song]));
 
-    return {
+    let res = {
       trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
       relaxing: content_list.slice(5, 10).map((id) => songMap.get(id) || {}),
       romance: content_list.slice(10, 15).map((id) => songMap.get(id) || {}),
       lofi: content_list.slice(15, 20).map((id) => songMap.get(id) || {}),
     };
+
+    document.getElementById("skeleton-loader").classList.add("hidden");
+    document.getElementById("content").classList.remove("hidden");
+
+    return res;
   } catch (error) {
     console.error("Error fetching song data:", error);
     return {

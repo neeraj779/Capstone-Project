@@ -22,11 +22,16 @@ async function fetchSongs() {
     const { content_list, songs } = playlistData;
     const songMap = new Map(songs.map((song) => [song.id, song]));
 
-    return {
+    let res = {
       trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
       search: searchData,
       artists: searchData.map((song) => song.primary_artists).flat(),
     };
+
+    document.getElementById("skeleton-loader").classList.add("hidden");
+    document.getElementById("content").classList.remove("hidden");
+
+    return res;
   } catch (error) {
     console.error("Error fetching song data:", error);
     return {
@@ -70,6 +75,7 @@ function createArtistButton(artist) {
 
 async function renderSongs() {
   const categories = await fetchSongs();
+
   const containerIds = ["trending", "search"];
 
   containerIds.forEach((id) => {
