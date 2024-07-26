@@ -205,12 +205,21 @@
             <p class="-mt-1 text-xs">Search results</p>
           </div>
           <div
+            id="search-error-message"
+            class="hidden text-center p-6 rounded-lg bg-red-600 bg-opacity-50"
+          >
+            <p class="text-lg font-semibold">Oops! Something went wrong.</p>
+            <p class="mt-2 text-sm">
+              We couldn't load the search results. Please try again later.
+            </p>
+          </div>
+          <div
             id="search"
             class="scroll-bar pb-4 flex gap-6 items-center"
           ></div>
         </div>
         <div class="grid gap-5">
-          <div class="-mb-[3px]">
+          <div id="artist-header" class="-mb-[3px]">
             <h1 class="font-bold text-lg">
               🎤 Artists<span class="text-primary"></span>
             </h1>
@@ -222,7 +231,7 @@
           ></div>
         </div>
         <div class="grid gap-5">
-          <div class="-mb-[3px]">
+          <div id="trending-header" class="-mb-[3px]">
             <h1 class="font-bold text-lg">
               🔥 Trending<span class="text-primary"></span>
             </h1>

@@ -1,44 +1,62 @@
-async function fetchSongs() {
-  const query = new URLSearchParams(window.location.search).get("q");
-  const urls = [
-    "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false",
-    `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`,
-  ];
-
+async function fetchPlaylistData() {
   try {
-    const [playlistResponse, searchResponse] = await Promise.all(
-      urls.map((url) => fetch(url))
-    );
+    const playlistUrl =
+      "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+    const cacheName = "cached-songs";
+    const cache = await caches.open(cacheName);
+    let cachedResponse = await cache.match(playlistUrl);
 
-    if (!playlistResponse.ok || !searchResponse.ok) {
-      throw new Error("Failed to fetch data from one or more endpoints");
+    if (!cachedResponse) {
+      cachedResponse = await fetch(playlistUrl);
+      if (!cachedResponse.ok) {
+        throw new Error("Failed to fetch playlist data");
+      }
+      await cache.put(playlistUrl, cachedResponse.clone());
     }
 
+    return cachedResponse.json();
+  } catch (error) {
+    console.error("Error fetching playlist data:", error);
+    return { content_list: [], songs: [] };
+  }
+}
+
+async function fetchSearchData(query) {
+  try {
+    const searchUrl = `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
+    const response = await fetch(searchUrl);
+    if (!response.ok) {
+      throw new Error("Failed to fetch search data");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching search data:", error);
+    return [];
+  }
+}
+
+function processSongData(playlistData, searchData) {
+  const { content_list, songs } = playlistData;
+  const songMap = new Map(songs.map((song) => [song.id, song]));
+
+  return {
+    trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
+    search: searchData,
+    artists: [...new Set(searchData.flatMap((song) => song.primary_artists))],
+  };
+}
+
+async function fetchSongs() {
+  const query = new URLSearchParams(window.location.search).get("q") || "";
+  try {
     const [playlistData, searchData] = await Promise.all([
-      playlistResponse.json(),
-      searchResponse.json(),
+      fetchPlaylistData(),
+      fetchSearchData(query),
     ]);
-
-    const { content_list, songs } = playlistData;
-    const songMap = new Map(songs.map((song) => [song.id, song]));
-
-    let res = {
-      trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
-      search: searchData,
-      artists: searchData.map((song) => song.primary_artists).flat(),
-    };
-
-    document.getElementById("skeleton-loader").classList.add("hidden");
-    document.getElementById("content").classList.remove("hidden");
-
-    return res;
+    return processSongData(playlistData, searchData);
   } catch (error) {
     console.error("Error fetching song data:", error);
-    return {
-      trending: [],
-      search: [],
-      artists: [],
-    };
+    return null;
   }
 }
 
@@ -77,7 +95,6 @@ async function renderSongs() {
   const categories = await fetchSongs();
 
   const containerIds = ["trending", "search"];
-
   containerIds.forEach((id) => {
     const container = document.getElementById(id);
     if (container) {
@@ -87,13 +104,25 @@ async function renderSongs() {
 
   const artistsContainer = document.getElementById("artists");
   if (artistsContainer) {
-    const uniqueArtists = [...new Set(categories.artists)];
-    artistsContainer.innerHTML = uniqueArtists.map(createArtistButton).join("");
+    artistsContainer.innerHTML = categories.artists
+      .map(createArtistButton)
+      .join("");
+  }
+
+  document.getElementById("skeleton-loader").classList.add("hidden");
+  document.getElementById("content").classList.remove("hidden");
+
+  if (!categories.search.length) {
+    document.getElementById("search-error-message").classList.remove("hidden");
+    document.getElementById("artist-header").classList.add("hidden");
+  }
+
+  if (!categories.trending.length) {
+    document.getElementById("trending-header").classList.add("hidden");
   }
 }
 
 window.addEventListener("load", renderSongs);
-
 document.getElementById("hamburger")?.addEventListener("click", () => {
   document.getElementById("mobile-menu")?.classList.toggle("hidden");
 });

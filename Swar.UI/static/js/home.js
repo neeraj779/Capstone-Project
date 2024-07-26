@@ -1,24 +1,24 @@
 async function fetchSongs() {
+  const cacheName = "cached-songs";
+  const requestUrl =
+    "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+
+  const cache = await caches.open(cacheName);
+
+  const cachedResponse = await cache.match(requestUrl);
+  if (cachedResponse) {
+    const data = await cachedResponse.json();
+    return processSongData(data);
+  }
+
   try {
-    const response = await fetch(
-      "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false"
-    );
+    const response = await fetch(requestUrl);
+    const clonedResponse = response.clone();
     const data = await response.json();
-    const { content_list, songs } = data;
 
-    const songMap = new Map(songs.map((song) => [song.id, song]));
+    await cache.put(requestUrl, clonedResponse);
 
-    let res = {
-      trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
-      relaxing: content_list.slice(5, 10).map((id) => songMap.get(id) || {}),
-      romance: content_list.slice(10, 15).map((id) => songMap.get(id) || {}),
-      lofi: content_list.slice(15, 20).map((id) => songMap.get(id) || {}),
-    };
-
-    document.getElementById("skeleton-loader").classList.add("hidden");
-    document.getElementById("content").classList.remove("hidden");
-
-    return res;
+    return processSongData(data);
   } catch (error) {
     console.error("Error fetching song data:", error);
     return {
@@ -28,6 +28,22 @@ async function fetchSongs() {
       lofi: [],
     };
   }
+}
+
+function processSongData(data) {
+  const { content_list, songs } = data;
+  const songMap = new Map(songs.map((song) => [song.id, song]));
+  const res = {
+    trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
+    relaxing: content_list.slice(5, 10).map((id) => songMap.get(id) || {}),
+    romance: content_list.slice(10, 15).map((id) => songMap.get(id) || {}),
+    lofi: content_list.slice(15, 20).map((id) => songMap.get(id) || {}),
+  };
+
+  document.getElementById("skeleton-loader").classList.add("hidden");
+  document.getElementById("content").classList.remove("hidden");
+
+  return res;
 }
 
 function createSongCard({
