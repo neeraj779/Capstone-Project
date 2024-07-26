@@ -66,7 +66,7 @@ namespace SongService.API.Services
             var response = await _httpClient.GetStringAsync(songDetailsUrl);
             var jsonResponse = JObject.Parse(response);
             if (jsonResponse[id] == null)
-                throw new InvalidSongIdException();
+                return null;
             return SongsDataUtils.FormatSong(jsonResponse[id], lyrics);
         }
 

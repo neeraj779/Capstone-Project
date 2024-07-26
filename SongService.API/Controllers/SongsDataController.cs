@@ -37,15 +37,12 @@ namespace SongService.API.Controllers
         [HttpGet("GetSongById")]
         public async Task<ActionResult> GetSong(string id, bool lyrics = false)
         {
-            try
+            var song = await _songService.GetSong(id, lyrics);
+            if (song == null)
             {
-                var song = await _songService.GetSong(id, lyrics);
-                return Ok(song.ToString());
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = "Song not found" });
             }
-            catch (InvalidSongIdException)
-            {
-                return NotFound();
-            }
+            return Ok(song.ToString());
         }
 
         [HttpGet("GetAlbumById")]
