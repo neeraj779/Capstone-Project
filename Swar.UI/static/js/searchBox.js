@@ -8,17 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const query = input.value.trim();
 
-      if (query) {
-        const currentUrl = new URL(window.location.href);
-        const basePath = currentUrl.pathname.split("/").slice(0, -1).join("/");
-        const searchUrl = new URL(
-          `${basePath}/search.html`,
-          window.location.origin
-        );
-
-        searchUrl.searchParams.set("q", query);
-        window.location.href = searchUrl.toString();
-      }
+      if (query)
+        window.location.href = `./search.html?q=${encodeURIComponent(query)}`;
     });
   };
 
