@@ -32,6 +32,20 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "swar UI"
+    },
+    {
+      "src": "./Screenshot1.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "swar UI"
+    },
+    {
+      "src": "./Screenshot2.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "swar UI"
     }
   ],
   "description": "Swar UI | Your one-stop solution for amazing music experiences.",
