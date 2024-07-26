@@ -3,6 +3,11 @@
   "name": "Swar",
   "icons": [
     {
+      "src": "./icons-vector.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    },
+    {
       "src": "./android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
@@ -13,8 +18,39 @@
       "type": "image/png"
     }
   ],
+  "screenshots": [
+    {
+      "src": "./Screenshot1.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "swar UI"
+    },
+    {
+      "src": "./Screenshot1.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "swar UI"
+    },
+    {
+      "src": "./Screenshot2.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "swar UI"
+    },
+    {
+      "src": "./Screenshot2.png",
+      "sizes": "640x320",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "swar UI"
+    }
+  ],
+  "description": "Swar UI | Your one-stop solution for amazing music experiences.",
   "start_url": "../",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#111828",
   "background_color": "#ffffff"
 }
