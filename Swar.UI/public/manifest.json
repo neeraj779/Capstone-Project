@@ -27,24 +27,10 @@
       "label": "swar UI"
     },
     {
-      "src": "./Screenshot1.png",
-      "sizes": "640x320",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "swar UI"
-    },
-    {
       "src": "./Screenshot2.png",
       "sizes": "640x320",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "swar UI"
-    },
-    {
-      "src": "./Screenshot2.png",
-      "sizes": "640x320",
-      "type": "image/png",
-      "form_factor": "narrow",
       "label": "swar UI"
     }
   ],
@@ -52,5 +38,5 @@
   "start_url": "../",
   "display": "standalone",
   "theme_color": "#111828",
-  "background_color": "#ffffff"
+  "background_color": "#111828"
 }
