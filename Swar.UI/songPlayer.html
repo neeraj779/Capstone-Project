@@ -7,7 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="./static/css/SongPlayer.css" />
   </head>
@@ -39,8 +42,50 @@
           <a href="#" class="hover:text-gray-400">Albums</a>
         </div>
         <div class="relative flex-1 max-w-xs hidden md:block">
+          <form id="search-form" class="relative">
+            <input
+              type="text"
+              id="search-input"
+              class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
+              placeholder="Search songs, artists..."
+            />
+            <svg
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+              />
+            </svg>
+          </form>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="md:hidden absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50 hidden"
+      >
+        <div class="flex flex-col items-center py-4 space-y-4">
+          <a href="index.html" class="text-white hover:text-gray-400">Home</a>
+          <a href="#" class="text-white hover:text-gray-400">Playlist</a>
+          <a href="#" class="text-white hover:text-gray-400">Albums</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="mb-3 mt-5">
+      <div class="md:hidden relative max-w-full mx-6 mb-6">
+        <form id="mobile-search-form" class="relative">
           <input
             type="text"
+            id="mobile-search-input"
             class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
             placeholder="Search songs, artists..."
           />
@@ -60,43 +105,7 @@
               d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
             />
           </svg>
-        </div>
-      </div>
-      <div
-        id="mobile-menu"
-        class="md:hidden absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50 hidden"
-      >
-        <div class="flex flex-col items-center py-4 space-y-4">
-          <a href="index.html" class="text-white hover:text-gray-400">Home</a>
-          <a href="#" class="text-white hover:text-gray-400">Playlist</a>
-          <a href="#" class="text-white hover:text-gray-400">Albums</a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="mb-3 mt-5">
-      <div class="md:hidden relative max-w-full mx-6 mb-6">
-        <input
-          type="text"
-          class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
-          placeholder="Search songs, artists..."
-        />
-        <svg
-          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
-          />
-        </svg>
+        </form>
       </div>
 
       <audio id="audio" class="hidden"></audio>
@@ -173,5 +182,6 @@
       </div>
     </div>
     <script src="./static/js/SongPlayer.js"></script>
+    <script src="./static/js/searchBox.js"></script>
   </body>
 </html>
