@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Swar.API.Models.DBModels;
+using Swar.API.Models.ENUMs;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Swar.API.Contexts
 {
@@ -16,6 +19,22 @@ namespace Swar.API.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var adminUser = new User
+            {
+                UserId = 100,
+                UserName = "admin",
+                UserStatus = UserStatusEnum.UserStatus.Active,
+                Role = UserRoleEnum.UserRole.Admin,
+                RegistrationDate = DateTime.UtcNow
+            };
+
+            HMACSHA512 hMACSHA = new HMACSHA512();
+            adminUser.PasswordHashKey = hMACSHA.Key;
+            adminUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes("admin"));
+
+
+            modelBuilder.Entity<User>().HasData(adminUser);
+
             modelBuilder.Entity<Playlist>()
                 .HasMany(p => p.PlaylistSongs)
                 .WithOne(ps => ps.Playlist)
@@ -43,6 +62,12 @@ namespace Swar.API.Contexts
 
             modelBuilder.Entity<PlaylistSong>()
                 .HasKey(ps => new { ps.PlaylistId, ps.SongId });
+
+            modelBuilder.Entity<PlaylistSong>()
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistSongs)
+                .HasForeignKey(ps => ps.PlaylistId);
+
 
             modelBuilder.Entity<LikedSong>()
                 .HasIndex(ul => new { ul.UserId, ul.SongId })

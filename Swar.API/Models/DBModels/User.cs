@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Swar.API.Models.ENUMs;
+using System.ComponentModel.DataAnnotations;
 
 namespace Swar.API.Models.DBModels
 {
-    public enum UserRole
-    {
-        Admin,
-        User
-    }
-
     public class User
     {
         [Key]
@@ -15,8 +10,8 @@ namespace Swar.API.Models.DBModels
         public string UserName { get; set; } = string.Empty;
         public byte[] HashedPassword { get; set; } = Array.Empty<byte>();
         public byte[] PasswordHashKey { get; set; } = Array.Empty<byte>();
-        public string Status { get; set; } = string.Empty;
-        public UserRole Role { get; set; }
+        public UserStatusEnum.UserStatus UserStatus { get; set; }
+        public UserRoleEnum.UserRole Role { get; set; }
         public DateTime RegistrationDate { get; set; }
 
         public ICollection<Playlist> Playlists { get; set; }

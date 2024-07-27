@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Swar.API.Contexts;
+using Swar.API.Interfaces.Repositories;
+using Swar.API.Interfaces.Services;
+using Swar.API.Models.DBModels;
+using Swar.API.Repositories;
+using Swar.API.Services;
 
 namespace Swar.API
 {
@@ -20,6 +25,17 @@ namespace Swar.API
             builder.Services.AddDbContext<SwarContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
                 );
+            #endregion
+
+            #region Repositories
+            builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<int, Playlist>, PlaylistRepository>();
+            builder.Services.AddScoped<IPlaylistSongsRepository, PlaylistSongsRepository>();
+            #endregion
+
+            #region Services
+            builder.Services.AddScoped<IPlaylistService, PlaylistService>();
+            builder.Services.AddScoped<IPlaylistSongsService, PlaylistSongsService>();
             #endregion
 
             var app = builder.Build();
