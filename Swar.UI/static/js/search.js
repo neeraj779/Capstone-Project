@@ -25,6 +25,7 @@ async function fetchSearchData(query) {
   try {
     const searchUrl = `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
     document.getElementById("search-input").value = query;
+    document.getElementById("mobile-search-input").value = query;
     const response = await fetch(searchUrl);
     if (!response.ok) {
       throw new Error("Failed to fetch search data");
