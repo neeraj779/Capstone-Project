@@ -25,7 +25,10 @@ window.addEventListener("appinstalled", () => {
   Swal.fire({
     icon: "success",
     title: "🎉 Installation Complete!",
-    html: '<div class="swal2-text">Great news! The app is now installed on your device. Enjoy exploring all the amazing features! 🚀</div>',
+    html: `
+    <div class="custom-alert">
+    <p>Great news! <span class="highlight">Swar is now installed on your device.</span> Enjoy exploring all the amazing features! 🚀</p>
+    </div>`,
     showConfirmButton: false,
     toast: true,
     position: "top-end",

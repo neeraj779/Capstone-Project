@@ -21,3 +21,22 @@
 .swal2-title {
     color: white !important;
 }
+
+.swal2-timer-progress-bar {
+    background: #fff !important;
+}
+
+.custom-alert {
+    font-family: 'Arial', sans-serif;
+    color: #e0e0e0;
+    background-color: #202938;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.highlight {
+    font-weight: bold;
+    color: #90caf9;
+}
