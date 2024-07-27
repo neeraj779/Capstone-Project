@@ -24,8 +24,8 @@ async function installApp() {
 window.addEventListener("appinstalled", () => {
   Swal.fire({
     icon: "success",
-    title: "App Installed 😀",
-    text: "The app has been successfully installed on your device. 🚀",
+    title: "🎉 Installation Complete!",
+    html: '<div class="swal2-text">Great news! The app is now installed on your device. Enjoy exploring all the amazing features! 🚀</div>',
     showConfirmButton: false,
     toast: true,
     position: "top-end",
@@ -33,16 +33,4 @@ window.addEventListener("appinstalled", () => {
     timerProgressBar: true,
     background: "#111828",
   });
-});
-
-Swal.fire({
-  icon: "success",
-  title: "🎉 Installation Complete!",
-  html: '<div class="swal2-text">Great news! The app is now installed on your device. Enjoy exploring all the amazing features! 🚀</div>',
-  showConfirmButton: false,
-  toast: true,
-  position: "top-end",
-  timer: 4000,
-  timerProgressBar: true,
-  background: "#111828",
 });
