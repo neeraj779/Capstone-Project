@@ -30,6 +30,13 @@
 
     <title>Swar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="./static/css/home.css" />
   </head>
   <body class="bg-gray-900 text-white">
@@ -306,8 +313,16 @@
           <div id="lofi" class="scroll-bar pb-4 flex gap-6 items-center"></div>
         </div>
       </div>
+      <button
+        id="install-button"
+        class="fixed bottom-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-lg z-50 hidden"
+      >
+        <i class="fas fa-download fa-lg"></i>
+      </button>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./static/js/home.js"></script>
     <script src="./static/js/searchBox.js"></script>
+    <script src="./static/js/installer.js"></script>
   </body>
 </html>

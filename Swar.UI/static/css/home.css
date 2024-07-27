@@ -16,3 +16,8 @@
     min-width: 200px;
     max-width: 200px;
 }
+
+.swal2-text,
+.swal2-title {
+    color: white !important;
+}
