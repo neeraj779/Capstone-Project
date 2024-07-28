@@ -49,16 +49,24 @@ namespace Swar.API.Services
             return playlistSongs.Select(MapPlaylistSongToReturnPlaylistSongDTO);
         }
 
-        public async Task<IEnumerable<PlaylistSongsReturnDTO>> GetAllSongsInUserPlaylist(int userId, int playlistId)
+        public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId)
         {
             await ValidateUserAndPlaylist(userId, playlistId);
 
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
+                throw new EntityNotFoundException("No Playlist songs found.");
+
+            var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlistId).ToList();
+            if (!userPlaylistSongs.Any())
                 throw new EntityNotFoundException("No songs found in playlist.");
 
-            var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlistId);
-            return userPlaylistSongs.Select(MapPlaylistSongToReturnPlaylistSongDTO);
+            var songsIdList = userPlaylistSongs.Select(ps => ps.SongId).ToList();
+            return new PlaylistSongsDTO
+            {
+                PlaylistId = playlistId,
+                Songs = songsIdList
+            };
         }
 
         public async Task<PlaylistSongsReturnDTO> RemoveSongFromPlaylist(int userId, int playlistId, string songId)

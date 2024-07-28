@@ -28,7 +28,7 @@ namespace Swar.API.Interfaces.Services
         /// <param name="userId">The ID of the user.</param>
         /// <param name="playlistId">The ID of the playlist.</param>
         /// <returns>A collection of DTOs representing the songs in the playlist.</returns>
-        public Task<IEnumerable<PlaylistSongsReturnDTO>> GetAllSongsInUserPlaylist(int userId, int playlistId);
+        public Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId);
 
         /// <summary>
         /// Gets all songs in a specific playlist.

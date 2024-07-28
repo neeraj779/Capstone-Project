@@ -34,7 +34,8 @@ namespace Swar.API.Services
             {
                 UserId = userId,
                 PlaylistName = addPlaylistDTO.PlaylistName,
-                IsPublic = addPlaylistDTO.IsPublic,
+                Description = addPlaylistDTO.Description,
+                IsPrivate = addPlaylistDTO.IsPrivate,
                 CreatedAt = DateTime.Now
             };
 
@@ -90,7 +91,7 @@ namespace Swar.API.Services
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 
-        public async Task<ReturnPlaylistDTO> UpdatePlaylistName(int userId, int playlistId, string playlistName)
+        public async Task<ReturnPlaylistDTO> UpdatePlaylist(int userId, int playlistId, UpdatePlaylistDTO updatePlaylistDTO)
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
@@ -99,12 +100,14 @@ namespace Swar.API.Services
             if (playlist.UserId != userId)
                 throw new UnauthorizedAccessException();
 
-            playlist.PlaylistName = playlistName;
+            playlist.PlaylistName = updatePlaylistDTO.PlaylistName;
+            playlist.Description = updatePlaylistDTO.Description;
+
             await _playlistRepository.Update(playlist);
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 
-        public async Task<ReturnPlaylistDTO> UpdatePlaylistPrivacy(int userId, int playlistId, bool isPublic)
+        public async Task<ReturnPlaylistDTO> UpdatePlaylistPrivacy(int userId, int playlistId, bool IsPrivate)
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
@@ -113,7 +116,7 @@ namespace Swar.API.Services
             if (playlist.UserId != userId)
                 throw new UnauthorizedAccessException();
 
-            playlist.IsPublic = isPublic;
+            playlist.IsPrivate = IsPrivate;
             await _playlistRepository.Update(playlist);
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
@@ -125,7 +128,8 @@ namespace Swar.API.Services
                 UserId = playlist.UserId,
                 PlaylistId = playlist.PlaylistId,
                 PlaylistName = playlist.PlaylistName,
-                IsPublic = playlist.IsPublic,
+                Description = playlist.Description,
+                IsPrivate = playlist.IsPrivate,
                 CreatedAt = playlist.CreatedAt
             };
         }

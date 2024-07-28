@@ -45,7 +45,7 @@ namespace Swar.API.Controllers
             }
         }
 
-        [HttpDelete("DeletePlaylist")]
+        [HttpDelete("DeletePlaylist/{playlistId}")]
         public async Task<IActionResult> DeletePlaylist(int playlistId)
         {
             try
@@ -78,7 +78,7 @@ namespace Swar.API.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+                return StatusCode(StatusCodes.Status200OK, new ErrorModel { Status = StatusCodes.Status200OK, Message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace Swar.API.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+                return StatusCode(StatusCodes.Status200OK, new ErrorModel { Status = StatusCodes.Status200OK, Message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -128,13 +128,13 @@ namespace Swar.API.Controllers
             }
         }
 
-        [HttpPut("UpdatePlaylistName")]
-        public async Task<IActionResult> UpdatePlaylistName(int playlistId, string playlistName)
+        [HttpPut("UpdatePlaylist/{playlistId}")]
+        public async Task<IActionResult> UpdatePlaylist(int playlistId, UpdatePlaylistDTO updatePlaylistDTO)
         {
             try
             {
                 var userId = 100; // Todo: Get userId from token
-                var result = await _playlistService.UpdatePlaylistName(userId, playlistId, playlistName);
+                var result = await _playlistService.UpdatePlaylist(userId, playlistId, updatePlaylistDTO);
                 return Ok(result);
             }
             catch (EntityNotFoundException ex)
@@ -151,13 +151,13 @@ namespace Swar.API.Controllers
             }
         }
 
-        [HttpPut("UpdatePlaylistPrivacy")]
-        public async Task<IActionResult> UpdatePlaylistPrivacy(int playlistId, bool isPublic)
+        [HttpPut("UpdatePlaylistPrivacy/{playlistId}")]
+        public async Task<ActionResult> UpdatePlaylistPrivacy(int playlistId, UpdatePlaylistPrivacyDTO updatePlaylistPrivacyDTO)
         {
             try
             {
                 var userId = 100; // Todo: Get userId from token
-                var result = await _playlistService.UpdatePlaylistPrivacy(userId, playlistId, isPublic);
+                var result = await _playlistService.UpdatePlaylistPrivacy(userId, playlistId, updatePlaylistPrivacyDTO.IsPrivate);
                 return Ok(result);
             }
             catch (EntityNotFoundException ex)
