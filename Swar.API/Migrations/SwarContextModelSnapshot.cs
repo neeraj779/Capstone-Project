@@ -30,6 +30,9 @@ namespace Swar.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"), 1L, 1);
 
+                    b.Property<DateTime>("LikedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SongId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -78,6 +81,16 @@ namespace Swar.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaylistId"), 1L, 1);
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PlaylistName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,9 +126,21 @@ namespace Swar.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("HashedPassword")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHashKey")
                         .IsRequired()
@@ -127,17 +152,29 @@ namespace Swar.API.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserStatus")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 100,
+                            Email = "admin@gmail.com",
+                            Gender = "Male",
+                            HashedPassword = new byte[] { 105, 206, 164, 53, 222, 226, 133, 230, 244, 70, 164, 31, 104, 161, 46, 242, 108, 10, 234, 51, 129, 76, 145, 233, 217, 157, 211, 80, 199, 191, 253, 166, 141, 123, 224, 50, 227, 253, 192, 207, 107, 108, 133, 207, 20, 150, 79, 108, 138, 47, 95, 20, 241, 214, 220, 59, 22, 154, 175, 178, 41, 102, 241, 240 },
+                            Name = "admin",
+                            PasswordHashKey = new byte[] { 254, 131, 17, 21, 216, 237, 51, 76, 205, 207, 186, 238, 14, 173, 45, 28, 6, 169, 14, 51, 199, 32, 227, 66, 84, 179, 22, 78, 71, 81, 155, 207, 158, 136, 149, 224, 255, 125, 68, 189, 166, 29, 200, 213, 26, 64, 241, 17, 185, 137, 92, 135, 154, 194, 249, 131, 214, 7, 212, 93, 190, 181, 85, 112, 184, 169, 47, 47, 33, 194, 105, 18, 132, 16, 93, 214, 112, 134, 154, 205, 139, 172, 153, 5, 6, 243, 239, 236, 96, 217, 135, 94, 205, 135, 131, 145, 31, 190, 221, 74, 9, 209, 255, 139, 95, 114, 178, 141, 234, 246, 3, 72, 52, 112, 119, 227, 21, 76, 159, 122, 35, 53, 110, 25, 162, 225, 201, 63 },
+                            RegistrationDate = new DateTime(2024, 7, 29, 15, 34, 42, 215, DateTimeKind.Utc).AddTicks(6070),
+                            Role = 0,
+                            UserStatus = 0
+                        });
                 });
 
             modelBuilder.Entity("Swar.API.Models.DBModels.UserUploadedSong", b =>
@@ -187,7 +224,7 @@ namespace Swar.API.Migrations
             modelBuilder.Entity("Swar.API.Models.DBModels.LikedSong", b =>
                 {
                     b.HasOne("Swar.API.Models.DBModels.User", "User")
-                        .WithMany("Likes")
+                        .WithMany("LikedSongs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -246,7 +283,7 @@ namespace Swar.API.Migrations
 
             modelBuilder.Entity("Swar.API.Models.DBModels.User", b =>
                 {
-                    b.Navigation("Likes");
+                    b.Navigation("LikedSongs");
 
                     b.Navigation("PlayHistories");
 
