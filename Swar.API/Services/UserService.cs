@@ -122,7 +122,7 @@ namespace Swar.API.Services
         private void ValidateUser(User user)
         {
             if (user == null)
-                throw new EntityNotFoundException("User not found");
+                throw new EntityNotFoundException("You are not registered");
 
             if (user.UserStatus == UserStatusEnum.UserStatus.Inactive)
                 throw new InactiveAccountException();

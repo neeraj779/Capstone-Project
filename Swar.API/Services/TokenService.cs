@@ -13,7 +13,7 @@ namespace Swar.API.Services
         private readonly string _refreshTokenSecret;
         private readonly SymmetricSecurityKey _accessTokenKey;
         private readonly SymmetricSecurityKey _refreshTokenKey;
-        private readonly TimeSpan _accessTokenExpiration = TimeSpan.FromHours(1);
+        private readonly TimeSpan _accessTokenExpiration = TimeSpan.FromDays(20);
         private readonly TimeSpan _refreshTokenExpiration = TimeSpan.FromDays(30);
 
         public TokenService(IConfiguration configuration)

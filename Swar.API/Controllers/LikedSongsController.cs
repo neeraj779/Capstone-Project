@@ -25,7 +25,7 @@ namespace Swar.API.Controllers
         /// <returns>Returns the result of the operation.</returns>
         [HttpPost("LikeSong")]
         [Authorize(Roles = "Admin, User")]
-        public async Task<IActionResult> LikeSong(string songId)
+        public async Task<IActionResult> LikeSong([FromBody] string songId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -111,7 +111,7 @@ namespace Swar.API.Controllers
         /// </summary>
         /// <param name="songId">The ID of the song to check.</param>
         /// <returns>Returns true if the song is liked, otherwise false.</returns>
-        [HttpGet("IsSongLikedByUser")]
+        [HttpGet("IsSongLikedByUser/{songId}")]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> IsSongLikedByUser(string songId)
         {

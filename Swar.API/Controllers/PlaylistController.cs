@@ -122,7 +122,7 @@ namespace Swar.API.Controllers
             }
             catch (EntityNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status200OK, new ErrorModel { Status = StatusCodes.Status200OK, Message = ex.Message });
+                return StatusCode(StatusCodes.Status200OK, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
             }
             catch (Exception ex)
             {
