@@ -110,8 +110,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("like-checkbox")
     .addEventListener("change", toggleLike);
   await getSong();
-
-  document.getElementById("hamburger")?.addEventListener("click", () => {
-    document.getElementById("mobile-menu")?.classList.toggle("hidden");
-  });
 });
