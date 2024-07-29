@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swar.API.Exceptions;
+using Swar.API.Helpers;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
 using Swar.API.Models.DTOs;
@@ -17,7 +19,13 @@ namespace Swar.API.Controllers
             _playlistSongsService = playlistSongsService;
         }
 
+        /// <summary>
+        /// Adds a song to a playlist.
+        /// </summary>
+        /// <param name="playlistSongsDTO">Details of the song and playlist.</param>
+        /// <returns>Returns the result of adding the song to the playlist.</returns>
         [HttpPost("AddSongToPlaylist")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> AddSongToPlaylist(AddSongToPlaylistDTO playlistSongsDTO)
         {
             if (!ModelState.IsValid)
@@ -25,13 +33,18 @@ namespace Swar.API.Controllers
 
             try
             {
-                var userId = 100; // Todo: Get userId from token
+                int userId = UserHelper.GetUserId(User);
                 var result = await _playlistSongsService.AddSongToPlaylist(userId, playlistSongsDTO);
+
                 return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { Status = StatusCodes.Status403Forbidden, Message = ex.Message });
             }
             catch (EntityAlreadyExistsException ex)
             {
@@ -43,18 +56,30 @@ namespace Swar.API.Controllers
             }
         }
 
-        [HttpDelete("RemoveSongFromPlaylist/{playlistId}&{songId}")]
+        /// <summary>
+        /// Removes a song from a playlist.
+        /// </summary>
+        /// <param name="playlistId">The ID of the playlist.</param>
+        /// <param name="songId">The ID of the song.</param>
+        /// <returns>Returns the result of removing the song from the playlist.</returns>
+        [HttpDelete("RemoveSongFromPlaylist/{playlistId}/{songId}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> RemoveSongFromPlaylist(int playlistId, string songId)
         {
             try
             {
-                var userId = 100; // Todo: Get userId from token
+                int userId = UserHelper.GetUserId(User);
                 var result = await _playlistSongsService.RemoveSongFromPlaylist(userId, playlistId, songId);
+
                 return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { Status = StatusCodes.Status403Forbidden, Message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -62,7 +87,12 @@ namespace Swar.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all songs in all playlists.
+        /// </summary>
+        /// <returns>Returns a list of all songs in all playlists.</returns>
         [HttpGet("GetAllSongsInPlaylist")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllSongsInPlaylist()
         {
             try
@@ -80,18 +110,29 @@ namespace Swar.API.Controllers
             }
         }
 
-        [HttpGet("GetAllSongsInUserPlaylist")]
+        /// <summary>
+        /// Gets all songs in a specific user’s playlist.
+        /// </summary>
+        /// <param name="playlistId">The ID of the playlist.</param>
+        /// <returns>Returns a list of songs in the specified user's playlist.</returns>
+        [HttpGet("GetAllSongsInUserPlaylist/{playlistId}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetAllSongsInUserPlaylist(int playlistId)
         {
             try
             {
-                var userId = 100; // Todo: Get userId from token
+                int userId = UserHelper.GetUserId(User);
                 var result = await _playlistSongsService.GetAllSongsInUserPlaylist(userId, playlistId);
+
                 return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
                 return StatusCode(StatusCodes.Status200OK, new ErrorModel { Status = StatusCodes.Status200OK, Message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { Status = StatusCodes.Status403Forbidden, Message = ex.Message });
             }
             catch (Exception ex)
             {

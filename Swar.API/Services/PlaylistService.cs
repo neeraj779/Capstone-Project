@@ -52,7 +52,7 @@ namespace Swar.API.Services
                 throw new EntityNotFoundException();
 
             if (playlist.UserId != userId)
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("You are not authorized to delete this playlist.");
 
             await _playlistRepository.Delete(playlistId);
             return MapPlaylistToReturnPlaylistDTO(playlist);
@@ -63,7 +63,7 @@ namespace Swar.API.Services
         {
             var playlists = await _playlistRepository.GetAll();
             if (!playlists.Any())
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("No playlists found.");
 
             return playlists.Select(MapPlaylistToReturnPlaylistDTO).ToList();
         }
@@ -74,7 +74,7 @@ namespace Swar.API.Services
             var userPlaylists = playlists.Where(p => p.UserId == userId);
 
             if (!userPlaylists.Any())
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException($"No playlists found for user with ID {userId}.");
 
             return userPlaylists.Select(MapPlaylistToReturnPlaylistDTO).ToList();
         }
@@ -83,10 +83,10 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
 
             if (playlist.UserId != userId)
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("You are not authorized to view this playlist.");
 
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
@@ -95,10 +95,10 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
 
             if (playlist.UserId != userId)
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("You are not authorized to update this playlist.");
 
             playlist.PlaylistName = updatePlaylistDTO.PlaylistName;
             playlist.Description = updatePlaylistDTO.Description;
@@ -111,10 +111,10 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
 
             if (playlist.UserId != userId)
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("You are not authorized to update this playlist.");
 
             playlist.IsPrivate = IsPrivate;
             await _playlistRepository.Update(playlist);

@@ -44,7 +44,7 @@ namespace Swar.API.Services
         {
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException("No Playlist songs found.");
 
             return playlistSongs.Select(MapPlaylistSongToReturnPlaylistSongDTO);
         }
@@ -97,7 +97,7 @@ namespace Swar.API.Services
 
             if (playlist.UserId != userId)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("You are not authorized to Perform this operation.");
             }
         }
 

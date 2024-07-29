@@ -19,22 +19,34 @@ namespace Swar.API.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ConfigureAdminUser(modelBuilder);
+            ConfigureRelationships(modelBuilder);
+            ConfigureCompositeKeys(modelBuilder);
+            ConfigureUniqueIndices(modelBuilder);
+        }
+
+        private void ConfigureAdminUser(ModelBuilder modelBuilder)
+        {
             var adminUser = new User
             {
                 UserId = 100,
-                UserName = "admin",
+                Email = "admin@gmail.com",
+                Name = "admin",
+                Gender = "Male",
                 UserStatus = UserStatusEnum.UserStatus.Active,
                 Role = UserRoleEnum.UserRole.Admin,
                 RegistrationDate = DateTime.UtcNow
             };
 
-            HMACSHA512 hMACSHA = new HMACSHA512();
-            adminUser.PasswordHashKey = hMACSHA.Key;
-            adminUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes("admin"));
-
+            using var hmac = new HMACSHA512();
+            adminUser.PasswordHashKey = hmac.Key;
+            adminUser.HashedPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes("admin123"));
 
             modelBuilder.Entity<User>().HasData(adminUser);
+        }
 
+        private void ConfigureRelationships(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Playlist>()
                 .HasMany(p => p.PlaylistSongs)
                 .WithOne(ps => ps.Playlist)
@@ -46,7 +58,7 @@ namespace Swar.API.Contexts
                 .HasForeignKey(p => p.UserId);
 
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Likes)
+                .HasMany(u => u.LikedSongs)
                 .WithOne(l => l.User)
                 .HasForeignKey(l => l.UserId);
 
@@ -60,6 +72,13 @@ namespace Swar.API.Contexts
                 .WithOne(us => us.User)
                 .HasForeignKey(us => us.UserId);
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
+
+        private void ConfigureCompositeKeys(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<PlaylistSong>()
                 .HasKey(ps => new { ps.PlaylistId, ps.SongId });
 
@@ -67,11 +86,18 @@ namespace Swar.API.Contexts
                 .HasOne(ps => ps.Playlist)
                 .WithMany(p => p.PlaylistSongs)
                 .HasForeignKey(ps => ps.PlaylistId);
+        }
 
-
+        private void ConfigureUniqueIndices(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<LikedSong>()
                 .HasIndex(ul => new { ul.UserId, ul.SongId })
                 .IsUnique();
+
+            modelBuilder.Entity<LikedSong>()
+                .HasOne(ul => ul.User)
+                .WithMany(u => u.LikedSongs)
+                .HasForeignKey(ul => ul.UserId);
         }
     }
 }
