@@ -27,7 +27,7 @@ async function fetchPlaylistSongs() {
 async function fetchSong(songId) {
   try {
     const response = await fetch(
-      `http://localhost:5292/api/SongsData/GetSongById?id=${songId}&lyrics=false`
+      `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongById?id=${songId}&lyrics=false`
     );
     if (!response.ok) throw new Error("Failed to fetch song data");
     return await response.json();

@@ -1,5 +1,5 @@
 const CRUDService = (function () {
-  const API_BASE_URL = "http://localhost:5286/api/v1";
+  const API_BASE_URL = "https://swarapi.azurewebsites.net/api/v1";
   const accessToken = localStorage.getItem("accessToken");
 
   async function fetchAll(endpoint) {

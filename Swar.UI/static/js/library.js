@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchPlaylists();
 });
 
-const API_BASE_URL = "http://localhost:5286/api/v1/Playlist";
+const API_BASE_URL = "https://songserviceapi.azurewebsites.net/api/v1/Playlist";
 
 async function fetchPlaylists() {
   try {

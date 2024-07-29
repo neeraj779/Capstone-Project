@@ -20,7 +20,7 @@ document
     toggleUI(true);
 
     try {
-      const response = await fetch("http://localhost:5286/api/v1/Auth/Login", {
+      const response = await fetch("https://swarapi.azurewebsites.net/api/v1/Auth/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
