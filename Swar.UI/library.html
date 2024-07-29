@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Swar is a music streaming platform for music lovers"
+    />
+    <link rel="apple-touch-icon" href="./public/android-chrome-192x192.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./public/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./public/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="./public/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./public/apple-touch-icon-180x180.png"
+    />
+    <link rel="manifest" href="./public/manifest.json" />
+
+    <title>Swar | Your Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./static/css/library.css" />
+    <link rel="stylesheet" href="./static/css/validation.css" />
+    <link rel="stylesheet" href="./static/css/alert.css" />
+  </head>
+
+  <body class="bg-gray-900 text-white">
+    <nav class="bg-gray-800 py-4 shadow-md">
+      <div class="container mx-auto flex items-center justify-between px-6">
+        <a href="index.html" class="flex items-center">
+          <img
+            src="./assets/img/logo.png"
+            alt="Swar Logo"
+            class="h-10 w-auto"
+          />
+        </a>
+        <div class="md:hidden flex items-center">
+          <button id="hamburger" class="text-white focus:outline-none">
+            <svg
+              class="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
+        </div>
+        <div id="nav-links" class="hidden md:flex space-x-6">
+          <a href="index.html" class="hover:text-gray-400">Home</a>
+          <a href="library.html" class="hover:text-gray-400"> Your Library</a>
+        </div>
+        <div class="relative flex-1 max-w-xs hidden md:block">
+          <form id="search-form" class="relative">
+            <input
+              type="text"
+              id="search-input"
+              class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
+              placeholder="Search songs, artists..."
+            />
+            <svg
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+              />
+            </svg>
+          </form>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="md:hidden absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50 hidden"
+      >
+        <div class="flex flex-col items-center py-4 space-y-4">
+          <a href="index.html" class="text-white hover:text-gray-400">Home</a>
+          <a href="library.html" class="text-white hover:text-gray-400"
+            >Your Library</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto px-6 md:px-20 py-10 space-y-6">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Your Library</h1>
+        <button
+          class="bg-gray-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-gray-600 hover:shadow-xl transform hover:scale-110 transition-all duration-300 ease-in-out flex items-center"
+          onclick="addNewPlaylist()"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      <div>
+        <a
+          href="playlist.html?id=liked"
+          class="relative flex items-center bg-gray-800 rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300"
+        >
+          <img
+            src="./assets/img/likedSong.png"
+            alt="Album Cover"
+            class="w-32 h-32 object-cover rounded-md border border-gray-700"
+          />
+          <div class="ml-6 flex flex-col justify-center flex-grow">
+            <div class="flex items-center">
+              <h2 class="text-2xl font-semibold mb-1">Liked Songs</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-2">
+              Songs you've liked on Swara
+            </p>
+            <p class="text-gray-500 text-sm">Creation Date: July 27, 2024</p>
+          </div>
+        </a>
+      </div>
+      <div id="playlist-container" class="space-y-6"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./static/js/searchBox.js"></script>
+    <script src="./static/js/library.js"></script>
+    <script src="./static/js/crudService.js"></script>
+    <script src="./static/js/messages.js"></script>
+    <script src="./static/js/validation.js"></script>
+  </body>
+</html>

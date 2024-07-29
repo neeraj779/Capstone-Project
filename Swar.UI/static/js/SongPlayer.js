@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function getSong() {
     try {
       const response = await fetch(
-        `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongById?id=${songId}&lyrics=true`
+        `http://localhost:5292/api/SongsData/GetSongById?id=${songId}&lyrics=true`
       );
       if (!response.ok) throw new Error("Failed to fetch song data");
       const data = await response.json();
@@ -105,6 +105,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   forwardBtn.addEventListener("click", () => seek(10));
   downloadBtn.addEventListener("click", downloadSong);
 
+  await checkIfLiked(songId);
+  document
+    .getElementById("like-checkbox")
+    .addEventListener("change", toggleLike);
   await getSong();
 
   document.getElementById("hamburger")?.addEventListener("click", () => {

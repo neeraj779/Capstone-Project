@@ -1,0 +1,15 @@
+.error {
+    color: red;
+    font-size: 0.875em;
+    text-transform: capitalize;
+}
+
+.valid-input {
+    border-color: green !important;
+    box-shadow: 0 0 6px green !important;
+}
+
+.invalid-input {
+    border-color: red !important;
+    box-shadow: 0 0 6px red !important;
+}

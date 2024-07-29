@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Swar is a music streaming platform for music lovers"
+    />
+    <link rel="apple-touch-icon" href="./public/android-chrome-192x192.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./public/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./public/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="./public/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./public/apple-touch-icon-180x180.png"
+    />
+    <link rel="manifest" href="./public/manifest.json" />
+    <title>Swar - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./static/css/login.css" />
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="min-h-screen flex items-center justify-center bg-cover px-4">
+      <div
+        class="bg-gray-800 bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-md"
+      >
+        <div class="text-center mb-8">
+          <img
+            src="./assets/img/logo.png"
+            alt="Swar Logo"
+            class="h-12 mx-auto mb-4"
+          />
+          <h1 class="text-3xl font-bold">Welcome to Swar</h1>
+          <p class="text-gray-400">Please login to continue</p>
+        </div>
+        <form id="loginForm">
+          <div class="mb-4">
+            <label
+              for="email"
+              class="block text-sm font-semibold text-gray-400 mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              for="password"
+              class="block text-sm font-semibold text-gray-400 mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your password"
+              required
+              minlength="8"
+            />
+          </div>
+          <button
+            type="submit"
+            id="loginButton"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center"
+          >
+            <span id="buttonText">Login</span>
+            <svg
+              id="spinner"
+              class="w-5 h-5 hidden text-white animate-spin ml-3"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V2a10 10 0 00-10 10h2z"
+              ></path>
+            </svg>
+          </button>
+          <div
+            id="error-message"
+            class="mt-4 text-red-500 text-center hidden"
+          ></div>
+        </form>
+        <div class="mt-6 text-center">
+          <p class="text-gray-400">
+            Don't have an account?
+            <a href="#" class="text-blue-500 hover:underline">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="./static/js/login.js"></script>
+  </body>
+</html>
