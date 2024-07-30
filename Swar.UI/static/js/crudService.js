@@ -1,93 +1,83 @@
 const CRUDService = (function () {
   const API_BASE_URL = "https://swarapi.azurewebsites.net/api/v1";
+  const SONG_SERVICE_BASE_URL =
+    "https://songserviceapi.azurewebsites.net/api/v1";
   const accessToken = localStorage.getItem("accessToken");
 
-  async function fetchAll(endpoint) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!response.ok) throw new Error(response.statusText);
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching data from ${endpoint}:`, error);
-      throw error;
-    }
-  }
+  const HTTP_METHODS = {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+  };
 
-  async function fetchById(endpoint, id) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!response.ok) throw new Error(response.statusText);
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching data from ${endpoint}/${id}:`, error);
-      throw error;
-    }
-  }
+  async function makeRequest(
+    endpoint,
+    method,
+    data = null,
+    isSongService = false
+  ) {
+    const baseUrl = isSongService ? SONG_SERVICE_BASE_URL : API_BASE_URL;
+    const url = `${baseUrl}/${endpoint}`;
 
-  async function create(endpoint, data) {
+    const options = {
+      method,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (data) {
+      options.body = JSON.stringify(data);
+    }
+
     try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      if (response.status !== 200) {
-        throw new Error(result.message);
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(result.message || response.statusText);
       }
+      const result = await response.json();
       return result;
     } catch (error) {
-      console.error(`Error creating data at ${endpoint}:`, error);
+      console.error(`Error with ${method} request to ${url}:`, error);
       throw error;
     }
   }
 
-  async function update(endpoint, id, data) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      if (response.status !== 200) {
-        throw new Error(result.message);
-      }
-      return result;
-    } catch (error) {
-      console.error(`Error updating data at ${endpoint}/${id}:`, error);
-      throw error;
-    }
+  async function fetchAll(endpoint, isSongService = false) {
+    return makeRequest(endpoint, HTTP_METHODS.GET, null, isSongService);
   }
 
-  async function remove(endpoint, id) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!response.ok) throw new Error(response.statusText);
-      return await response.json();
-    } catch (error) {
-      console.error(`Error deleting data at ${endpoint}/${id}:`, error);
-      throw error;
-    }
+  async function fetchById(endpoint, id, isSongService = false) {
+    return makeRequest(
+      `${endpoint}/${id}`,
+      HTTP_METHODS.GET,
+      null,
+      isSongService
+    );
+  }
+
+  async function create(endpoint, data, isSongService = false) {
+    return makeRequest(endpoint, HTTP_METHODS.POST, data, isSongService);
+  }
+
+  async function update(endpoint, id, data, isSongService = false) {
+    return makeRequest(
+      `${endpoint}/${id}`,
+      HTTP_METHODS.PUT,
+      data,
+      isSongService
+    );
+  }
+
+  async function remove(endpoint, id, isSongService = false) {
+    return makeRequest(
+      `${endpoint}/${id}`,
+      HTTP_METHODS.DELETE,
+      null,
+      isSongService
+    );
   }
 
   return {

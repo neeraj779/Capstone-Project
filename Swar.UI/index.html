@@ -271,11 +271,22 @@
 
       <div id="content" class="hidden">
         <div class="grid gap-5">
+          <div class="-mb-[3px]" id="history-header">
+            <h1 class="font-bold text-lg">
+              🚀 Recently played <span class="text-primary"></span>
+            </h1>
+            <p class="text-xs">Songs you've listened to recently</p>
+          </div>
+          <div
+            id="history"
+            class="scroll-bar pb-4 flex gap-6 items-center"
+          ></div>
+
           <div class="-mb-[3px]">
             <h1 class="font-bold text-lg">
               🔥 Trending<span class="text-primary"></span>
             </h1>
-            <p class="-mt-1 text-xs">Trending songs in India</p>
+            <p class="text-xs">Trending songs in India</p>
           </div>
           <div
             id="trending"
@@ -286,7 +297,7 @@
             <h1 class="font-bold text-lg">
               🎧 Relaxing<span class="text-primary"></span>
             </h1>
-            <p class="-mt-1 text-xs">Top relaxing songs for peace</p>
+            <p class="text-xs">Top relaxing songs for peace</p>
           </div>
           <div
             id="relaxing"
@@ -297,7 +308,7 @@
             <h1 class="font-bold text-lg">
               💞 Romance<span class="text-primary"></span>
             </h1>
-            <p class="-mt-1 text-xs">Top romantic songs for love</p>
+            <p class="text-xs">Top romantic songs for love</p>
           </div>
           <div
             id="romance"
@@ -308,7 +319,7 @@
             <h1 class="font-bold text-lg">
               💤 Lofi<span class="text-primary"></span>
             </h1>
-            <p class="-mt-1 text-xs">Top lofi songs for relaxation</p>
+            <p class="text-xs">Top lofi songs for relaxation</p>
           </div>
           <div id="lofi" class="scroll-bar pb-4 flex gap-6 items-center"></div>
         </div>
@@ -322,6 +333,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./static/js/auth.js"></script>
+    <script src="./static/js/crudService.js"></script>
     <script src="./static/js/home.js"></script>
     <script src="./static/js/searchBox.js"></script>
     <script src="./static/js/installer.js"></script>

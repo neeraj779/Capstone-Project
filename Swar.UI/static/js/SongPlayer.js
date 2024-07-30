@@ -98,6 +98,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  async function logSongHistory(songId) {
+    try {
+      const response = await CRUDService.create(
+        "PlayHistory/LogSongHistory",
+        songId
+      );
+      console.log("Song history logged:", response.json());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   audio.addEventListener("timeupdate", handleTimeUpdate);
   audio.addEventListener("ended", () => {
     playing = false;
@@ -115,4 +127,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("like-checkbox")
     .addEventListener("change", toggleLike);
   await getSong();
+  logSongHistory(songId);
 });

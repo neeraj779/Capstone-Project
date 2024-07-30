@@ -1,31 +1,26 @@
 async function fetchSongs() {
   const cacheName = "cached-songs";
-  const requestUrl =
-    "https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+  const baseUrl = "https://songserviceapi.azurewebsites.net/api/v1/";
+  const endpoint = "SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
 
   const cache = await caches.open(cacheName);
 
-  const cachedResponse = await cache.match(requestUrl);
+  const cachedResponse = await cache.match(baseUrl + endpoint);
   if (cachedResponse) {
     const data = await cachedResponse.json();
     return processSongData(data);
   }
 
   try {
-    const response = await fetch(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    const clonedResponse = response.clone();
-    const data = await response.json();
-
-    await cache.put(requestUrl, clonedResponse);
+    const data = await CRUDService.fetchAll(endpoint, true);
+    const clonedResponse = new Response(JSON.stringify(data));
+    await cache.put(baseUrl + endpoint, clonedResponse);
 
     return processSongData(data);
   } catch (error) {
     console.error("Error fetching song data:", error);
     return {
+      history: [],
       trending: [],
       relaxing: [],
       romance: [],
@@ -34,10 +29,12 @@ async function fetchSongs() {
   }
 }
 
-function processSongData(data) {
+async function processSongData(data) {
   const { content_list, songs } = data;
   const songMap = new Map(songs.map((song) => [song.id, song]));
+  const recentlyPlayedSongIds = await getHistorySongsData();
   const res = {
+    history: recentlyPlayedSongIds || [],
     trending: content_list.slice(0, 5).map((id) => songMap.get(id) || {}),
     relaxing: content_list.slice(5, 10).map((id) => songMap.get(id) || {}),
     romance: content_list.slice(10, 15).map((id) => songMap.get(id) || {}),
@@ -74,7 +71,12 @@ function createSongCard({
 
 async function renderSongs() {
   const categories = await fetchSongs();
-  const containerIds = ["trending", "relaxing", "romance", "lofi"];
+  const containerIds = ["history", "trending", "relaxing", "romance", "lofi"];
+
+  if (categories.history.length === 0) {
+    document.getElementById("history-header").classList.add("hidden");
+    document.getElementById("history").classList.add("hidden");
+  }
 
   const containers = containerIds.reduce((acc, id) => {
     acc[id] = document.getElementById(id);
@@ -86,6 +88,47 @@ async function renderSongs() {
       containers[id].innerHTML = categories[id].map(createSongCard).join("");
     }
   });
+}
+
+async function fetchSong(songId) {
+  try {
+    const response = await CRUDService.fetchAll(
+      `SongsData/GetSongById?id=${songId}&lyrics=false`,
+      true
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching song:", error);
+    return null;
+  }
+}
+
+async function fetchRecentlyPlayedSongId() {
+  try {
+    let response = await CRUDService.fetchAll(
+      `PlayHistory/GetSongHistoryByUser?=true`,
+      false
+    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching songs:", error);
+  }
+}
+
+async function getHistorySongsData() {
+  try {
+    const { songs } = await fetchRecentlyPlayedSongId();
+
+    if (!songs || songs.length === 0) return [];
+
+    const fetchPromises = songs.map((songId) => fetchSong(songId));
+    const data = await Promise.all(fetchPromises);
+
+    return data.filter((songData) => songData != null);
+  } catch (error) {
+    console.error("Error fetching song data:", error);
+    return [];
+  }
 }
 
 window.addEventListener("load", renderSongs);
