@@ -42,7 +42,7 @@ namespace Swar.API.Services
             var user = await _userRepo.GetByEmail(userDTO.Email);
 
             if (user != null)
-                throw new EntityAlreadyExistsException("User already exists");
+                throw new EntityAlreadyExistsException("You are already registered. Please login");
 
             User newUser = await CreateUser(userDTO, UserRoleEnum.UserRole.User);
 
