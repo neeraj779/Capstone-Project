@@ -7,7 +7,7 @@ using Swar.API.Models;
 
 namespace Swar.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PlayHistoryController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace Swar.API.Controllers
 
         [HttpPost("LogSongHistory")]
         [Authorize(Roles = "Admin, User")]
-        public async Task<IActionResult> LogSongHistory(string songId)
+        public async Task<IActionResult> LogSongHistory([FromBody] string songId)
         {
             try
             {
