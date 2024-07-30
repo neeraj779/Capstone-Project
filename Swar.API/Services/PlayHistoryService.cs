@@ -56,7 +56,7 @@ namespace Swar.API.Services
             {
                 userPlayHistory = userPlayHistory
                     .GroupBy(p => p.SongId)
-                    .Select(g => g.First())
+                    .Select(g => g.OrderByDescending(p => p.PlayedAt).First())
                     .OrderByDescending(p => p.PlayedAt)
                     .ToList();
             }
