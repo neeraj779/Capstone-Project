@@ -27,7 +27,7 @@
       href="./public/apple-touch-icon-180x180.png"
     />
     <link rel="manifest" href="./public/manifest.json" />
-    <title>Swar - Login</title>
+    <title>Swar - Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -41,7 +41,7 @@
   <body class="bg-gray-900 text-white">
     <div class="min-h-screen flex items-center justify-center bg-cover px-4">
       <div
-        class="bg-gray-800 bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-md"
+        class="bg-gray-800 bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-md mt-8 mb-8 md:mt-12 md:mb-12"
       >
         <div class="text-center mb-8">
           <img
@@ -49,10 +49,24 @@
             alt="Swar Logo"
             class="h-12 mx-auto mb-4"
           />
-          <h1 class="text-3xl font-bold">Welcome to Swar</h1>
-          <p class="text-gray-400">Please login to continue</p>
+          <h1 class="text-3xl font-bold">Join Swar</h1>
+          <p class="text-gray-400">Create an account to enjoy our music</p>
         </div>
-        <form id="loginForm">
+        <form id="registerForm">
+          <div class="mb-4">
+            <label
+              for="name"
+              class="block text-sm font-semibold text-gray-400 mb-2"
+              >Name</label
+            >
+            <input
+              type="text"
+              id="name"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your Name"
+              required
+            />
+          </div>
           <div class="mb-4">
             <label
               for="email"
@@ -67,7 +81,24 @@
               required
             />
           </div>
-          <div class="mb-6">
+          <div class="mb-4">
+            <label
+              for="gender"
+              class="block text-sm font-semibold text-gray-400 mb-2"
+              >Gender</label
+            >
+            <select
+              id="gender"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="" disabled selected>Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="mb-4">
             <label
               for="password"
               class="block text-sm font-semibold text-gray-400 mb-2"
@@ -82,12 +113,27 @@
               minlength="8"
             />
           </div>
+          <div class="mb-6">
+            <label
+              for="confirmPassword"
+              class="block text-sm font-semibold text-gray-400 mb-2"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirmPassword"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Confirm your password"
+              required
+              minlength="8"
+            />
+          </div>
           <button
             type="submit"
-            id="loginButton"
+            id="registerButton"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center"
           >
-            <span id="buttonText">Login</span>
+            <span id="buttonText">Register</span>
             <svg
               id="spinner"
               class="w-5 h-5 hidden text-white animate-spin ml-3"
@@ -111,20 +157,18 @@
             </svg>
           </button>
           <div
-            id="error-message"
-            class="mt-4 text-red-500 text-center hidden"
+            id="message"
+            class="hidden mt-4 text-sm font-semibold p-3 rounded-lg"
           ></div>
         </form>
         <div class="mt-6 text-center">
           <p class="text-gray-400">
-            Don't have an account?
-            <a href="register.html" class="text-blue-500 hover:underline"
-              >Sign up</a
-            >
+            Already have an account?
+            <a href="login.html" class="text-blue-500 hover:underline">Login</a>
           </p>
         </div>
       </div>
     </div>
-    <script src="./static/js/login.js"></script>
+    <script src="./static/js/register.js"></script>
   </body>
 </html>

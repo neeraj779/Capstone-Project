@@ -20,13 +20,16 @@ document
     toggleUI(true);
 
     try {
-      const response = await fetch("https://swarapi.azurewebsites.net/api/v1/Auth/Login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://swarapi.azurewebsites.net/api/v1/Auth/Login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       if (!response.ok) {
         const error = await response.json();
