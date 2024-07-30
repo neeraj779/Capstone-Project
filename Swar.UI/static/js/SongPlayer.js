@@ -40,8 +40,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       document.getElementById("skeleton-loader").classList.add("hidden");
       document.getElementById("content").classList.remove("hidden");
+      logSongHistory(songId);
     } catch (error) {
-      console.error(error);
+      location.href = "index.html";
     }
   }
 
@@ -127,5 +128,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     .getElementById("like-checkbox")
     .addEventListener("change", toggleLike);
   await getSong();
-  logSongHistory(songId);
 });

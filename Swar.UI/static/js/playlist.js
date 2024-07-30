@@ -17,10 +17,11 @@ async function fetchPlaylistSongs() {
         `PlaylistSongs/GetAllSongsInUserPlaylist/${platlistId}`
       );
     }
-    renderPlaylistSongs(playlistSongs);
+    renderPlaylistSongs(playlistSongs || {});
     addDropdownEventListeners();
   } catch (error) {
     console.error("Error fetching playlist songs:", error);
+    location.href = "library.html";
   }
 }
 
