@@ -18,7 +18,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function getSong() {
     try {
       const response = await fetch(
-        `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongById?id=${songId}&lyrics=true`
+        `https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetSongById?id=${songId}&lyrics=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
       );
       if (!response.ok) throw new Error("Failed to fetch song data");
       const data = await response.json();

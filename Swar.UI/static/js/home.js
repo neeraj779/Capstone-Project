@@ -1,7 +1,7 @@
 async function fetchSongs() {
   const cacheName = "cached-songs";
   const requestUrl =
-    "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+    "https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
 
   const cache = await caches.open(cacheName);
 
@@ -12,7 +12,11 @@ async function fetchSongs() {
   }
 
   try {
-    const response = await fetch(requestUrl);
+    const response = await fetch(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
     const clonedResponse = response.clone();
     const data = await response.json();
 

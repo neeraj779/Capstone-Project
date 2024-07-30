@@ -1,13 +1,17 @@
 async function fetchPlaylistData() {
   try {
     const playlistUrl =
-      "https://songserviceapi.azurewebsites.net/api/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+      "https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
     const cacheName = "cached-songs";
     const cache = await caches.open(cacheName);
     let cachedResponse = await cache.match(playlistUrl);
 
     if (!cachedResponse) {
-      cachedResponse = await fetch(playlistUrl);
+      cachedResponse = await fetch(playlistUrl, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       if (!cachedResponse.ok) {
         throw new Error("Failed to fetch playlist data");
       }
@@ -23,10 +27,14 @@ async function fetchPlaylistData() {
 
 async function fetchSearchData(query) {
   try {
-    const searchUrl = `https://songserviceapi.azurewebsites.net/api/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
+    const searchUrl = `https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
     document.getElementById("search-input").value = query;
     document.getElementById("mobile-search-input").value = query;
-    const response = await fetch(searchUrl);
+    const response = await fetch(searchUrl, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch search data");
     }
