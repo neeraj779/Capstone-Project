@@ -26,7 +26,7 @@ namespace Swar.API.Controllers
             {
                 int userId = UserHelper.GetUserId(User);
                 await _playHistoryService.LogSongHistory(userId, songId);
-                return Ok();
+                return Ok(new { Message = "Song history logged successfully." });
             }
             catch (EntityNotFoundException ex)
             {
