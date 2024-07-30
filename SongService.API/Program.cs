@@ -84,7 +84,7 @@ namespace SongService.API
                 options.AddPolicy("CorsPolicy",
                     builder => builder.WithOrigins("https://neeraj779.github.io", "http://127.0.0.1:3000")
                                       .WithMethods("GET")
-                                      .WithHeaders("Authorization"));
+                                      .WithHeaders("Authorization", "Content-Type"));
             });
 
 
