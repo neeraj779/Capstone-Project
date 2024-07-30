@@ -25,7 +25,7 @@ namespace Swar.API.Interfaces.Services
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         /// <returns>A collection of DTOs representing the liked songs of the user.</returns>
-        public Task<LikedSongsDTO> GetAllLikedSongs(int userId);
+        public Task<SongsListDTO> GetAllLikedSongs(int userId);
 
         /// <summary>
         /// Checks if a song is in the liked songs list of a user.

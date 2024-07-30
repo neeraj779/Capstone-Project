@@ -58,7 +58,7 @@ namespace Swar.API.Services
             return MapLikedSongToDTO(likedSong);
         }
 
-        public async Task<LikedSongsDTO> GetAllLikedSongs(int userId)
+        public async Task<SongsListDTO> GetAllLikedSongs(int userId)
         {
             var likedSongs = await _likedSongRepository.GetAll();
             var userLikedSongs = likedSongs.Where(ls => ls.UserId == userId).ToList();
@@ -70,7 +70,7 @@ namespace Swar.API.Services
 
             var songIds = userLikedSongs.Select(ls => ls.SongId).ToList();
 
-            return new LikedSongsDTO
+            return new SongsListDTO
             {
                 UserId = userId,
                 Songs = songIds

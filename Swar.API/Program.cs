@@ -112,19 +112,21 @@ namespace Swar.API
             #endregion
 
             #region Repositories
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
             builder.Services.AddScoped<IRepository<int, Playlist>, PlaylistRepository>();
             builder.Services.AddScoped<IPlaylistSongsRepository, PlaylistSongsRepository>();
             builder.Services.AddScoped<IRepository<int, LikedSong>, LikedSongsRepository>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRepository<int, PlayHistory>, PlayHistoryRepository>();
             #endregion
 
             #region Services
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IPlaylistService, PlaylistService>();
             builder.Services.AddScoped<IPlaylistSongsService, PlaylistSongsService>();
             builder.Services.AddScoped<ILikedSongsService, LikedSongsService>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IPlayHistoryService, PlayHistoryService>();
             #endregion
 
             builder.Services.AddCors(options =>
