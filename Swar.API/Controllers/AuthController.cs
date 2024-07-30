@@ -73,6 +73,10 @@ namespace Swar.API.Controllers
             {
                 return Conflict(new ErrorModel { Status = StatusCodes.Status409Conflict, Message = ex.Message });
             }
+            catch (WeakPasswordException ex)
+            {
+                return BadRequest(new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

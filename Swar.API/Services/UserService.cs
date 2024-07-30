@@ -44,6 +44,9 @@ namespace Swar.API.Services
             if (user != null)
                 throw new EntityAlreadyExistsException("You are already registered. Please login");
 
+            if (!IsPasswordStrong(userDTO.Password))
+                throw new WeakPasswordException();
+
             User newUser = await CreateUser(userDTO, UserRoleEnum.UserRole.User);
 
             return MapUserToReturnDTO(newUser);
@@ -126,6 +129,17 @@ namespace Swar.API.Services
 
             if (user.UserStatus == UserStatusEnum.UserStatus.Inactive)
                 throw new InactiveAccountException();
+        }
+
+        private bool IsPasswordStrong(string password)
+        {
+            const int minLength = 8;
+            bool hasUpperCase = password.Any(char.IsUpper);
+            bool hasLowerCase = password.Any(char.IsLower);
+            bool hasDigit = password.Any(char.IsDigit);
+            bool hasSpecialChar = password.Any(ch => !char.IsLetterOrDigit(ch));
+
+            return password.Length >= minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
         }
 
         private bool IsPasswordCorrect(string password, byte[] passwordHashKey, byte[] storedPasswordHash)
