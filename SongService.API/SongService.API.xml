@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SongService.API</name>
+    </assembly>
+    <members>
+        <member name="T:SongService.API.Controllers.SongsDataController">
+            <summary>
+            Controller for managing song data operations.
+            </summary>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.#ctor(SongService.API.Interfaces.ISongDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SongService.API.Controllers.SongsDataController"/> class.
+            </summary>
+            <param name="songService">The service for handling song data.</param>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.SearchForSong(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Searches for songs based on a query.
+            </summary>
+            <param name="query">The search query for songs.</param>
+            <param name="lyrics">Whether to include lyrics in the search results.</param>
+            <param name="songData">Whether to include song data in the search results.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult"/> with the search results or an error message.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetSongById(System.String,System.Boolean)">
+            <summary>
+            Retrieves a song by its ID.
+            </summary>
+            <param name="id">The ID of the song to retrieve.</param>
+            <param name="lyrics">Whether to include lyrics in the response.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult"/> with the song data or an error message.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetAlbumById(System.String,System.Boolean)">
+            <summary>
+            Retrieves an album by its ID.
+            </summary>
+            <param name="albumId">The ID of the album to retrieve.</param>
+            <param name="lyrics">Whether to include lyrics in the response.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> with the album data.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetAlbumByLink(System.String,System.Boolean)">
+            <summary>
+            Retrieves an album using its URL.
+            </summary>
+            <param name="inputUrl">The URL of the album.</param>
+            <param name="lyrics">Whether to include lyrics in the response.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> with the album data or an error message.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetPlaylistById(System.String,System.Boolean)">
+            <summary>
+            Retrieves a playlist by its ID.
+            </summary>
+            <param name="listId">The ID of the playlist to retrieve.</param>
+            <param name="lyrics">Whether to include lyrics in the response.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> with the playlist data.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetPlaylistByLink(System.String,System.Boolean)">
+            <summary>
+            Retrieves a playlist using its URL.
+            </summary>
+            <param name="inputUrl">The URL of the playlist.</param>
+            <param name="lyrics">Whether to include lyrics in the response.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> with the playlist data or an error message.</returns>
+        </member>
+        <member name="M:SongService.API.Controllers.SongsDataController.GetLyrics(System.String)">
+            <summary>
+            Retrieves lyrics for a song by its ID.
+            </summary>
+            <param name="id">The ID of the song whose lyrics are to be retrieved.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> with the lyrics or an error message.</returns>
+        </member>
+    </members>
+</doc>

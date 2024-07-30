@@ -1,18 +1,20 @@
 ﻿using Newtonsoft.Json.Linq;
+using SongService.API.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SongService.API.Utils
+namespace SongService.API.Services
 {
-    public class SongsDataUtils
+    public class SongProcessingService : ISongProcessingService
     {
         private const string DefaultImageSize = "150x150";
         private const string TargetImageSize = "500x500";
         private const string HighQualitySuffix = "_320.mp4";
         private const string MediumQualitySuffix = "_160.mp4";
         private const string PreviewSuffix = "_96_p.mp4";
+        private const string EncryptionKey = "38346591";
 
-        public static JObject FormatSong(JToken data, bool includeLyrics)
+        public async Task<JObject> FormatSong(JToken data)
         {
             try
             {
@@ -44,22 +46,25 @@ namespace SongService.API.Utils
             }
 
             FormatBasicSongInfo(data);
-
-            if (includeLyrics && data["has_lyrics"]?.ToString() == "true")
-            {
-                data["lyrics"] = GetLyrics(data["id"]?.ToString());
-            }
-            else
-            {
-                data["lyrics"] = null;
-            }
-
             FormatCopyrightText(data);
 
             return (JObject)data;
         }
 
-        public static JObject FormatAlbum(JToken data, bool includeLyrics)
+        public async Task<JObject> FormatPlaylist(JToken data)
+        {
+            data["firstname"] = FormatString(data["firstname"]?.ToString());
+            data["listname"] = FormatString(data["listname"]?.ToString());
+
+            foreach (var song in data["songs"] ?? Enumerable.Empty<JToken>())
+            {
+                await FormatSong(song);
+            }
+
+            return (JObject)data;
+        }
+
+        public async Task<JObject> FormatAlbum(JToken data)
         {
             data["image"] = data["image"]?.ToString().Replace(DefaultImageSize, TargetImageSize);
             data["name"] = FormatString(data["name"]?.ToString());
@@ -68,26 +73,13 @@ namespace SongService.API.Utils
 
             foreach (var song in data["songs"] ?? Enumerable.Empty<JToken>())
             {
-                FormatSong(song, includeLyrics);
+                await FormatSong(song);
             }
 
             return (JObject)data;
         }
 
-        public static JObject FormatPlaylist(JToken data, bool includeLyrics)
-        {
-            data["firstname"] = FormatString(data["firstname"]?.ToString());
-            data["listname"] = FormatString(data["listname"]?.ToString());
-
-            foreach (var song in data["songs"] ?? Enumerable.Empty<JToken>())
-            {
-                FormatSong(song, includeLyrics);
-            }
-
-            return (JObject)data;
-        }
-
-        private static void FormatBasicSongInfo(JToken data)
+        private void FormatBasicSongInfo(JToken data)
         {
             data["song"] = FormatString(data["song"]?.ToString());
             data["music"] = FormatString(data["music"]?.ToString());
@@ -98,14 +90,14 @@ namespace SongService.API.Utils
             data["image"] = data["image"]?.ToString().Replace(DefaultImageSize, TargetImageSize);
         }
 
-        private static string? FormatString(string input)
+        private string? FormatString(string input)
         {
             return input?.Replace("&quot;", "'")
                          .Replace("&amp;", "&")
                          .Replace("&#039;", "'");
         }
 
-        private static string GeneratePreviewUrl(string mediaUrl, string quality)
+        private string GeneratePreviewUrl(string mediaUrl, string quality)
         {
             return mediaUrl
                 .Replace(HighQualitySuffix, PreviewSuffix)
@@ -113,7 +105,7 @@ namespace SongService.API.Utils
                 .Replace("//aac.", "//preview.");
         }
 
-        private static string RestoreUrlFromPreview(string previewUrl, string quality)
+        private string RestoreUrlFromPreview(string previewUrl, string quality)
         {
             string restoredUrl = previewUrl.Replace("preview", "aac");
 
@@ -129,11 +121,11 @@ namespace SongService.API.Utils
             return restoredUrl;
         }
 
-        private static string DecryptUrl(string url)
+        private string DecryptUrl(string url)
         {
             using var desCipher = new DESCryptoServiceProvider
             {
-                Key = Encoding.ASCII.GetBytes("38346591"),
+                Key = Encoding.ASCII.GetBytes(EncryptionKey),
                 Mode = CipherMode.ECB,
                 Padding = PaddingMode.PKCS7
             };
@@ -148,7 +140,7 @@ namespace SongService.API.Utils
             return decryptedUrl.Replace("_96.mp4", HighQualitySuffix);
         }
 
-        private static void FormatCopyrightText(JToken data)
+        private void FormatCopyrightText(JToken data)
         {
             try
             {
@@ -158,13 +150,6 @@ namespace SongService.API.Utils
             {
                 Console.WriteLine("Key not found");
             }
-        }
-        public static string GetLyrics(string id)
-        {
-            var url = $"https://www.jiosaavn.com/api.php?__call=lyrics.getLyrics&ctx=web6dot0&api_version=4&_format=json&_marker=0%3F_marker%3D0&lyrics_id={id}";
-            var response = new HttpClient().GetStringAsync(url).Result;
-            var lyricsJson = JObject.Parse(response);
-            return lyricsJson["lyrics"].ToString();
         }
     }
 }
