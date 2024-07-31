@@ -11,7 +11,6 @@ namespace SongService.API.Controllers
     /// </summary>
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
     public class SongsDataController : ControllerBase
     {
         private readonly ISongDataService _songService;
@@ -33,6 +32,7 @@ namespace SongService.API.Controllers
         /// <param name="songData">Whether to include song data in the search results.</param>
         /// <returns>An <see cref="ActionResult"/> with the search results or an error message.</returns>
         [HttpGet("GetSongsByQuery")]
+        [Authorize]
         public async Task<ActionResult> SearchForSong(string query, bool lyrics = false, bool songData = true)
         {
             try
@@ -98,6 +98,7 @@ namespace SongService.API.Controllers
         /// <param name="lyrics">Whether to include lyrics in the response.</param>
         /// <returns>An <see cref="IActionResult"/> with the album data.</returns>
         [HttpGet("GetAlbumById")]
+        [Authorize]
         public async Task<IActionResult> GetAlbumById(string albumId, bool lyrics = false)
         {
             try
@@ -122,6 +123,7 @@ namespace SongService.API.Controllers
         /// <param name="lyrics">Whether to include lyrics in the response.</param>
         /// <returns>An <see cref="IActionResult"/> with the album data or an error message.</returns>
         [HttpGet("GetAlbumByLink")]
+        [Authorize]
         public async Task<IActionResult> GetAlbumByLink(string inputUrl, bool lyrics = false)
         {
             try
@@ -155,6 +157,7 @@ namespace SongService.API.Controllers
         /// <param name="lyrics">Whether to include lyrics in the response.</param>
         /// <returns>An <see cref="IActionResult"/> with the playlist data.</returns>
         [HttpGet("GetPlaylistById")]
+        [Authorize]
         public async Task<IActionResult> GetPlaylistById(string listId, bool lyrics = false)
         {
             try
@@ -179,6 +182,7 @@ namespace SongService.API.Controllers
         /// <param name="lyrics">Whether to include lyrics in the response.</param>
         /// <returns>An <see cref="IActionResult"/> with the playlist data or an error message.</returns>
         [HttpGet("GetPlaylistByLink")]
+        [Authorize]
         public async Task<IActionResult> GetPlaylistByLink(string inputUrl, bool lyrics = false)
         {
             try
@@ -211,6 +215,7 @@ namespace SongService.API.Controllers
         /// <param name="id">The ID of the song whose lyrics are to be retrieved.</param>
         /// <returns>An <see cref="IActionResult"/> with the lyrics or an error message.</returns>
         [HttpGet("GetLyricsById")]
+        [Authorize]
         public async Task<IActionResult> GetLyrics(string id)
         {
             try
