@@ -196,5 +196,12 @@ namespace Swar.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("VerifyToken")]
+        [Authorize]
+        public IActionResult VerifyToken()
+        {
+            return Ok();
+        }
     }
 }

@@ -103,9 +103,9 @@ namespace SongService.API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors("CorsPolicy");
 
 
             app.MapControllers();

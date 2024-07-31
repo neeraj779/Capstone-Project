@@ -132,7 +132,9 @@ namespace Swar.API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("https://neeraj779.github.io", "http://127.0.0.1:3000").AllowAnyHeader().AllowAnyMethod());
+                    builder => builder.WithOrigins("https://neeraj779.github.io", "http://127.0.0.1:3000")
+                                      .WithMethods("GET", "POST", "PUT", "DELETE")
+                                      .WithHeaders("Authorization", "Content-Type"));
 
             });
 
@@ -145,9 +147,9 @@ namespace Swar.API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors("CorsPolicy");
 
 
             app.MapControllers();
