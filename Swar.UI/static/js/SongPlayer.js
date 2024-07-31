@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         true
       );
       if (!data) throw new Error("Song not found");
+      document.title = data.song;
       audio.src = data.media_url;
       document.getElementById("song-title").textContent = data.song;
       document.getElementById("song-artist").textContent =
@@ -107,6 +108,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   audio.addEventListener("ended", () => {
     playing = false;
     togglePlayPause();
+  });
+  audio.addEventListener("pause", () => {
+    isPlaying = false;
+    playIcon.classList.remove("hidden");
+    pauseIcon.classList.add("hidden");
+  });
+  audio.addEventListener("play", () => {
+    isPlaying = true;
+    playIcon.classList.add("hidden");
+    pauseIcon.classList.remove("hidden");
   });
   slider.addEventListener("input", handleSeek);
   playPauseBtn.addEventListener("click", togglePlayPause);
