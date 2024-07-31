@@ -132,6 +132,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       navigator.mediaSession.setActionHandler("seekforward", () => {
         seek(10);
       });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        seek(-10);
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        seek(10);
+      });
     }
   }
 
