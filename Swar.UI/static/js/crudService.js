@@ -2,7 +2,6 @@ const CRUDService = (function () {
   const API_BASE_URL = "https://swarapi.azurewebsites.net/api/v1";
   const SONG_SERVICE_BASE_URL =
     "https://songserviceapi.azurewebsites.net/api/v1";
-  const accessToken = localStorage.getItem("accessToken");
 
   const HTTP_METHODS = {
     GET: "GET",
@@ -11,75 +10,67 @@ const CRUDService = (function () {
     DELETE: "DELETE",
   };
 
-  async function makeRequest(
+  const accessToken = localStorage.getItem("accessToken");
+
+  const buildUrl = (endpoint, isSongService) =>
+    `${isSongService ? SONG_SERVICE_BASE_URL : API_BASE_URL}/${endpoint}`;
+
+  const buildHeaders = () => ({
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  });
+
+  const isJsonOrText = (contentType) =>
+    contentType &&
+    (contentType.includes("application/json") ||
+      contentType.includes("text/plain"));
+
+  const makeRequest = async (
     endpoint,
     method,
     data = null,
     isSongService = false
-  ) {
-    const baseUrl = isSongService ? SONG_SERVICE_BASE_URL : API_BASE_URL;
-    const url = `${baseUrl}/${endpoint}`;
-
+  ) => {
+    const url = buildUrl(endpoint, isSongService);
     const options = {
       method,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
+      headers: buildHeaders(),
+      ...(data && { body: JSON.stringify(data) }),
     };
-
-    if (data) {
-      options.body = JSON.stringify(data);
-    }
 
     try {
       const response = await fetch(url, options);
-      const result = await response.json();
+      const contentType = response.headers.get("Content-Type");
+
+      const result = isJsonOrText(contentType) ? await response.json() : null;
+
       if (!response.ok) {
-        const error = new Error(result.message || response.statusText);
-        error.status = result.status || response.status;
+        const error = new Error(
+          (result && result.message) || response.statusText
+        );
+        error.status = (result && result.status) || response.status;
         throw error;
       }
       return result;
     } catch (error) {
       throw error;
     }
-  }
+  };
 
-  async function fetchAll(endpoint, isSongService = false) {
-    return makeRequest(endpoint, HTTP_METHODS.GET, null, isSongService);
-  }
+  const fetchAll = (endpoint, isSongService = false) =>
+    makeRequest(endpoint, HTTP_METHODS.GET, null, isSongService);
 
-  async function fetchById(endpoint, id, isSongService = false) {
-    return makeRequest(
-      `${endpoint}/${id}`,
-      HTTP_METHODS.GET,
-      null,
-      isSongService
-    );
-  }
+  const fetchById = (endpoint, id, isSongService = false) =>
+    makeRequest(`${endpoint}/${id}`, HTTP_METHODS.GET, null, isSongService);
 
-  async function create(endpoint, data, isSongService = false) {
-    return makeRequest(endpoint, HTTP_METHODS.POST, data, isSongService);
-  }
+  const create = (endpoint, data, isSongService = false) =>
+    makeRequest(endpoint, HTTP_METHODS.POST, data, isSongService);
 
-  async function update(endpoint, id, data, isSongService = false) {
-    return makeRequest(
-      `${endpoint}/${id}`,
-      HTTP_METHODS.PUT,
-      data,
-      isSongService
-    );
-  }
+  const update = (endpoint, id, data, isSongService = false) =>
+    makeRequest(`${endpoint}/${id}`, HTTP_METHODS.PUT, data, isSongService);
 
-  async function remove(endpoint, id, isSongService = false) {
-    return makeRequest(
-      `${endpoint}/${id}`,
-      HTTP_METHODS.DELETE,
-      null,
-      isSongService
-    );
-  }
+  const remove = (endpoint, id, isSongService = false) =>
+    makeRequest(`${endpoint}/${id}`, HTTP_METHODS.DELETE, null, isSongService);
 
   return {
     fetchAll,

@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         `SongsData/GetSongById?id=${songId}&lyrics=true`,
         true
       );
+      if (!data) throw new Error("Song not found");
       audio.src = data.media_url;
       document.getElementById("song-title").textContent = data.song;
       document.getElementById("song-artist").textContent =
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("content").classList.remove("hidden");
       logSongHistory(songId);
     } catch (error) {
-      location.href = "../";
+      location.href = "index.html";
     }
   }
 

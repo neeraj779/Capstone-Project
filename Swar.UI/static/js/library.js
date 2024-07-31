@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchPlaylists();
 });
 
-
 async function fetchPlaylists() {
   try {
     const playlists = await CRUDService.fetchAll(
@@ -146,7 +145,6 @@ function renderPlaylists(playlists) {
 
   if (Array.isArray(playlists)) {
     playlists.forEach((playlist) => {
-      console.log(playlist);
       const card = createPlaylistCard(playlist);
       container.innerHTML += card;
     });
