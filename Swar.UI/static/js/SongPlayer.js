@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const backwardBtn = document.getElementById("backward-btn");
   const forwardBtn = document.getElementById("forward-btn");
   const downloadBtn = document.getElementById("download-btn");
+  const lyricsContainer = document.getElementById("lyrics-container");
 
   let isPlaying = false;
 
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         data.singers || data.primary_artists || "Unknown Artist";
       document.getElementById("song-image").src = data.image;
       document.getElementById("song-lyrics").innerHTML =
-        data.lyrics || "Lyrics not available";
+        data.lyrics || lyricsContainer.classList.add("hidden");
       audio.addEventListener("loadedmetadata", () => {
         slider.max = audio.duration;
         durationEl.textContent = formatTime(audio.duration);
