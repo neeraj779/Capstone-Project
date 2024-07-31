@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       a.download = `${document.getElementById("song-title").textContent}.mp3`;
       a.click();
       URL.revokeObjectURL(url);
+      message.showToast("Song downloaded successfully");
     } catch (error) {
       console.error(error);
     }

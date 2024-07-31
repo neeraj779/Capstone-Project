@@ -13,6 +13,18 @@ const message = (function () {
     });
   }
 
+  function showToast(message) {
+    Swal.fire({
+      icon: "success",
+      title: message,
+      showConfirmButton: false,
+      toast: true,
+      position: "bottom",
+      timer: 2000,
+      background: "#1f2937",
+    });
+  }
+
   function showAlert(icon, title, text) {
     Swal.fire({
       icon,
@@ -26,6 +38,7 @@ const message = (function () {
 
   return {
     showSuccessToast,
+    showToast,
     showAlert,
   };
 })();

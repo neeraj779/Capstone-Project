@@ -18,8 +18,7 @@
 }
 
 .dropdown-button {
-    position: absolute;
-    right: 24px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    right: 27px;
+    transition: background-color 0.3s ease;
 }

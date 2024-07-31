@@ -100,9 +100,18 @@ function createPlaylistCard(playlist) {
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <i class="fas fa-ellipsis-v text-xl"></i>
+          <img src="./assets/img/lib-btn.svg" alt="btn" class="w-8 h-8">
         </button>
         <div class="dropdown-content">
+          <a
+            href="#"
+            data-playlistid="${playlist.playlistId}"
+            data-playlistname="${playlist.playlistName}"
+            onclick="copyLink(this)"
+            class="text-white-500 hover:text-gray-700 flex items-center px-4 py-2"
+          >
+            <i class="fa-solid fa-link mr-2"></i> Copy Link
+          </a>
           <a
             href="#"
             data-playlistid="${playlist.playlistId}"
@@ -344,6 +353,21 @@ async function changeVisibility(anchor, isPrivate) {
       message.showAlert("error", "Error", error.message);
     }
   }
+}
+
+function copyLink(element) {
+  const playlistId = element.getAttribute("data-playlistid");
+  const playlistName = element.getAttribute("data-playlistname");
+
+  const link = `${window.location.origin}/Capstone-Project/playlist.html?id=${playlistId}&name=${playlistName}`;
+  navigator.clipboard
+    .writeText(link)
+    .then(() => {
+      message.showToast("Link copied to clipboard.");
+    })
+    .catch((err) => {
+      alert("Failed to copy link.");
+    });
 }
 
 document.getElementById("hamburger")?.addEventListener("click", () => {
