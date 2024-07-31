@@ -20,30 +20,14 @@ document
     toggleUI(true);
 
     try {
-      const response = await fetch(
-        "https://swarapi.azurewebsites.net/api/v1/Auth/Login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const data = { email, password };
+      const response = await CRUDService.create("Auth/Login", data);
 
-      if (!response.ok) {
-        const error = await response.json();
-        errorMessageDiv.textContent = error.message || "An error occurred.";
-        errorMessageDiv.classList.remove("hidden");
-        return;
-      }
-
-      const data = await response.json();
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
       window.location.href = "./index.html";
-    } catch {
-      errorMessageDiv.textContent = "An error occurred while trying to log in.";
+    } catch(error) {
+      errorMessageDiv.textContent = error.message || "An error occurred.";
       errorMessageDiv.classList.remove("hidden");
     } finally {
       toggleUI(false);

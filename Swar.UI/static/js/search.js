@@ -1,24 +1,19 @@
 async function fetchPlaylistData() {
-  try {
-    const playlistUrl =
-      "https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
-    const cacheName = "cached-songs";
-    const cache = await caches.open(cacheName);
-    let cachedResponse = await cache.match(playlistUrl);
+  const BASE_URL = "https://songserviceapi.azurewebsites.net/api/v1/";
+  const ENDPOINT = "SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+  const cacheName = "cached-songs";
 
-    if (!cachedResponse) {
-      cachedResponse = await fetch(playlistUrl, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      if (!cachedResponse.ok) {
-        throw new Error("Failed to fetch playlist data");
-      }
-      await cache.put(playlistUrl, cachedResponse.clone());
+  try {
+    const cache = await caches.open(cacheName);
+    const cachedResponse = await cache.match(BASE_URL + ENDPOINT);
+
+    if (cachedResponse) {
+      return await cachedResponse.json();
     }
 
-    return cachedResponse.json();
+    const data = await CRUDService.fetchAll(ENDPOINT, true);
+    await cache.put(BASE_URL + ENDPOINT, new Response(JSON.stringify(data)));
+    return data;
   } catch (error) {
     console.error("Error fetching playlist data:", error);
     return { content_list: [], songs: [] };
@@ -27,18 +22,11 @@ async function fetchPlaylistData() {
 
 async function fetchSearchData(query) {
   try {
-    const searchUrl = `https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
+    const searchUrl = `SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`;
     document.getElementById("search-input").value = query;
     document.getElementById("mobile-search-input").value = query;
-    const response = await fetch(searchUrl, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch search data");
-    }
-    return response.json();
+
+    return await CRUDService.fetchAll(searchUrl, true);
   } catch (error) {
     console.error("Error fetching search data:", error);
     return [];
@@ -73,7 +61,7 @@ async function fetchSongs() {
 function createSongCard({
   id,
   title = "Unknown Title",
-  image = "default-image.jpg",
+  image = "./assets/img/songLogo.avif",
   song = "Unknown Song",
   primary_artists = "Unknown Artist",
 }) {

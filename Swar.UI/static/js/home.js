@@ -70,7 +70,7 @@ function toggleVisibility(elementId, isVisible) {
 function createSongCard({
   id,
   title = "Unknown Title",
-  image = "default-image.jpg",
+  image = "./assets/img/songLogo.avif",
   song = "Unknown Song",
   primary_artists = "Unknown Artist",
 }) {

@@ -17,16 +17,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function getSong() {
     try {
-      const response = await fetch(
-        `https://songserviceapi.azurewebsites.net/api/v1/SongsData/GetSongById?id=${songId}&lyrics=true`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
+      const data = await CRUDService.fetchAll(
+        `SongsData/GetSongById?id=${songId}&lyrics=true`,
+        true
       );
-      if (!response.ok) throw new Error("Failed to fetch song data");
-      const data = await response.json();
       audio.src = data.media_url;
       document.getElementById("song-title").textContent = data.song;
       document.getElementById("song-artist").textContent =
@@ -42,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("content").classList.remove("hidden");
       logSongHistory(songId);
     } catch (error) {
-      location.href = "index.html";
+      location.href = "../";
     }
   }
 
@@ -101,11 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function logSongHistory(songId) {
     try {
-      const response = await CRUDService.create(
-        "PlayHistory/LogSongHistory",
-        songId
-      );
-      console.log("Song history logged:", response.json());
+      await CRUDService.create("PlayHistory/LogSongHistory", songId);
     } catch (error) {
       console.error(error);
     }

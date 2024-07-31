@@ -29,26 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch(
-        "https://swarapi.azurewebsites.net/api/v1/Auth/Register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, gender, password }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
-        handleSuccess();
-      } else {
-        showMessage(result.message || "An error occurred", "error");
-      }
+      const data = { name, email, gender, password };
+      await CRUDService.create("Auth/Register", data);
+      handleSuccess();
     } catch (error) {
-      showMessage(`An error occurred: ${error.message}`, "error");
+      showMessage(error.message || "An error occurred", "error");
     } finally {
       stopSpinner();
     }
