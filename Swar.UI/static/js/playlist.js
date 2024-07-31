@@ -20,7 +20,11 @@ async function fetchPlaylistSongs() {
     renderPlaylistSongs(playlistSongs || {});
     addDropdownEventListeners();
   } catch (error) {
-    console.error("Error fetching playlist songs:", error);
+    if (error.status === 404) {
+      document.getElementById("error-message").classList.remove("hidden");
+      document.getElementById("skeleton-loader").classList.add("hidden");
+      return;
+    }
     location.href = "library.html";
   }
 }

@@ -36,11 +36,12 @@ const CRUDService = (function () {
       const response = await fetch(url, options);
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.message || response.statusText);
+        const error = new Error(result.message || response.statusText);
+        error.status = result.status || response.status;
+        throw error;
       }
       return result;
     } catch (error) {
-      console.error(`Error with ${method} request to ${url}:`, error);
       throw error;
     }
   }
