@@ -42,7 +42,7 @@ namespace Swar.API.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { Status = StatusCodes.Status403Forbidden, Message = ex.Message });
             }
-            catch (MaxPlaylistLimitException ex)
+            catch (MaxLimitException ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
             }

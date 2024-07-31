@@ -28,7 +28,7 @@ namespace Swar.API.Services
 
             var userPlaylists = await _playlistRepository.GetAll();
             if (userPlaylists.Count(p => p.UserId == userId) >= 3)
-                throw new MaxPlaylistLimitException();
+                throw new MaxLimitException();
 
             Playlist playlist = new Playlist
             {
