@@ -33,6 +33,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       audio.addEventListener("loadedmetadata", () => {
         slider.max = audio.duration;
         durationEl.textContent = formatTime(audio.duration);
+        updateMediaSession(data);
+        audio.play();
+        isPlaying = true;
+        playIcon.classList.add("hidden");
+        pauseIcon.classList.remove("hidden");
       });
       document.getElementById("skeleton-loader").classList.add("hidden");
       document.getElementById("content").classList.remove("hidden");
@@ -59,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       pauseIcon.classList.remove("hidden");
     }
     isPlaying = !isPlaying;
+    updateMediaSessionPlaybackState();
   }
 
   function handleTimeUpdate() {
@@ -68,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function handleSeek() {
     audio.currentTime = slider.value;
+    updateMediaSessionPositionState();
   }
 
   function toggleLoop() {
@@ -77,6 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function seek(seconds) {
     audio.currentTime += seconds;
+    updateMediaSessionPositionState();
   }
 
   async function downloadSong() {
@@ -104,20 +112,61 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function updateMediaSession(data) {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: data.song,
+        artist: data.singers || data.primary_artists || "Unknown Artist",
+        artwork: [{ src: data.image, sizes: "500x500", type: "image/png" }],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        togglePlayPause();
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        togglePlayPause();
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", () => {
+        seek(-10);
+      });
+      navigator.mediaSession.setActionHandler("seekforward", () => {
+        seek(10);
+      });
+    }
+  }
+
+  function updateMediaSessionPlaybackState() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+    }
+  }
+
+  function updateMediaSessionPositionState() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setPositionState({
+        duration: audio.duration,
+        playbackRate: audio.playbackRate,
+        position: audio.currentTime,
+      });
+    }
+  }
+
   audio.addEventListener("timeupdate", handleTimeUpdate);
   audio.addEventListener("ended", () => {
-    playing = false;
+    isPlaying = false;
     togglePlayPause();
   });
   audio.addEventListener("pause", () => {
     isPlaying = false;
     playIcon.classList.remove("hidden");
     pauseIcon.classList.add("hidden");
+    updateMediaSessionPlaybackState();
   });
   audio.addEventListener("play", () => {
     isPlaying = true;
     playIcon.classList.add("hidden");
     pauseIcon.classList.remove("hidden");
+    updateMediaSessionPlaybackState();
   });
   slider.addEventListener("input", handleSeek);
   playPauseBtn.addEventListener("click", togglePlayPause);
