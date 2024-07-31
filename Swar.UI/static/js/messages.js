@@ -7,7 +7,7 @@ const message = (function () {
       showConfirmButton: false,
       toast: true,
       position: "top-end",
-      timer: 4000,
+      timer: 2000,
       timerProgressBar: true,
       background: "#111828",
     });

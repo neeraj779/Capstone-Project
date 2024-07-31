@@ -11,6 +11,11 @@ async function fetchPlaylistSongs() {
   try {
     let playlistSongs;
     if (platlistId === "liked") {
+      let isLogged = await isLoggedin();
+      if (!isLogged) {
+        location.href = "login.html";
+        return;
+      }
       playlistSongs = await CRUDService.fetchAll("LikedSongs/GetLikedSongs");
     } else {
       playlistSongs = await CRUDService.fetchAll(
@@ -25,7 +30,17 @@ async function fetchPlaylistSongs() {
       document.getElementById("skeleton-loader").classList.add("hidden");
       return;
     }
-    location.href = "library.html";
+
+    if (error.status === 403) {
+      message.showAlert(
+        "error",
+        "Error",
+        "You are not authorized to view this playlist. Redirecting to home page..."
+      );
+      setTimeout(() => {
+        location.href = "index.html";
+      }, 3000);
+    } else location.href = "library.html";
   }
 }
 
@@ -142,6 +157,25 @@ function addDropdownEventListeners() {
 
 function toggleLike(button) {
   button.classList.toggle("text-red-500");
+}
+
+async function isLoggedin() {
+  const accessToken = localStorage.getItem("accessToken");
+  try {
+    const response = await fetch(
+      "https://swarapi.azurewebsites.net/api/v1/Auth/VerifyToken",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
 }
 
 document.getElementById("hamburger")?.addEventListener("click", () => {
