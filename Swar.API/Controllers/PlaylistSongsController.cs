@@ -42,6 +42,10 @@ namespace Swar.API.Controllers
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
             }
+            catch (MaxLimitException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
             catch (UnauthorizedAccessException ex)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { Status = StatusCodes.Status403Forbidden, Message = ex.Message });
@@ -116,7 +120,6 @@ namespace Swar.API.Controllers
         /// <param name="playlistId">The ID of the playlist.</param>
         /// <returns>Returns a list of songs in the specified user's playlist.</returns>
         [HttpGet("GetAllSongsInUserPlaylist/{playlistId}")]
-        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetAllSongsInUserPlaylist(int playlistId)
         {
             try

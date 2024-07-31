@@ -26,6 +26,12 @@ namespace Swar.API.Services
             await ValidateUserAndPlaylist(userId, addSongToPlaylistDTO.PlaylistId);
 
             var playlistSongExists = await _playlistSongRepository.GetByCompositeKey(addSongToPlaylistDTO.PlaylistId, addSongToPlaylistDTO.SongId);
+            var playlistSongsCount = await _playlistSongRepository.GetAll();
+            playlistSongsCount = playlistSongsCount.Where(ps => ps.PlaylistId == addSongToPlaylistDTO.PlaylistId);
+
+            if (playlistSongsCount.Count() >= 5)
+                throw new MaxLimitException("A playlist can only have 5 songs.");
+
 
             if (playlistSongExists != null)
                 throw new EntityAlreadyExistsException("Song already exists in playlist.");
@@ -51,7 +57,7 @@ namespace Swar.API.Services
 
         public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId)
         {
-            await ValidateUserAndPlaylist(userId, playlistId);
+            await ValidateUserAndPlaylist(userId, playlistId, true);
 
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
@@ -81,23 +87,35 @@ namespace Swar.API.Services
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
-        private async Task ValidateUserAndPlaylist(int userId, int playlistId)
+        private async Task ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
         {
-            User user = await _userRepository.GetById(userId);
-            if (user.UserStatus != UserStatusEnum.UserStatus.Active)
+            var playlist = await _playlistRepository.GetById(playlistId)
+                ?? throw new EntityNotFoundException("Playlist not found.");
+
+            if (userId != 0)
             {
-                throw new InactiveAccountException();
+                var user = await _userRepository.GetById(userId)
+                    ?? throw new EntityNotFoundException("User not found.");
+
+                if (user.UserStatus != UserStatusEnum.UserStatus.Active)
+                {
+                    throw new InactiveAccountException();
+                }
             }
 
-            var playlist = await _playlistRepository.GetById(playlistId);
-            if (playlist == null)
+            if (isGetRequest)
             {
-                throw new EntityNotFoundException("Playlist not found.");
+                if (playlist.IsPrivate && (userId == 0 || playlist.UserId != userId))
+                {
+                    throw new UnauthorizedAccessException("You are not authorized to access this private playlist.");
+                }
             }
-
-            if (playlist.UserId != userId)
+            else
             {
-                throw new UnauthorizedAccessException("You are not authorized to Perform this operation.");
+                if (playlist.UserId != userId)
+                {
+                    throw new UnauthorizedAccessException("You are not authorized to modify this playlist.");
+                }
             }
         }
 

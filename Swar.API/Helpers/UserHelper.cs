@@ -10,9 +10,6 @@ namespace Swar.API.Helpers
                 throw new ArgumentNullException(nameof(user));
 
             string claimUserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(claimUserId))
-                throw new InvalidOperationException("User ID claim is missing.");
-
             return Convert.ToInt32(claimUserId);
         }
     }
