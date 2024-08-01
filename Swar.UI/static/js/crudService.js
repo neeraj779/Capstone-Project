@@ -7,6 +7,7 @@ const CRUDService = (function () {
     GET: "GET",
     POST: "POST",
     PUT: "PUT",
+    PATCH: "PATCH",
     DELETE: "DELETE",
   };
 
@@ -69,6 +70,9 @@ const CRUDService = (function () {
   const update = (endpoint, id, data, isSongService = false) =>
     makeRequest(`${endpoint}/${id}`, HTTP_METHODS.PUT, data, isSongService);
 
+  const patch = (endpoint, data, isSongService = false) =>
+    makeRequest(`${endpoint}`, HTTP_METHODS.PATCH, data, isSongService);
+
   const remove = (endpoint, id, isSongService = false) =>
     makeRequest(`${endpoint}/${id}`, HTTP_METHODS.DELETE, null, isSongService);
 
@@ -76,6 +80,7 @@ const CRUDService = (function () {
     fetchAll,
     fetchById,
     create,
+    patch,
     update,
     remove,
   };
