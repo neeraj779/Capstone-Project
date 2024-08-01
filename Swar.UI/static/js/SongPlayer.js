@@ -35,10 +35,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         slider.max = audio.duration;
         durationEl.textContent = formatTime(audio.duration);
         updateMediaSession(data);
-        audio.play();
-        isPlaying = true;
-        playIcon.classList.add("hidden");
-        pauseIcon.classList.remove("hidden");
+        audio
+          .play()
+          .then(() => {
+            isPlaying = true;
+            updatePlayPauseUI();
+            updateMediaSessionPlaybackState();
+          })
+          .catch((err) => {
+            console.error("Failed to play audio:", err);
+          });
       });
       document.getElementById("skeleton-loader").classList.add("hidden");
       document.getElementById("content").classList.remove("hidden");
@@ -55,17 +61,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function togglePlayPause() {
-    if (isPlaying) {
+    if (audio.paused) {
+      audio.play();
+    } else {
       audio.pause();
+    }
+    updatePlayPauseUI();
+    updateMediaSessionPlaybackState();
+  }
+
+  function updatePlayPauseUI() {
+    if (audio.paused) {
       playIcon.classList.remove("hidden");
       pauseIcon.classList.add("hidden");
     } else {
-      audio.play();
       playIcon.classList.add("hidden");
       pauseIcon.classList.remove("hidden");
     }
-    isPlaying = !isPlaying;
-    updateMediaSessionPlaybackState();
+    isPlaying = !audio.paused;
   }
 
   function handleTimeUpdate() {
@@ -144,7 +157,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateMediaSessionPlaybackState() {
     if ("mediaSession" in navigator) {
-      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+      navigator.mediaSession.playbackState = audio.paused
+        ? "paused"
+        : "playing";
     }
   }
 
@@ -161,18 +176,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   audio.addEventListener("timeupdate", handleTimeUpdate);
   audio.addEventListener("ended", () => {
     isPlaying = false;
-    togglePlayPause();
+    updatePlayPauseUI();
+    updateMediaSessionPlaybackState();
   });
   audio.addEventListener("pause", () => {
     isPlaying = false;
-    playIcon.classList.remove("hidden");
-    pauseIcon.classList.add("hidden");
+    updatePlayPauseUI();
     updateMediaSessionPlaybackState();
   });
   audio.addEventListener("play", () => {
     isPlaying = true;
-    playIcon.classList.add("hidden");
-    pauseIcon.classList.remove("hidden");
+    updatePlayPauseUI();
     updateMediaSessionPlaybackState();
   });
   slider.addEventListener("input", handleSeek);
