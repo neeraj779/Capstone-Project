@@ -73,7 +73,7 @@ async function removeSong(element) {
 
 function createPlaylistSongsCard(playlistSong) {
   return `
-      <div id = ${playlistSong.id} class="relative flex items-center rounded-lg p-1 hover:shadow-xl transition-shadow duration-300 hover:bg-gray-800">
+      <div id = ${playlistSong.id} class="relative flex items-center rounded-lg p-1 transition-shadow duration-300">
         <a href="songPlayer.html?id=${playlistSong.id}">
           <img src="${playlistSong.image}" alt="Album Cover" class="ml-3 w-12 h-12 object-cover rounded-md border border-gray-700" />
         </a>
@@ -88,7 +88,7 @@ function createPlaylistSongsCard(playlistSong) {
         <div class="flex items-center space-x-10 mr-6 relative">
           <div class="dropdown-button-container">
             <button class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-ellipsis-v text-xl"></i>
+              <img src="./assets/img/lib-btn.svg" alt="btn" class="w-6 h-6">
             </button>
             <div class="dropdown-content">
               <a href="#" data-songId="${playlistSong.id}" onclick="removeSong(this)" class="text-red-500 hover:text-red-700 flex items-center px-4 py-2">
