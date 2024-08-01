@@ -108,7 +108,7 @@ function createPlaylistCard(playlist) {
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="copyLink(this)"
-            class="text-white-500 hover:text-gray-700 flex items-center px-4 py-2"
+            class="text-white-500 flex items-center px-4 py-2"
           >
             <i class="fa-solid fa-link mr-2"></i> Copy Link
           </a>
@@ -118,7 +118,7 @@ function createPlaylistCard(playlist) {
             data-playlistname="${playlist.playlistName}"
             data-description="${playlist.description}"
             onclick="editPlaylist(this)"
-            class="text-blue-500 hover:text-blue-700 flex items-center px-4 py-2"
+            class="text-blue-500 flex items-center px-4 py-2"
           >
             <i class="fas fa-pencil-alt mr-2"></i>Edit Playlist
           </a>
@@ -127,7 +127,7 @@ function createPlaylistCard(playlist) {
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="deletePlaylist(this)"
-            class="text-red-500 hover:text-red-700 flex items-center px-4 py-2"
+            class="text-red-500 flex items-center px-4 py-2"
           >
             <i class="fas fa-trash-alt mr-2"></i>Delete Playlist
           </a>
@@ -136,7 +136,7 @@ function createPlaylistCard(playlist) {
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="changeVisibility(this, !${playlist.isPrivate})"
-            class="text-green-500 hover:text-green-700 flex items-center px-4 py-2"
+            class="text-green-500 flex items-center px-4 py-2"
           >
             <i class="fas ${
               playlist.isPrivate ? "fa-unlock" : "fa-lock"
@@ -369,7 +369,3 @@ function copyLink(element) {
       alert("Failed to copy link.");
     });
 }
-
-document.getElementById("hamburger")?.addEventListener("click", () => {
-  document.getElementById("mobile-menu")?.classList.toggle("hidden");
-});

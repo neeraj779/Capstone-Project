@@ -121,6 +121,3 @@ async function renderSongs() {
 }
 
 window.addEventListener("load", renderSongs);
-document.getElementById("hamburger")?.addEventListener("click", () => {
-  document.getElementById("mobile-menu")?.classList.toggle("hidden");
-});
