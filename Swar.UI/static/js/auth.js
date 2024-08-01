@@ -38,7 +38,7 @@ async function checkAuth() {
 async function verifyAccessToken(accessToken) {
   try {
     const response = await fetch(
-      "https://swarapi.azurewebsites.net/api/v1/Auth/VerifyToken",
+      "https://swarapi.azurewebsites.net/api/v1/users/verify-token",
       {
         method: "GET",
         headers: {
@@ -58,7 +58,7 @@ async function verifyAccessToken(accessToken) {
 async function refreshAccessToken(refreshToken) {
   try {
     const response = await fetch(
-      "https://swarapi.azurewebsites.net/api/v1/Auth/RefreshToken",
+      "https://swarapi.azurewebsites.net/api/v1/users/refresh-token",
       {
         method: "POST",
         headers: {

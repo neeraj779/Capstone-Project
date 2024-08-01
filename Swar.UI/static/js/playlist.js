@@ -163,7 +163,7 @@ async function isLoggedin() {
   const accessToken = localStorage.getItem("accessToken");
   try {
     const response = await fetch(
-      "https://swarapi.azurewebsites.net/api/v1/Auth/VerifyToken",
+      "https://swarapi.azurewebsites.net/api/v1/users/verify-token",
       {
         method: "GET",
         headers: {
@@ -177,7 +177,3 @@ async function isLoggedin() {
     return false;
   }
 }
-
-document.getElementById("hamburger")?.addEventListener("click", () => {
-  document.getElementById("mobile-menu")?.classList.toggle("hidden");
-});
