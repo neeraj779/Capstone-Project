@@ -94,7 +94,7 @@ function createPlaylistCard(playlist) {
           playlist.createdAt
         ).toLocaleDateString()}</p>
       </div>
-      <div class="dropdown-button">
+      <div class="dropdown-button-lib">
         <button
           class="text-gray-400 hover:text-gray-600 focus:outline-none"
           aria-haspopup="true"
@@ -102,13 +102,13 @@ function createPlaylistCard(playlist) {
         >
           <img src="./assets/img/lib-btn.svg" alt="btn" class="w-8 h-8">
         </button>
-        <div class="dropdown-content">
+        <div class="dropdown-content-lib">
           <a
             href="#"
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="copyLink(this)"
-            class="text-white-500 flex items-center px-4 py-2"
+            class="text-white-500 hover:text-gray-700 flex items-center px-4 py-2"
           >
             <i class="fa-solid fa-link mr-2"></i> Copy Link
           </a>
@@ -118,7 +118,7 @@ function createPlaylistCard(playlist) {
             data-playlistname="${playlist.playlistName}"
             data-description="${playlist.description}"
             onclick="editPlaylist(this)"
-            class="text-blue-500 flex items-center px-4 py-2"
+            class="text-blue-500 hover:text-blue-700 flex items-center px-4 py-2"
           >
             <i class="fas fa-pencil-alt mr-2"></i>Edit Playlist
           </a>
@@ -127,7 +127,7 @@ function createPlaylistCard(playlist) {
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="deletePlaylist(this)"
-            class="text-red-500 flex items-center px-4 py-2"
+            class="text-red-500 hover:text-red-700 flex items-center px-4 py-2"
           >
             <i class="fas fa-trash-alt mr-2"></i>Delete Playlist
           </a>
@@ -136,7 +136,7 @@ function createPlaylistCard(playlist) {
             data-playlistid="${playlist.playlistId}"
             data-playlistname="${playlist.playlistName}"
             onclick="changeVisibility(this, !${playlist.isPrivate})"
-            class="text-green-500 flex items-center px-4 py-2"
+            class="text-green-500 hover:text-green-700 flex items-center px-4 py-2"
           >
             <i class="fas ${
               playlist.isPrivate ? "fa-unlock" : "fa-lock"
@@ -161,14 +161,15 @@ function renderPlaylists(playlists) {
 }
 
 function addDropdownEventListeners() {
-  document.querySelectorAll(".dropdown-button").forEach((button, index) => {
-    const dropdownContent =
-      document.querySelectorAll(".dropdown-content")[index];
+  document.querySelectorAll(".dropdown-button-lib").forEach((button, index) => {
+    const dropdownContent = document.querySelectorAll(".dropdown-content-lib")[
+      index
+    ];
 
     button.addEventListener("click", () => {
       const isVisible = dropdownContent.classList.contains("show");
       document
-        .querySelectorAll(".dropdown-content")
+        .querySelectorAll(".dropdown-content-lib")
         .forEach((content) => content.classList.remove("show"));
       dropdownContent.classList.toggle("show", !isVisible);
       button.setAttribute("aria-expanded", !isVisible);
