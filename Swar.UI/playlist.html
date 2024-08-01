@@ -37,21 +37,14 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="./static/css/library.css" />
+    <link rel="stylesheet" href="./static/css/navbar.css" />
     <link rel="stylesheet" href="./static/css/validation.css" />
     <link rel="stylesheet" href="./static/css/alert.css" />
   </head>
 
   <body class="bg-gray-900 text-white">
     <nav class="bg-gray-800 py-4 shadow-md">
-      <div class="container mx-auto flex items-center justify-between px-6">
-        <a href="index.html" class="flex items-center">
-          <img
-            src="./assets/img/logo.png"
-            alt="Swar Logo"
-            class="h-10 w-auto"
-          />
-        </a>
+      <div class="container mx-auto flex items-center justify-between px-4">
         <div class="md:hidden flex items-center">
           <button id="hamburger" class="text-white focus:outline-none">
             <svg
@@ -70,40 +63,79 @@
             </svg>
           </button>
         </div>
-        <div id="nav-links" class="hidden md:flex space-x-6">
-          <a href="index.html" class="hover:text-gray-400">Home</a>
-          <a href="library.html" class="hover:text-gray-400"> Your Library</a>
-        </div>
-        <div class="relative flex-1 max-w-xs hidden md:block">
-          <form id="search-form" class="relative">
-            <input
-              type="text"
-              id="search-input"
-              class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
-              placeholder="Search songs, artists..."
+        <div class="flex items-center space-x-6">
+          <a href="index.html" class="flex items-center">
+            <img
+              src="./assets/img/logo.png"
+              alt="Swar Logo"
+              class="h-10 w-auto"
             />
-            <svg
-              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          </a>
+          <div id="nav-links" class="hidden md:flex space-x-6">
+            <a href="index.html" class="hover:text-gray-400 transition-colors"
+              >Home</a
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+            <a href="library.html" class="hover:text-gray-400 transition-colors"
+              >Your Library</a
+            >
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="relative max-w-xs hidden md:block">
+            <form id="search-form" class="relative">
+              <input
+                type="text"
+                id="search-input"
+                class="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full focus:outline-none"
+                placeholder="Search songs, artists..."
               />
-            </svg>
-          </form>
+              <svg
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.35-4.35"
+                />
+              </svg>
+            </form>
+          </div>
+          <div id="dropdown-button" class="dropdown-button">
+            <button
+              class="text-gray-400 hover:text-gray-300 focus:outline-none"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img
+                src="./assets/img/profile.svg"
+                alt="Profile"
+                class="w-8 h-8 rounded-full"
+              />
+            </button>
+            <div id="dropdown-content" class="dropdown-content">
+              <a href="profile.html" class="flex items-center px-4 py-2"
+                ><i class="fa-solid fa-user mr-2"></i> View Profile</a
+              >
+              <a
+                id="logout-button"
+                class="flex items-center px-4 py-2 cursor-pointer"
+              >
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <div
         id="mobile-menu"
-        class="md:hidden absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50 hidden"
+        class="mobile-menu absolute inset-x-0 top-16 bg-gray-800 shadow-lg z-50"
       >
         <div class="flex flex-col items-center py-4 space-y-4">
           <a href="index.html" class="text-white hover:text-gray-400">Home</a>
@@ -251,6 +283,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./static/js/navabar.js"></script>
     <script src="./static/js/searchBox.js"></script>
     <script src="./static/js/playlist.js"></script>
     <script src="./static/js/crudService.js"></script>
