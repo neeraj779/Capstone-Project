@@ -21,7 +21,7 @@ document
 
     try {
       const data = { email, password };
-      const response = await CRUDService.create("Auth/Login", data);
+      const response = await CRUDService.create("users/login", data);
 
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("refreshToken", response.refreshToken);

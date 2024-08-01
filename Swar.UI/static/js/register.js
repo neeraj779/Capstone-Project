@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const data = { name, email, gender, password };
-      await CRUDService.create("Auth/Register", data);
+      await CRUDService.create("users/register", data);
       handleSuccess();
     } catch (error) {
       showMessage(error.message || "An error occurred", "error");
