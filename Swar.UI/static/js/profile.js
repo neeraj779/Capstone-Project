@@ -35,12 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateProfileUI(data) {
     if (data) {
-      let profileImgSrc = "../../assets/img/neutral_avatar.png";
+      let profileImgSrc = "./assets/img/neutral_avatar.png";
 
       if (data.gender === "Male")
-        profileImgSrc = "../../assets/img/male_avatar.svg";
+        profileImgSrc = "./assets/img/male_avatar.svg";
       else if (data.gender === "Female")
-        profileImgSrc = "../../assets/img/female_avatar.svg";
+        profileImgSrc = "./assets/img/female_avatar.svg";
 
       document.getElementById("profile-picture").src = profileImgSrc;
       document.getElementById("profile-status").textContent = data.status;
