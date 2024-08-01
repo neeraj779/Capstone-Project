@@ -20,7 +20,7 @@ namespace Swar.API.Services
             _userRepo = userRepo;
         }
 
-        public async Task<LoginReturnDTO> Login(UserLoginDTO loginDTO)
+        public async Task<LoginResultDTO> Login(UserLoginDTO loginDTO)
         {
             var user = await _userRepo.GetByEmail(loginDTO.Email);
             ValidateUser(user);
@@ -28,7 +28,7 @@ namespace Swar.API.Services
             if (!IsPasswordCorrect(loginDTO.Password, user.PasswordHashKey, user.HashedPassword))
                 throw new InvalidCredentialsException();
 
-            return new LoginReturnDTO
+            return new LoginResultDTO
             {
                 AccessToken = _tokenService.GenerateJwtToken(user, "access"),
                 RefreshToken = _tokenService.GenerateJwtToken(user, "refresh"),
@@ -83,6 +83,15 @@ namespace Swar.API.Services
             return newUser;
         }
 
+        public async Task<RegisteredUserDTO> GetUserById(int userId)
+        {
+            User user = await _userRepo.GetById(userId);
+            if (user == null)
+                throw new EntityNotFoundException("User not found");
+
+            return MapUserToReturnDTO(user);
+
+        }
 
         public async Task<IEnumerable<RegisteredUserDTO>> GetAllUsers()
         {
@@ -99,6 +108,55 @@ namespace Swar.API.Services
 
             return userReturnDTOs;
         }
+
+        public async Task<RegisteredUserDTO> UpdateUser(int userId, UserUpdateDTO userUpdateDto)
+        {
+            User user = await _userRepo.GetById(userId);
+            ValidateUser(user);
+
+            if (!string.IsNullOrWhiteSpace(userUpdateDto.Email))
+            {
+                var isEmailExist = await _userRepo.GetByEmail(userUpdateDto.Email);
+                if (isEmailExist != null && isEmailExist.UserId != userId)
+                    throw new EntityAlreadyExistsException("An account with this email already exists");
+            }
+
+            UpdateUserProperties(user, userUpdateDto);
+
+            User updatedUser = await _userRepo.Update(user);
+            return MapUserToReturnDTO(updatedUser);
+
+        }
+
+        public async Task<RegisteredUserDTO> UpdateUserPassword(int userId, UserPasswordUpdateDTO userPasswordUpdateDto)
+        {
+            User user = await _userRepo.GetById(userId);
+            ValidateUser(user);
+
+            if (!IsPasswordCorrect(userPasswordUpdateDto.OldPassword, user.PasswordHashKey, user.HashedPassword))
+                throw new InvalidCredentialsException("Old password is incorrect");
+
+            if (!IsPasswordStrong(userPasswordUpdateDto.NewPassword))
+                throw new WeakPasswordException();
+
+            HMACSHA512 hMACSHA = new HMACSHA512();
+            user.PasswordHashKey = hMACSHA.Key;
+            user.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(userPasswordUpdateDto.NewPassword));
+
+            await _userRepo.Update(user);
+            return MapUserToReturnDTO(user);
+        }
+
+        public async Task<RegisteredUserDTO> DeleteUser(int userId)
+        {
+            User user = await _userRepo.GetById(userId);
+            if (user == null)
+                throw new EntityNotFoundException("User not found");
+
+            await _userRepo.Delete(userId);
+            return MapUserToReturnDTO(user);
+        }
+
 
         public async Task<RegisteredUserDTO> ActivateUser(int id)
         {
@@ -148,6 +206,25 @@ namespace Swar.API.Services
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return computedHash.SequenceEqual(storedPasswordHash);
         }
+
+        private void UpdateUserProperties(User user, UserUpdateDTO userUpdateDto)
+        {
+            if (!string.IsNullOrWhiteSpace(userUpdateDto.Name))
+            {
+                user.Name = userUpdateDto.Name;
+            }
+
+            if (!string.IsNullOrWhiteSpace(userUpdateDto.Email))
+            {
+                user.Email = userUpdateDto.Email;
+            }
+
+            if (!string.IsNullOrWhiteSpace(userUpdateDto.Gender))
+            {
+                user.Gender = userUpdateDto.Gender;
+            }
+        }
+
 
         public RegisteredUserDTO MapUserToReturnDTO(User user)
         {

@@ -9,6 +9,11 @@
             _message = "Email or password is incorrect";
         }
 
+        public InvalidCredentialsException(string message)
+        {
+            _message = message;
+        }
+
         public override string Message => _message;
     }
 }
