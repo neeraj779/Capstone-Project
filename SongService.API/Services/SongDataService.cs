@@ -165,7 +165,7 @@ namespace SongService.API.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new InvalidQueryException();
             }
