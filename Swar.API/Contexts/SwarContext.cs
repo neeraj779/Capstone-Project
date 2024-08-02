@@ -15,7 +15,6 @@ namespace Swar.API.Contexts
         public DbSet<LikedSong> LikedSongs { get; set; }
         public DbSet<PlayHistory> PlayHistories { get; set; }
         public DbSet<PlaylistSong> PlaylistSongs { get; set; }
-        public DbSet<UserUploadedSong> UserUploadedSongs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
