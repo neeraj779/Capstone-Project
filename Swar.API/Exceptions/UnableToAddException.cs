@@ -1,7 +1,7 @@
 ﻿namespace Swar.API.Exceptions
 {
     [Serializable]
-    internal class UnableToAddException : Exception
+    public class UnableToAddException : Exception
     {
         string _message;
         public UnableToAddException()
