@@ -13,7 +13,7 @@ namespace Swar.API.Models.DBModels
         public byte[] HashedPassword { get; set; } = Array.Empty<byte>();
         public byte[] PasswordHashKey { get; set; } = Array.Empty<byte>();
         public UserStatusEnum.UserStatus UserStatus { get; set; }
-        public UserRoleEnum.UserRole Role { get; set; }
+        public UserRoleEnum.UserRole Role { get; set; } = UserRoleEnum.UserRole.User;
         public DateTime RegistrationDate { get; set; }
 
         public ICollection<Playlist> Playlists { get; set; }
