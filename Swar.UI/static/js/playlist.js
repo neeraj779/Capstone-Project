@@ -90,7 +90,7 @@ function createPlaylistSongsCard(playlistSong) {
             <button class="text-gray-400 hover:text-gray-600 focus:outline-none" aria-haspopup="true" aria-expanded="false">
               <img src="./assets/img/lib-btn.svg" alt="btn" class="w-6 h-6">
             </button>
-            <div class="dropdown-content">
+            <div class="dropdown-content-lib">
               <a href="#" data-songId="${playlistSong.id}" onclick="removeSong(this)" class="text-red-500 hover:text-red-700 flex items-center px-4 py-2">
                 <i class="fas fa-trash-alt mr-2"></i>Remove
               </a>
@@ -134,11 +134,12 @@ function addDropdownEventListeners() {
   document.addEventListener("click", (event) => {
     const isDropdownButton = event.target.closest(".dropdown-button-container");
     if (isDropdownButton) {
-      const dropdownContent =
-        isDropdownButton.querySelector(".dropdown-content");
+      const dropdownContent = isDropdownButton.querySelector(
+        ".dropdown-content-lib"
+      );
       const isVisible = dropdownContent.classList.contains("show");
       document
-        .querySelectorAll(".dropdown-content")
+        .querySelectorAll(".dropdown-content-lib")
         .forEach((content) => content.classList.remove("show"));
       dropdownContent.classList.toggle("show", !isVisible);
       isDropdownButton
@@ -146,7 +147,7 @@ function addDropdownEventListeners() {
         .setAttribute("aria-expanded", !isVisible);
     } else {
       document
-        .querySelectorAll(".dropdown-content")
+        .querySelectorAll(".dropdown-content-lib")
         .forEach((content) => content.classList.remove("show"));
       document
         .querySelectorAll(".dropdown-button-container button")
