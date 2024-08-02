@@ -128,6 +128,33 @@ namespace Swar.API.Controllers
         }
 
         /// <summary>
+        /// Gets all the users.
+        /// </summary>
+        /// <returns>Returns the list of users.</returns>
+        [HttpGet("GetAllUsers")]
+        [Authorize(Roles = "Admin")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<RegisteredUserDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userService.GetAllUsers();
+                return Ok(users);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Gets the current user's details.
         /// </summary>
         /// <returns>Returns the user details.</returns>
