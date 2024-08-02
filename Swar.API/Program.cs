@@ -103,6 +103,7 @@ namespace Swar.API
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin, User"));
             });
 
+            builder.Logging.AddLog4Net("log4net.config");
 
             #region Context
             builder.Services.AddDbContext<SwarContext>(

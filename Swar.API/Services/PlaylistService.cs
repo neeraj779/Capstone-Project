@@ -11,11 +11,13 @@ namespace Swar.API.Services
     {
         private readonly IRepository<int, Playlist> _playlistRepository;
         private readonly IRepository<int, User> _userRepository;
+        private readonly ILogger<PlaylistService> _logger;
 
-        public PlaylistService(IRepository<int, Playlist> playlistRepository, IRepository<int, User> userRepository)
+        public PlaylistService(IRepository<int, Playlist> playlistRepository, IRepository<int, User> userRepository, ILogger<PlaylistService> logger)
         {
             _playlistRepository = playlistRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<ReturnPlaylistDTO> AddPlaylist(int userId, AddPlaylistDTO addPlaylistDTO)
@@ -23,12 +25,16 @@ namespace Swar.API.Services
             User user = await _userRepository.GetById(userId);
             if (user.UserStatus != UserStatusEnum.UserStatus.Active)
             {
+                _logger.LogInformation($"User {userId} tried to add a playlist but the account is inactive.");
                 throw new InactiveAccountException();
             }
 
             var userPlaylists = await _playlistRepository.GetAll();
             if (userPlaylists.Count(p => p.UserId == userId) >= 3)
+            {
+                _logger.LogInformation($"User {userId} tried to add more than 3 playlists.");
                 throw new MaxLimitException();
+            }
 
             Playlist playlist = new Playlist
             {
@@ -41,6 +47,7 @@ namespace Swar.API.Services
 
             await _playlistRepository.Add(playlist);
 
+            _logger.LogInformation($"User {userId} added playlist {playlist.PlaylistId}");
             return MapPlaylistToReturnPlaylistDTO(playlist);
 
         }
@@ -52,9 +59,14 @@ namespace Swar.API.Services
                 throw new EntityNotFoundException();
 
             if (playlist.UserId != userId)
+            {
+                _logger.LogInformation($"User {userId} tried to delete playlist {playlistId} but is not authorized.");
                 throw new UnauthorizedAccessException("You are not authorized to delete this playlist.");
+            }
 
             await _playlistRepository.Delete(playlistId);
+
+            _logger.LogInformation($"User {userId} deleted playlist {playlistId}");
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 
@@ -63,8 +75,12 @@ namespace Swar.API.Services
         {
             var playlists = await _playlistRepository.GetAll();
             if (!playlists.Any())
+            {
+                _logger.LogInformation("No playlists found during GetAllPlaylists.");
                 throw new EntityNotFoundException("No playlists found.");
+            }
 
+            _logger.LogInformation("Returning all playlists.");
             return playlists.Select(MapPlaylistToReturnPlaylistDTO).ToList();
         }
 
@@ -74,8 +90,12 @@ namespace Swar.API.Services
             var userPlaylists = playlists.Where(p => p.UserId == userId);
 
             if (!userPlaylists.Any())
+            {
+                _logger.LogInformation($"No playlists found for user with ID {userId}.");
                 throw new EntityNotFoundException($"No playlists found for user with ID {userId}.");
+            }
 
+            _logger.LogInformation($"Returning all playlists for user with ID {userId}.");
             return userPlaylists.Select(MapPlaylistToReturnPlaylistDTO).ToList();
         }
 
@@ -83,11 +103,18 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
+            {
+                _logger.LogInformation($"Playlist with ID {playlistId} not found.");
                 throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
+            }
 
             if (playlist.UserId != userId)
+            {
+                _logger.LogInformation($"User {userId} tried to access playlist {playlistId} but is not authorized.");
                 throw new UnauthorizedAccessException("You are not authorized to view this playlist.");
+            }
 
+            _logger.LogInformation($"Returning playlist with ID {playlistId}.");
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 
@@ -95,15 +122,23 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
+            {
+                _logger.LogInformation($"Playlist with ID {playlistId} not found.");
                 throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
+            }
 
             if (playlist.UserId != userId)
+            {
+                _logger.LogInformation($"User {userId} tried to update playlist {playlistId} but is not authorized.");
                 throw new UnauthorizedAccessException("You are not authorized to update this playlist.");
+            }
 
             playlist.PlaylistName = updatePlaylistDTO.PlaylistName;
             playlist.Description = updatePlaylistDTO.Description;
 
             await _playlistRepository.Update(playlist);
+
+            _logger.LogInformation($"User {userId} updated playlist {playlistId}.");
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 
@@ -111,13 +146,21 @@ namespace Swar.API.Services
         {
             Playlist playlist = await _playlistRepository.GetById(playlistId);
             if (playlist == null)
+            {
+                _logger.LogInformation($"Playlist with ID {playlistId} not found.");
                 throw new EntityNotFoundException($"Playlist with ID {playlistId} not found.");
+            }
 
             if (playlist.UserId != userId)
+            {
+                _logger.LogInformation($"User {userId} tried to update playlist {playlistId} but is not authorized.");
                 throw new UnauthorizedAccessException("You are not authorized to update this playlist.");
+            }
 
             playlist.IsPrivate = IsPrivate;
             await _playlistRepository.Update(playlist);
+
+            _logger.LogInformation($"User {userId} updated privacy of playlist {playlistId} to {IsPrivate}.");
             return MapPlaylistToReturnPlaylistDTO(playlist);
         }
 

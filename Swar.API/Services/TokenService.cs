@@ -15,13 +15,15 @@ namespace Swar.API.Services
         private readonly SymmetricSecurityKey _refreshTokenKey;
         private readonly TimeSpan _accessTokenExpiration = TimeSpan.FromHours(5);
         private readonly TimeSpan _refreshTokenExpiration = TimeSpan.FromDays(30);
+        private readonly ILogger<TokenService> _logger;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, ILogger<TokenService> logger)
         {
             _accessTokenSecret = configuration["TokenKey:Access"];
             _refreshTokenSecret = configuration["TokenKey:Refresh"];
             _accessTokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_accessTokenSecret));
             _refreshTokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_refreshTokenSecret));
+            _logger = logger;
         }
 
         public string GenerateJwtToken(User user, string token_type)
@@ -40,6 +42,7 @@ namespace Swar.API.Services
                 signingCredentials: credentials
             );
 
+            _logger.LogInformation($"Token generated for user {user.UserId} with token type {token_type}");
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 

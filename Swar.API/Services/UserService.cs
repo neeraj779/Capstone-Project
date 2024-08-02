@@ -13,11 +13,13 @@ namespace Swar.API.Services
     {
         private readonly IUserRepository _userRepo;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepo, ITokenService tokenService)
+        public UserService(IUserRepository userRepo, ITokenService tokenService, ILogger<UserService> logger)
         {
-            _tokenService = tokenService;
             _userRepo = userRepo;
+            _tokenService = tokenService;
+            _logger = logger;
         }
 
         public async Task<LoginResultDTO> Login(UserLoginDTO loginDTO)
@@ -27,6 +29,8 @@ namespace Swar.API.Services
 
             if (!IsPasswordCorrect(loginDTO.Password, user.PasswordHashKey, user.HashedPassword))
                 throw new InvalidCredentialsException();
+
+            _logger.LogInformation("Login attempt for user ID: {UserId}", user.UserId);
 
             return new LoginResultDTO
             {
@@ -42,7 +46,10 @@ namespace Swar.API.Services
             var user = await _userRepo.GetByEmail(userDTO.Email);
 
             if (user != null)
+            {
+                _logger.LogWarning("Registration attempt for already registered userid {UserId}", user.UserId);
                 throw new EntityAlreadyExistsException("You are already registered. Please login");
+            }
 
             if (!IsPasswordStrong(userDTO.Password))
                 throw new WeakPasswordException();
@@ -56,6 +63,8 @@ namespace Swar.API.Services
         {
             var user = await _userRepo.GetById(userId);
             ValidateUser(user);
+
+            _logger.LogInformation("Token refresh for user ID: {UserId}", user.UserId);
 
             return new AccessTokenDTO
             {
@@ -89,6 +98,8 @@ namespace Swar.API.Services
             if (user == null)
                 throw new EntityNotFoundException("User not found");
 
+            _logger.LogInformation("User details fetched for user ID: {UserId}", user.UserId);
+
             return MapUserToReturnDTO(user);
 
         }
@@ -99,6 +110,7 @@ namespace Swar.API.Services
 
             if (users.Count() == 0)
             {
+                _logger.LogWarning("No users found during GetAllUsers");
                 throw new EntityNotFoundException("No users found");
             }
 
@@ -118,10 +130,15 @@ namespace Swar.API.Services
             {
                 var isEmailExist = await _userRepo.GetByEmail(userUpdateDto.Email);
                 if (isEmailExist != null && isEmailExist.UserId != userId)
+                {
+                    _logger.LogWarning("Error during user update. Email already used for user ID: {UserId}", user.UserId);
                     throw new EntityAlreadyExistsException("An account with this email already exists");
+                }
             }
 
             UpdateUserProperties(user, userUpdateDto);
+
+            _logger.LogInformation("User details updated for user ID: {UserId}", user.UserId);
 
             User updatedUser = await _userRepo.Update(user);
             return MapUserToReturnDTO(updatedUser);
@@ -134,7 +151,10 @@ namespace Swar.API.Services
             ValidateUser(user);
 
             if (!IsPasswordCorrect(userPasswordUpdateDto.OldPassword, user.PasswordHashKey, user.HashedPassword))
+            {
+                _logger.LogWarning("Error during user password update. Old password is incorrect for user ID: {UserId}", user.UserId);
                 throw new InvalidCredentialsException("Old password is incorrect");
+            }
 
             if (!IsPasswordStrong(userPasswordUpdateDto.NewPassword))
                 throw new WeakPasswordException();
@@ -144,6 +164,8 @@ namespace Swar.API.Services
             user.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(userPasswordUpdateDto.NewPassword));
 
             await _userRepo.Update(user);
+
+            _logger.LogInformation("User password updated for user ID: {UserId}", user.UserId);
             return MapUserToReturnDTO(user);
         }
 
@@ -154,6 +176,8 @@ namespace Swar.API.Services
                 throw new EntityNotFoundException("User not found");
 
             await _userRepo.Delete(userId);
+            _logger.LogInformation("User deleted for user ID: {UserId}", user.UserId);
+
             return MapUserToReturnDTO(user);
         }
 
@@ -166,6 +190,7 @@ namespace Swar.API.Services
             user.UserStatus = UserStatusEnum.UserStatus.Active;
             await _userRepo.Update(user);
 
+            _logger.LogInformation("User activated for user ID: {UserId}", user.UserId);
             return MapUserToReturnDTO(user);
         }
 
@@ -177,16 +202,23 @@ namespace Swar.API.Services
             user.UserStatus = UserStatusEnum.UserStatus.Inactive;
             await _userRepo.Update(user);
 
+            _logger.LogInformation("User deactivated for user ID: {UserId}", user.UserId);
             return MapUserToReturnDTO(user);
         }
 
         private void ValidateUser(User user)
         {
             if (user == null)
-                throw new EntityNotFoundException("You are not registered");
+            {
+                _logger.LogWarning("User not found");
+                throw new EntityNotFoundException("User not found");
+            }
 
             if (user.UserStatus == UserStatusEnum.UserStatus.Inactive)
+            {
+                _logger.LogWarning("Inactive account for user ID: {UserId}", user.UserId);
                 throw new InactiveAccountException();
+            }
         }
 
         private bool IsPasswordStrong(string password)

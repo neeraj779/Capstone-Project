@@ -11,21 +11,29 @@ namespace Swar.API.Services
     {
         private readonly IRepository<int, PlayHistory> _playHistoryRepository;
         private readonly IRepository<int, User> _userRepository;
+        private readonly ILogger<PlayHistoryService> _logger;
 
-        public PlayHistoryService(IRepository<int, PlayHistory> playHistoryRepository, IRepository<int, User> userRepository)
+        public PlayHistoryService(IRepository<int, PlayHistory> playHistoryRepository, IRepository<int, User> userRepository, ILogger<PlayHistoryService> logger)
         {
             _playHistoryRepository = playHistoryRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task LogSongHistory(int userId, string songId)
         {
             User user = await _userRepository.GetById(userId);
             if (user == null)
+            {
+                _logger.LogInformation($"User {userId} tried to log song history but the user does not exist.");
                 throw new EntityNotFoundException();
+            }
 
             if (user.UserStatus != UserStatusEnum.UserStatus.Active)
+            {
+                _logger.LogInformation($"User {userId} tried to log song history but the account is inactive.");
                 throw new InactiveAccountException();
+            }
 
             PlayHistory playHistory = new PlayHistory
             {
@@ -34,6 +42,7 @@ namespace Swar.API.Services
                 PlayedAt = DateTime.Now
             };
 
+            _logger.LogInformation($"User {userId} logged song {songId} to history.");
             await _playHistoryRepository.Add(playHistory);
         }
 
@@ -41,10 +50,16 @@ namespace Swar.API.Services
         {
             var user = await _userRepository.GetById(userId);
             if (user == null)
+            {
+                _logger.LogInformation($"User {userId} tried to get song history but the user does not exist.");
                 throw new EntityNotFoundException();
+            }
 
             if (user.UserStatus != UserStatusEnum.UserStatus.Active)
+            {
+                _logger.LogInformation($"User {userId} tried to get song history but the account is inactive.");
                 throw new InactiveAccountException();
+            }
 
             var playHistory = await _playHistoryRepository.GetAll();
 
@@ -62,8 +77,12 @@ namespace Swar.API.Services
             }
 
             if (!userPlayHistory.Any())
+            {
+                _logger.LogInformation($"User {userId} tried to get song history but no songs found.");
                 throw new EntityNotFoundException();
+            }
 
+            _logger.LogInformation($"Returning song history for user {userId}.");
             return new SongsListDTO
             {
                 UserId = userId,
@@ -75,7 +94,10 @@ namespace Swar.API.Services
         {
             var playHistory = await _playHistoryRepository.GetAll();
             if (!playHistory.Any())
+            {
+                _logger.LogInformation("No play history found.");
                 throw new EntityNotFoundException();
+            }
 
             List<SongsListDTO> songsListDTOs = new List<SongsListDTO>();
             var users = playHistory.Select(p => p.UserId).Distinct().ToList();
@@ -89,6 +111,7 @@ namespace Swar.API.Services
                 });
             }
 
+            _logger.LogInformation("Returning all user play history.");
             return songsListDTOs;
         }
     }

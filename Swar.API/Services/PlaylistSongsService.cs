@@ -12,12 +12,14 @@ namespace Swar.API.Services
         private readonly IPlaylistSongsRepository _playlistSongRepository;
         private readonly IRepository<int, Playlist> _playlistRepository;
         private readonly IRepository<int, User> _userRepository;
+        private readonly ILogger<PlaylistSongsService> _logger;
 
-        public PlaylistSongsService(IPlaylistSongsRepository playlistSongRepository, IRepository<int, Playlist> playlistRepository, IRepository<int, User> userRepository)
+        public PlaylistSongsService(IPlaylistSongsRepository playlistSongRepository, IRepository<int, Playlist> playlistRepository, IRepository<int, User> userRepository, ILogger<PlaylistSongsService> logger)
         {
             _playlistSongRepository = playlistSongRepository;
             _playlistRepository = playlistRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
 
@@ -30,11 +32,17 @@ namespace Swar.API.Services
             playlistSongsCount = playlistSongsCount.Where(ps => ps.PlaylistId == addSongToPlaylistDTO.PlaylistId);
 
             if (playlistSongsCount.Count() >= 5)
+            {
+                _logger.LogInformation($"User {userId} tried to add more than 5 songs to playlist {addSongToPlaylistDTO.PlaylistId}");
                 throw new MaxLimitException("A playlist can only have 5 songs.");
+            }
 
 
             if (playlistSongExists != null)
+            {
+                _logger.LogInformation($"User {userId} tried to add song {addSongToPlaylistDTO.SongId} to playlist {addSongToPlaylistDTO.PlaylistId} but it already exists.");
                 throw new EntityAlreadyExistsException("Song already exists in playlist.");
+            }
 
             PlaylistSong playlistSong = new PlaylistSong
             {
@@ -43,6 +51,8 @@ namespace Swar.API.Services
             };
 
             await _playlistSongRepository.Add(playlistSong);
+
+            _logger.LogInformation($"User {userId} added song {addSongToPlaylistDTO.SongId} to playlist {addSongToPlaylistDTO.PlaylistId}");
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
@@ -50,8 +60,12 @@ namespace Swar.API.Services
         {
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
+            {
+                _logger.LogInformation("No Playlist songs found.");
                 throw new EntityNotFoundException("No Playlist songs found.");
+            }
 
+            _logger.LogInformation("Returning all Playlist songs.");
             return playlistSongs.Select(MapPlaylistSongToReturnPlaylistSongDTO);
         }
 
@@ -65,9 +79,14 @@ namespace Swar.API.Services
 
             var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlistId).ToList();
             if (!userPlaylistSongs.Any())
+            {
+                _logger.LogInformation($"No Playlist songs found for user with id {userId}.");
                 throw new EntityNotFoundException("No songs found in playlist.");
+            }
 
             var songsIdList = userPlaylistSongs.Select(ps => ps.SongId).ToList();
+
+            _logger.LogInformation($"Returning all Playlist songs for user with id {userId}.");
             return new PlaylistSongsDTO
             {
                 PlaylistId = playlistId,
@@ -81,9 +100,14 @@ namespace Swar.API.Services
 
             var playlistSong = await _playlistSongRepository.GetByCompositeKey(playlistId, songId);
             if (playlistSong == null)
+            {
+                _logger.LogInformation($"User {userId} tried to remove song {songId} from playlist {playlistId} but it does not exist.");
                 throw new EntityNotFoundException("Playlist song not found.");
+            }
 
             await _playlistSongRepository.DeletePlaylistSong(playlistId, songId);
+
+            _logger.LogInformation($"User {userId} removed song {songId} from playlist {playlistId}");
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
