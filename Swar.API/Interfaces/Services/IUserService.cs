@@ -12,7 +12,7 @@ namespace Swar.API.Interfaces.Services
         public Task<RegisteredUserDTO> UpdateUser(int userId, UserUpdateDTO user);
         public Task<RegisteredUserDTO> DeleteUser(int userId);
         public Task<RegisteredUserDTO> UpdateUserPassword(int userId, UserPasswordUpdateDTO user);
-        public Task<RegisteredUserDTO> ActivateUser(int userId);
-        public Task<RegisteredUserDTO> DeactivateUser(int userId);
+        public Task<RegisteredUserDTO> ActivateUser(int userId, int adminId);
+        public Task<RegisteredUserDTO> DeactivateUser(int userId, int adminId);
     }
 }

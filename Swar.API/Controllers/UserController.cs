@@ -314,7 +314,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                var user = await _userService.DeactivateUser(id);
+                int adminId = UserHelper.GetUserId(User);
+                var user = await _userService.DeactivateUser(id, adminId);
                 return Ok(user);
             }
             catch (EntityNotFoundException ex)
@@ -330,7 +331,41 @@ namespace Swar.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        
+
+        /// <summary>
+        /// Activates a user account.
+        /// </summary>
+        /// <param name="id">User ID.</param>
+        /// <returns>Returns the deactivated user details.</returns>
+        [HttpPost("{id}/activate")]
+        [Authorize(Roles = "Admin")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RegisteredUserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            try
+            {
+                int adminId = UserHelper.GetUserId(User);
+                var user = await _userService.ActivateUser(id, adminId);
+                return Ok(user);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
+            }
+            catch (InactiveAccountException ex)
+            {
+                return Unauthorized(new ErrorModel { Status = StatusCodes.Status401Unauthorized, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         /// <summary>
         /// Verify the user's access token.
         /// </summary>

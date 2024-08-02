@@ -8,6 +8,11 @@
         {
             _message = "Account is inactive";
         }
+
+        public InactiveAccountException(string message)
+        {
+            _message = message;
+        }
         public override string Message => _message;
     }
 }

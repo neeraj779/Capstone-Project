@@ -182,10 +182,11 @@ namespace Swar.API.Services
         }
 
 
-        public async Task<RegisteredUserDTO> ActivateUser(int id)
+        public async Task<RegisteredUserDTO> ActivateUser(int id, int adminId)
         {
-            var user = await _userRepo.GetById(id);
+            ValidateUser(await _userRepo.GetById(adminId), true);
 
+            var user = await _userRepo.GetById(id);
             if (user == null)
             {
                 _logger.LogWarning("User not found");
@@ -199,8 +200,10 @@ namespace Swar.API.Services
             return MapUserToReturnDTO(user);
         }
 
-        public async Task<RegisteredUserDTO> DeactivateUser(int id)
+        public async Task<RegisteredUserDTO> DeactivateUser(int id, int adminId)
         {
+            ValidateUser(await _userRepo.GetById(adminId), true);
+
             var user = await _userRepo.GetById(id);
             if (user == null)
             {
@@ -215,18 +218,19 @@ namespace Swar.API.Services
             return MapUserToReturnDTO(user);
         }
 
-        private void ValidateUser(User user)
+        private void ValidateUser(User user, bool isAdmin = false)
         {
+            string userType = isAdmin ? "Admin" : "User";
             if (user == null)
             {
-                _logger.LogWarning("User not found");
-                throw new EntityNotFoundException("User not found");
+                _logger.LogWarning("{UserType} does not exist", userType);
+                throw new EntityNotFoundException($"{userType} does not exist");
             }
 
             if (user.UserStatus == UserStatusEnum.UserStatus.Inactive)
             {
-                _logger.LogWarning("Inactive account for user ID: {UserId}", user.UserId);
-                throw new InactiveAccountException();
+                _logger.LogWarning("{UserType} account is inactive", userType);
+                throw new InactiveAccountException($"{userType} account is inactive");
             }
         }
 

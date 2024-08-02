@@ -187,6 +187,13 @@
             <param name="id">User ID.</param>
             <returns>Returns the deactivated user details.</returns>
         </member>
+        <member name="M:Swar.API.Controllers.UserController.ActivateUser(System.Int32)">
+            <summary>
+            Activates a user account.
+            </summary>
+            <param name="id">User ID.</param>
+            <returns>Returns the deactivated user details.</returns>
+        </member>
         <member name="M:Swar.API.Controllers.UserController.VerifyToken">
             <summary>
             Verify the user's access token.
