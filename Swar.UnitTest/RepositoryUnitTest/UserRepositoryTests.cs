@@ -5,7 +5,7 @@ using Swar.API.Models.DBModels;
 using Swar.API.Models.ENUMs;
 using Swar.API.Repositories;
 
-namespace Swar.API.Tests.Repositories
+namespace Swar.UnitTest.RepositoryUnitTest
 {
     public class UserRepositoryTests
     {

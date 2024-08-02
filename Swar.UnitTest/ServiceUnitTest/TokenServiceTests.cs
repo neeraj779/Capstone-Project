@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Swar.API.Tests.Services
+namespace Swar.UnitTest.ServiceUnitTest
 {
     public class TokenServiceTests
     {

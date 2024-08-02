@@ -9,7 +9,7 @@ using Swar.API.Models.ENUMs;
 using Swar.API.Repositories;
 using Swar.API.Services;
 
-namespace Swar.API.Tests.Services
+namespace Swar.UnitTest.ServiceUnitTest
 {
     [TestFixture]
     public class LikedSongsServiceTests

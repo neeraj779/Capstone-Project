@@ -13,7 +13,7 @@ using Swar.API.Services;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Swar.API.Tests.Services
+namespace Swar.UnitTest.ServiceUnitTest
 {
     [TestFixture]
     public class UserServiceTest

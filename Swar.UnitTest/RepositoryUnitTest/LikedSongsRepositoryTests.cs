@@ -4,7 +4,7 @@ using Swar.API.Exceptions;
 using Swar.API.Models.DBModels;
 using Swar.API.Repositories;
 
-namespace Swar.API.Tests.Repositories
+namespace Swar.UnitTest.RepositoryUnitTest
 {
     [TestFixture]
     public class LikedSongsRepositoryTests
