@@ -24,7 +24,7 @@ namespace Swar.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(
-                async c =>
+                c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo
                     {
