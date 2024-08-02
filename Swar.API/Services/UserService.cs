@@ -185,7 +185,12 @@ namespace Swar.API.Services
         public async Task<RegisteredUserDTO> ActivateUser(int id)
         {
             var user = await _userRepo.GetById(id);
-            ValidateUser(user);
+
+            if (user == null)
+            {
+                _logger.LogWarning("User not found");
+                throw new EntityNotFoundException("User not found");
+            }
 
             user.UserStatus = UserStatusEnum.UserStatus.Active;
             await _userRepo.Update(user);
@@ -197,7 +202,11 @@ namespace Swar.API.Services
         public async Task<RegisteredUserDTO> DeactivateUser(int id)
         {
             var user = await _userRepo.GetById(id);
-            ValidateUser(user);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found");
+                throw new EntityNotFoundException("User not found");
+            }
 
             user.UserStatus = UserStatusEnum.UserStatus.Inactive;
             await _userRepo.Update(user);
