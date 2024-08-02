@@ -18,9 +18,16 @@ namespace Swar.API.Repositories
 
         public async virtual Task<T> Add(T item)
         {
-            var result = await _dbSet.AddAsync(item);
-            await _context.SaveChangesAsync();
-            return result.Entity;
+            try
+            {
+                var result = await _dbSet.AddAsync(item);
+                await _context.SaveChangesAsync();
+                return result.Entity;
+            }
+            catch (DbUpdateException)
+            {
+                throw new UnableToAddException();
+            }
         }
 
         public async virtual Task<T> GetById(K key)
