@@ -47,11 +47,6 @@ namespace Swar.API.Contexts
 
         private void ConfigureRelationships(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Playlist>()
-                .HasMany(p => p.PlaylistSongs)
-                .WithOne(ps => ps.Playlist)
-                .HasForeignKey(ps => ps.PlaylistId);
-
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Playlists)
                 .WithOne(p => p.User)
@@ -75,17 +70,32 @@ namespace Swar.API.Contexts
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<Playlist>()
+                .HasMany(p => p.PlaylistSongs)
+                .WithOne(ps => ps.Playlist)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<PlaylistSong>()
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistSongs)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<LikedSong>()
+                .HasOne(ul => ul.User)
+                .WithMany(u => u.LikedSongs)
+                .HasForeignKey(ul => ul.UserId);
+
+            modelBuilder.Entity<PlayHistory>()
+                .HasOne(ph => ph.User)
+                .WithMany(u => u.PlayHistories)
+                .HasForeignKey(ph => ph.UserId);
         }
 
         private void ConfigureCompositeKeys(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PlaylistSong>()
                 .HasKey(ps => new { ps.PlaylistId, ps.SongId });
-
-            modelBuilder.Entity<PlaylistSong>()
-                .HasOne(ps => ps.Playlist)
-                .WithMany(p => p.PlaylistSongs)
-                .HasForeignKey(ps => ps.PlaylistId);
         }
 
         private void ConfigureUniqueIndices(ModelBuilder modelBuilder)
@@ -93,11 +103,6 @@ namespace Swar.API.Contexts
             modelBuilder.Entity<LikedSong>()
                 .HasIndex(ul => new { ul.UserId, ul.SongId })
                 .IsUnique();
-
-            modelBuilder.Entity<LikedSong>()
-                .HasOne(ul => ul.User)
-                .WithMany(u => u.LikedSongs)
-                .HasForeignKey(ul => ul.UserId);
         }
     }
 }
