@@ -83,7 +83,7 @@ namespace Swar.API.Services
             newUser.Gender = user.Gender;
             newUser.PasswordHashKey = hMACSHA.Key;
             newUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
-            newUser.UserStatus = UserStatusEnum.UserStatus.Inactive;
+            newUser.UserStatus = UserStatusEnum.UserStatus.Active;
             newUser.Role = role;
             newUser.RegistrationDate = DateTime.Now;
 
