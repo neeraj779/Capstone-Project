@@ -11,8 +11,8 @@ namespace Swar.API.Models.DBModels
         public bool IsPrivate { get; set; }
         public DateTime CreatedAt { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = default!;
 
-        public ICollection<PlaylistSong> PlaylistSongs { get; set; }
+        public ICollection<PlaylistSong>? PlaylistSongs { get; set; }
     }
 }
