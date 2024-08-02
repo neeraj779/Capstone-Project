@@ -35,16 +35,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         slider.max = audio.duration;
         durationEl.textContent = formatTime(audio.duration);
         updateMediaSession(data);
+
         audio
           .play()
           .then(() => {
             isPlaying = true;
-            updatePlayPauseUI();
-            updateMediaSessionPlaybackState();
           })
           .catch((err) => {
             console.error("Failed to play audio:", err);
           });
+
+        updatePlayPauseUI();
+        updateMediaSessionPlaybackState();
       });
       document.getElementById("skeleton-loader").classList.add("hidden");
       document.getElementById("content").classList.remove("hidden");
