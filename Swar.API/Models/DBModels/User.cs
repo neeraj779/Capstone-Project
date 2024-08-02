@@ -16,9 +16,8 @@ namespace Swar.API.Models.DBModels
         public UserRoleEnum.UserRole Role { get; set; } = UserRoleEnum.UserRole.User;
         public DateTime RegistrationDate { get; set; }
 
-        public ICollection<Playlist> Playlists { get; set; }
-        public ICollection<LikedSong> LikedSongs { get; set; }
-        public ICollection<PlayHistory> PlayHistories { get; set; }
-        public ICollection<UserUploadedSong> UploadedSongs { get; set; }
+        public ICollection<Playlist>? Playlists { get; set; }
+        public ICollection<LikedSong>? LikedSongs { get; set; }
+        public ICollection<PlayHistory>? PlayHistories { get; set; }
     }
 }

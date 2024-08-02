@@ -62,11 +62,6 @@ namespace Swar.API.Contexts
                 .HasForeignKey(ph => ph.UserId);
 
             modelBuilder.Entity<User>()
-                .HasMany(u => u.UploadedSongs)
-                .WithOne(us => us.User)
-                .HasForeignKey(us => us.UserId);
-
-            modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
