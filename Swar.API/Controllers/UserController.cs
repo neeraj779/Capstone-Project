@@ -330,7 +330,10 @@ namespace Swar.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        
+        /// <summary>
+        /// Verify the user's access token.
+        /// </summary>
         [HttpGet("verify-token")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]

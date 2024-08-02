@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Swar.API</name>
+    </assembly>
+    <members>
+        <member name="M:Swar.API.Controllers.LikedSongsController.LikeSong(System.String)">
+            <summary>
+            Adds a song to the user's liked songs.
+            </summary>
+            <param name="songId">The ID of the song to like.</param>
+            <returns>Returns the result of the operation.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.LikedSongsController.UnlikeSong(System.String)">
+            <summary>
+            Removes a song from the user's liked songs.
+            </summary>
+            <param name="songId">The ID of the song to unlike.</param>
+            <returns>Returns the result of the operation.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.LikedSongsController.GetLikedSongs">
+            <summary>
+            Gets all liked songs of the user.
+            </summary>
+            <returns>Returns a list of liked songs.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.LikedSongsController.IsSongLikedByUser(System.String)">
+            <summary>
+            Checks if a song is liked by the user.
+            </summary>
+            <param name="songId">The ID of the song to check.</param>
+            <returns>Returns true if the song is liked, otherwise false.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlayHistoryController.LogSongHistory(System.String)">
+            <summary>
+            Logs the history of a song played by the user.
+            </summary>
+            <param name="songId">The ID of the song to log.</param>
+            <returns>Returns a success message if the song history is logged successfully.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlayHistoryController.GetSongHistoryByUser(System.Boolean)">
+            <summary>
+            Gets the song history for the current user.
+            </summary>
+            <param name="unique">Indicates whether to return only unique songs.</param>
+            <returns>Returns a list of songs from the user's history.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlayHistoryController.GetAllUserHistory">
+            <summary>
+            Gets the play history for all users.
+            </summary>
+            <returns>Returns a list of all users' song history.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.CreatePlaylist(Swar.API.Models.DTOs.AddPlaylistDTO)">
+            <summary>
+            Creates a new playlist.
+            </summary>
+            <param name="addPlaylistDTO">The playlist details.</param>
+            <returns>Returns the created playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.DeletePlaylist(System.Int32)">
+            <summary>
+            Deletes a playlist by its ID.
+            </summary>
+            <param name="playlistId">The ID of the playlist to delete.</param>
+            <returns>Returns the result of the deletion.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.GetAllPlaylists">
+            <summary>
+            Gets all playlists.
+            </summary>
+            <returns>Returns a list of all playlists.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.GetAllPlaylistsByUserId">
+            <summary>
+            Gets all playlists of a specific user.
+            </summary>
+            <returns>Returns a list of user's playlists.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.GetPlaylistById(System.Int32)">
+            <summary>
+            Gets a specific playlist by its ID.
+            </summary>
+            <param name="playlistId">The ID of the playlist.</param>
+            <returns>Returns the playlist details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.UpdatePlaylist(System.Int32,Swar.API.Models.DTOs.UpdatePlaylistDTO)">
+            <summary>
+            Updates a playlist by its ID.
+            </summary>
+            <param name="playlistId">The ID of the playlist to update.</param>
+            <param name="updatePlaylistDTO">The updated playlist details.</param>
+            <returns>Returns the updated playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistController.UpdatePlaylistPrivacy(System.Int32,Swar.API.Models.DTOs.UpdatePlaylistPrivacyDTO)">
+            <summary>
+            Updates the privacy of a playlist by its ID.
+            </summary>
+            <param name="playlistId">The ID of the playlist.</param>
+            <param name="updatePlaylistPrivacyDTO">The updated privacy details.</param>
+            <returns>Returns the updated playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistSongsController.AddSongToPlaylist(Swar.API.Models.DTOs.AddSongToPlaylistDTO)">
+            <summary>
+            Adds a song to a playlist.
+            </summary>
+            <param name="playlistSongsDTO">Details of the song and playlist.</param>
+            <returns>Returns the result of adding the song to the playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistSongsController.RemoveSongFromPlaylist(System.Int32,System.String)">
+            <summary>
+            Removes a song from a playlist.
+            </summary>
+            <param name="playlistId">The ID of the playlist.</param>
+            <param name="songId">The ID of the song.</param>
+            <returns>Returns the result of removing the song from the playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistSongsController.GetAllSongsInPlaylist">
+            <summary>
+            Gets all songs in all playlists.
+            </summary>
+            <returns>Returns a list of all songs in all playlists.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.PlaylistSongsController.GetAllSongsInUserPlaylist(System.Int32)">
+            <summary>
+            Gets all songs in a specific user’s playlist.
+            </summary>
+            <param name="playlistId">The ID of the playlist.</param>
+            <returns>Returns a list of songs in the specified user's playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.Login(Swar.API.Models.DTOs.UserLoginDTO)">
+            <summary>
+            Logs in a user.
+            </summary>
+            <param name="loginDTO">User login details.</param>
+            <returns>Returns the login result.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.Register(Swar.API.Models.DTOs.UserRegisterDTO)">
+            <summary>
+            Registers a new user.
+            </summary>
+            <param name="userDTO">User registration details.</param>
+            <returns>Returns the registered user details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.RefreshToken">
+            <summary>
+            Refreshes the user's access token.
+            </summary>
+            <returns>Returns the new access token.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.GetAllUsers">
+            <summary>
+            Gets all the users.
+            </summary>
+            <returns>Returns the list of users.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.GetCurrentUser">
+            <summary>
+            Gets the current user's details.
+            </summary>
+            <returns>Returns the user details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.UpdateCurrentUser(Swar.API.Models.DTOs.UserUpdateDTO)">
+            <summary>
+            Updates the current user's details.
+            </summary>
+            <param name="userUpdateDTO">User update details.</param>
+            <returns>Returns the updated user details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.UpdateCurrentUserPassword(Swar.API.Models.DTOs.UserPasswordUpdateDTO)">
+            <summary>
+            Updates the current user's password.
+            </summary>
+            <param name="userPasswordUpdateDTO">Password update details.</param>
+            <returns>Returns the updated user details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.DeleteCurrentUser">
+            <summary>
+            Deletes the current user's account.
+            </summary>
+            <returns>Returns the deletion confirmation.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.DeactivateUser(System.Int32)">
+            <summary>
+            Deactivates a user account.
+            </summary>
+            <param name="id">User ID.</param>
+            <returns>Returns the deactivated user details.</returns>
+        </member>
+        <member name="M:Swar.API.Controllers.UserController.VerifyToken">
+            <summary>
+            Verify the user's access token.
+            </summary>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.ILikedSongsService.AddSongToLikedSongs(System.Int32,System.String)">
+            <summary>
+            Adds a song to the liked songs list of a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="songId">The ID of the song to add.</param>
+            <returns>A DTO representing the liked songs list after the song is added.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.ILikedSongsService.RemoveSongFromLikedSongs(System.Int32,System.String)">
+            <summary>
+            Removes a song from the liked songs list of a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="songId">The ID of the song to remove.</param>
+            <returns>A DTO representing the liked songs list after the song is removed.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.ILikedSongsService.GetAllLikedSongs(System.Int32)">
+            <summary>
+            Gets all liked songs of a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <returns>A collection of DTOs representing the liked songs of the user.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.ILikedSongsService.IsSongLikedByUser(System.Int32,System.String)">
+            <summary>
+            Checks if a song is in the liked songs list of a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>"
+            <returns> A boolean value indicating if the song is in the liked songs list.</returns>        
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.IPlaylistSongsService.AddSongToPlaylist(System.Int32,Swar.API.Models.DTOs.AddSongToPlaylistDTO)">
+            <summary>
+            Adds a song to a playlist.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="playlistId">The ID of the playlist.</param>
+            <param name="songId">The ID of the song to add.</param>
+            <returns>A DTO representing the playlist with the added song.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.IPlaylistSongsService.RemoveSongFromPlaylist(System.Int32,System.Int32,System.String)">
+            <summary>
+            Removes a song from a playlist.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="playlistId">The ID of the playlist.</param>
+            <param name="songId">The ID of the song to remove.</param>
+            <returns>A DTO representing the playlist after the song is removed.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.IPlaylistSongsService.GetAllSongsInUserPlaylist(System.Int32,System.Int32)">
+            <summary>
+            Gets all songs in a specific playlist for a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="playlistId">The ID of the playlist.</param>
+            <returns>A collection of DTOs representing the songs in the playlist.</returns>
+        </member>
+        <member name="M:Swar.API.Interfaces.Services.IPlaylistSongsService.GetAllSongsInPlaylist">
+            <summary>
+            Gets all songs in a specific playlist.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="playlistId">The ID of the playlist.</param>
+            <returns>A collection of DTOs representing the songs in the playlist.</returns>
+        </member>
+    </members>
+</doc>

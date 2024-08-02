@@ -66,8 +66,8 @@ namespace Swar.API
                     { jwtSecurityScheme, Array.Empty<string>() }
                 });
 
-                    //var xmlPath = Path.Combine("StudentManagementAPI.xml");
-                    //c.IncludeXmlComments(xmlPath);
+                    var xmlPath = Path.Combine("Swar.API.xml");
+                    c.IncludeXmlComments(xmlPath);
                 });
 
             builder.Services.AddAuthentication(options =>

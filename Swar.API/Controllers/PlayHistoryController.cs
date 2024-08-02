@@ -18,6 +18,11 @@ namespace Swar.API.Controllers
             _playHistoryService = playHistoryService;
         }
 
+        /// <summary>
+        /// Logs the history of a song played by the user.
+        /// </summary>
+        /// <param name="songId">The ID of the song to log.</param>
+        /// <returns>Returns a success message if the song history is logged successfully.</returns>
         [HttpPost("LogSongHistory")]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> LogSongHistory([FromBody] string songId)
@@ -42,6 +47,11 @@ namespace Swar.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the song history for the current user.
+        /// </summary>
+        /// <param name="unique">Indicates whether to return only unique songs.</param>
+        /// <returns>Returns a list of songs from the user's history.</returns>
         [HttpGet("GetSongHistoryByUser")]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetSongHistoryByUser(bool unique = true)
@@ -66,6 +76,10 @@ namespace Swar.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the play history for all users.
+        /// </summary>
+        /// <returns>Returns a list of all users' song history.</returns>
         [HttpGet("GetAllUserHistory")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUserHistory()
@@ -84,6 +98,5 @@ namespace Swar.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel { Status = StatusCodes.Status500InternalServerError, Message = ex.Message });
             }
         }
-
     }
 }
