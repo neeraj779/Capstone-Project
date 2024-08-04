@@ -385,13 +385,16 @@ namespace Swar.UnitTest.ServiceUnitTest
         {
             // Arrange
             var user = CreateUser("testuser@example.com", "Password123!");
+            var admin = CreateUser("admin@gmail.com", "Password123!");
+            admin.Role = UserRoleEnum.UserRole.Admin;
             user.UserStatus = UserStatusEnum.UserStatus.Inactive;
             await _dbContext.Users.AddAsync(user);
+            await _dbContext.Users.AddAsync(admin);
 
             await _dbContext.SaveChangesAsync();
 
             // Act
-            var result = await _userService.ActivateUser(user.UserId);
+            var result = await _userService.ActivateUser(user.UserId, admin.UserId);
 
             // Assert
             Assert.That(result.Status, Is.EqualTo("Active"));
@@ -400,7 +403,7 @@ namespace Swar.UnitTest.ServiceUnitTest
         [Test]
         public void ActivateUser_UserNotFound_ThrowsEntityNotFoundException()
         {
-            Assert.ThrowsAsync<EntityNotFoundException>(() => _userService.ActivateUser(999));
+            Assert.ThrowsAsync<EntityNotFoundException>(() => _userService.ActivateUser(999, 100));
         }
 
 
@@ -409,13 +412,16 @@ namespace Swar.UnitTest.ServiceUnitTest
         {
             // Arrange
             var user = CreateUser("user@example.com", "Password123!");
+            var admin = CreateUser("admin@gmail.com", "Password123!");
+            admin.Role = UserRoleEnum.UserRole.Admin;
             user.UserStatus = UserStatusEnum.UserStatus.Active;
 
             await _dbContext.Users.AddAsync(user);
+            await _dbContext.Users.AddAsync(admin);
             await _dbContext.SaveChangesAsync();
 
             // Act
-            var result = await _userService.DeactivateUser(user.UserId);
+            var result = await _userService.DeactivateUser(user.UserId, admin.UserId);
 
             // Assert
             Assert.That(result.Status, Is.EqualTo("Inactive"));
@@ -425,7 +431,7 @@ namespace Swar.UnitTest.ServiceUnitTest
         [Test]
         public void DeactivateUser_UserNotFound_ThrowsEntityNotFoundException()
         {
-            Assert.ThrowsAsync<EntityNotFoundException>(() => _userService.DeactivateUser(999));
+            Assert.ThrowsAsync<EntityNotFoundException>(() => _userService.DeactivateUser(999, 100));
         }
 
 
