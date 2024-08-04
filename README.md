@@ -10,7 +10,22 @@
 	<img src="https://img.shields.io/github/languages/top/neeraj779/Capstone-Project?style=flat&color=0080ff" alt="repo-top-language">
 	<img src="https://img.shields.io/github/languages/count/neeraj779/Capstone-Project?style=flat&color=0080ff" alt="repo-language-count">
 <p>
-<hr>
+
+---
+
+<p align="center">
+<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=flat&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions">
+</p>
+
+[![CodeQL](https://github.com/neeraj779/Capstone-Project/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/github-code-scanning/codeql)
+
+[![Build and deploy .NET Core application to Web App SongServiceAPI](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml)
+
+[![Build and deploy .NET Core application to Web App SwarAPI](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarAPI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarAPI.yml)
+
+[![Deploy SwarUI content to GitHub Page](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml)
+
+---
 
 ## 🔗 Quick Links
 
@@ -299,4 +314,3 @@ dotnet test
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
