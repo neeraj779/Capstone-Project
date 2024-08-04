@@ -19,11 +19,11 @@
 
 [![CodeQL](https://github.com/neeraj779/Capstone-Project/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/github-code-scanning/codeql)
 
-[![Build and deploy .NET Core application to Web App SongServiceAPI](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml)
+[![Deploy SwarUI content to GitHub Page](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml)
 
 [![Build and deploy .NET Core application to Web App SwarAPI](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarAPI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarAPI.yml)
 
-[![Deploy SwarUI content to GitHub Page](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SwarUI.yml)
+[![Build and deploy .NET Core application to Web App SongServiceAPI](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml/badge.svg)](https://github.com/neeraj779/Capstone-Project/actions/workflows/SongServiceAPI.yml)
 
 ---
 
