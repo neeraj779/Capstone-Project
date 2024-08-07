@@ -107,9 +107,7 @@ namespace Swar.API
 
             #region Context
             builder.Services.AddDbContext<SwarContext>(
-                options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"),
-                    sqlServerOptions => sqlServerOptions.EnableRetryOnFailure())
-                );
+                options => options.UseNpgsql(builder.Configuration.GetConnectionString("defaultConnection")));
             #endregion
 
             #region Repositories
