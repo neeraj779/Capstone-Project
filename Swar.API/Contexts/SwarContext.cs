@@ -8,7 +8,10 @@ namespace Swar.API.Contexts
 {
     public class SwarContext : DbContext
     {
-        public SwarContext(DbContextOptions options) : base(options) { }
+        public SwarContext(DbContextOptions options) : base(options)
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
