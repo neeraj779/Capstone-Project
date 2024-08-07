@@ -82,7 +82,7 @@ namespace SongService.API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("https://neeraj779.github.io", "http://127.0.0.1:3000")
+                    builder => builder.WithOrigins("https://neeraj779.github.io", "http://127.0.0.1:3000", "http://localhost:5173")
                                       .WithMethods("GET")
                                       .WithHeaders("Authorization", "Content-Type"));
             });
