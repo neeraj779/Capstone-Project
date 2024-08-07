@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Swar.API.Contexts;
 
 #nullable disable
@@ -12,7 +12,7 @@ using Swar.API.Contexts;
 namespace Swar.API.Migrations
 {
     [DbContext(typeof(SwarContext))]
-    [Migration("20240729153442_initial")]
+    [Migration("20240807074837_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,27 +20,27 @@ namespace Swar.API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.32")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Swar.API.Models.DBModels.LikedSong", b =>
                 {
                     b.Property<int>("LikeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeId"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("LikeId"));
 
                     b.Property<DateTime>("LikedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SongId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("LikeId");
 
@@ -54,19 +54,19 @@ namespace Swar.API.Migrations
                 {
                     b.Property<int>("HistoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoryId"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("HistoryId"));
 
                     b.Property<DateTime>("PlayedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SongId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("HistoryId");
 
@@ -79,26 +79,26 @@ namespace Swar.API.Migrations
                 {
                     b.Property<int>("PlaylistId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaylistId"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PlaylistId"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsPrivate")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PlaylistName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("PlaylistId");
 
@@ -110,10 +110,10 @@ namespace Swar.API.Migrations
             modelBuilder.Entity("Swar.API.Models.DBModels.PlaylistSong", b =>
                 {
                     b.Property<int>("PlaylistId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("SongId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("PlaylistId", "SongId");
 
@@ -124,38 +124,38 @@ namespace Swar.API.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("HashedPassword")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHashKey")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserStatus")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("UserId");
 
@@ -170,57 +170,13 @@ namespace Swar.API.Migrations
                             UserId = 100,
                             Email = "admin@gmail.com",
                             Gender = "Male",
-                            HashedPassword = new byte[] { 105, 206, 164, 53, 222, 226, 133, 230, 244, 70, 164, 31, 104, 161, 46, 242, 108, 10, 234, 51, 129, 76, 145, 233, 217, 157, 211, 80, 199, 191, 253, 166, 141, 123, 224, 50, 227, 253, 192, 207, 107, 108, 133, 207, 20, 150, 79, 108, 138, 47, 95, 20, 241, 214, 220, 59, 22, 154, 175, 178, 41, 102, 241, 240 },
+                            HashedPassword = new byte[] { 255, 237, 216, 186, 55, 119, 53, 21, 24, 101, 208, 93, 160, 173, 28, 92, 104, 86, 100, 161, 40, 15, 43, 19, 174, 177, 229, 107, 154, 235, 181, 193, 58, 49, 152, 115, 11, 135, 40, 131, 10, 205, 223, 195, 82, 155, 8, 121, 175, 146, 253, 243, 192, 129, 58, 171, 199, 171, 51, 124, 16, 198, 235, 155 },
                             Name = "admin",
-                            PasswordHashKey = new byte[] { 254, 131, 17, 21, 216, 237, 51, 76, 205, 207, 186, 238, 14, 173, 45, 28, 6, 169, 14, 51, 199, 32, 227, 66, 84, 179, 22, 78, 71, 81, 155, 207, 158, 136, 149, 224, 255, 125, 68, 189, 166, 29, 200, 213, 26, 64, 241, 17, 185, 137, 92, 135, 154, 194, 249, 131, 214, 7, 212, 93, 190, 181, 85, 112, 184, 169, 47, 47, 33, 194, 105, 18, 132, 16, 93, 214, 112, 134, 154, 205, 139, 172, 153, 5, 6, 243, 239, 236, 96, 217, 135, 94, 205, 135, 131, 145, 31, 190, 221, 74, 9, 209, 255, 139, 95, 114, 178, 141, 234, 246, 3, 72, 52, 112, 119, 227, 21, 76, 159, 122, 35, 53, 110, 25, 162, 225, 201, 63 },
-                            RegistrationDate = new DateTime(2024, 7, 29, 15, 34, 42, 215, DateTimeKind.Utc).AddTicks(6070),
+                            PasswordHashKey = new byte[] { 104, 13, 235, 222, 119, 45, 76, 170, 192, 255, 83, 106, 166, 215, 13, 249, 253, 190, 26, 142, 96, 178, 243, 128, 97, 239, 44, 197, 176, 178, 230, 83, 37, 86, 98, 168, 69, 7, 46, 41, 19, 115, 20, 25, 50, 50, 172, 254, 125, 159, 155, 119, 249, 177, 103, 18, 70, 58, 235, 202, 95, 169, 224, 63, 80, 178, 24, 2, 24, 107, 158, 132, 170, 224, 124, 58, 37, 152, 15, 168, 105, 186, 76, 224, 57, 86, 84, 122, 93, 38, 178, 110, 162, 201, 96, 170, 225, 237, 28, 85, 131, 59, 198, 141, 146, 94, 111, 116, 242, 85, 55, 246, 68, 5, 240, 191, 197, 107, 118, 227, 234, 105, 43, 237, 35, 116, 115, 99 },
+                            RegistrationDate = new DateTime(2024, 8, 7, 7, 48, 37, 231, DateTimeKind.Utc).AddTicks(2065),
                             Role = 0,
                             UserStatus = 0
                         });
-                });
-
-            modelBuilder.Entity("Swar.API.Models.DBModels.UserUploadedSong", b =>
-                {
-                    b.Property<int>("SongId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SongId"), 1L, 1);
-
-                    b.Property<string>("Album")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Artist")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SongName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SongId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserUploadedSongs");
                 });
 
             modelBuilder.Entity("Swar.API.Models.DBModels.LikedSong", b =>
@@ -267,17 +223,6 @@ namespace Swar.API.Migrations
                     b.Navigation("Playlist");
                 });
 
-            modelBuilder.Entity("Swar.API.Models.DBModels.UserUploadedSong", b =>
-                {
-                    b.HasOne("Swar.API.Models.DBModels.User", "User")
-                        .WithMany("UploadedSongs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Swar.API.Models.DBModels.Playlist", b =>
                 {
                     b.Navigation("PlaylistSongs");
@@ -290,8 +235,6 @@ namespace Swar.API.Migrations
                     b.Navigation("PlayHistories");
 
                     b.Navigation("Playlists");
-
-                    b.Navigation("UploadedSongs");
                 });
 #pragma warning restore 612, 618
         }
