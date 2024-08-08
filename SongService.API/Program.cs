@@ -82,7 +82,7 @@ namespace SongService.API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("https://neeraj779.github.io", "https://swar.vercel.app/login", "http://localhost:5173")
+                    builder => builder.WithOrigins("https://neeraj779.github.io", "https://swar.vercel.app", "http://localhost:5173")
                                       .WithMethods("GET")
                                       .WithHeaders("Authorization", "Content-Type"));
             });
