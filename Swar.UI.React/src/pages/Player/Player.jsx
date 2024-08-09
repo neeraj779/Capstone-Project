@@ -31,7 +31,7 @@ const SongPlayer = () => {
     currentTime,
     loop,
     setLoop,
-    playSong,
+    loadSong,
     togglePlayPause,
     seek,
   } = usePlayer();
@@ -58,7 +58,7 @@ const SongPlayer = () => {
       document.title = data.song;
       setSong(data);
       if (currentSong?.id !== data.id) {
-        playSong(data);
+        loadSong(data);
         await logSongHistory(id);
       }
     } catch (error) {
@@ -67,7 +67,7 @@ const SongPlayer = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate, playSong, currentSong]);
+  }, [id, navigate, loadSong, currentSong]);
 
   const logSongHistory = async (songId) => {
     try {

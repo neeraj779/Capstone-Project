@@ -12,7 +12,7 @@ export const PlayerProvider = ({ children }) => {
 
   const audioRef = useRef(new Audio());
 
-  const playSong = useCallback(
+  const loadSong = useCallback(
     async (song) => {
       if (currentSong?.id !== song.id) {
         audioRef.current.src = song.media_url;
@@ -36,6 +36,11 @@ export const PlayerProvider = ({ children }) => {
     setIsPlaying(false);
   }, []);
 
+  const playSong = useCallback(() => {
+    audioRef.current.play();
+    setIsPlaying(true);
+  }, []);
+
   const resetPlayer = useCallback(() => {
     pauseSong();
     audioRef.current.currentTime = 0;
@@ -44,8 +49,8 @@ export const PlayerProvider = ({ children }) => {
   }, [pauseSong]);
 
   const togglePlayPause = useCallback(() => {
-    isPlaying ? pauseSong() : playSong(currentSong);
-  }, [isPlaying, pauseSong, playSong, currentSong]);
+    isPlaying ? pauseSong() : playSong();
+  }, [isPlaying, pauseSong, playSong]);
 
   const seek = useCallback((time) => {
     audioRef.current.currentTime += time;
@@ -82,7 +87,7 @@ export const PlayerProvider = ({ children }) => {
     loop,
     resetPlayer,
     setLoop,
-    playSong,
+    loadSong,
     pauseSong,
     togglePlayPause,
     seek,
