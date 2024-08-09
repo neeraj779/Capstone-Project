@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
-import logo from "../assets/img/logo.png";
-import profile from "../assets/img/profile.svg";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -8,25 +7,30 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import useClickOutside from "../hooks/useClickOutside";
+import logo from "../assets/img/logo.png";
+import profile from "../assets/img/profile.svg";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  const handleMobileMenuToggle = () => setMobileMenuOpen((prev) => !prev);
-  const handleDropdownToggle = () => setDropdownOpen((prev) => !prev);
-  const handleCloseDropdown = () => setDropdownOpen(false);
-  const handleCloseMobileMenu = () => setMobileMenuOpen(false);
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const closeDropdown = () => setDropdownOpen(false);
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/login";
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    closeDropdown();
+    navigate("/login");
   };
 
-  useClickOutside(dropdownRef, handleCloseDropdown);
-  useClickOutside(mobileMenuRef, handleCloseMobileMenu);
+  useClickOutside(dropdownRef, closeDropdown);
+  useClickOutside(mobileMenuRef, closeMobileMenu);
 
   return (
     <nav className="bg-gray-800 py-4 shadow-md text-white">
@@ -34,7 +38,8 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           className="md:hidden text-white focus:outline-none"
-          onClick={handleMobileMenuToggle}
+          onClick={toggleMobileMenu}
+          ref={mobileMenuRef}
           aria-label="Toggle navigation menu"
         >
           <svg
@@ -55,19 +60,19 @@ const Navbar = () => {
 
         {/* Logo and Navigation Links */}
         <div className="flex items-center space-x-6">
-          <a href="/" className="flex items-center">
-            <img src={logo} alt="Swar Logo" className="h-10 w-auto" />
-          </a>
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Logo" className="h-10 w-auto" />
+          </Link>
           <div className="hidden md:flex space-x-6">
-            <a href="/" className="hover:text-gray-400 transition-colors">
+            <Link to="/" className="hover:text-gray-400 transition-colors">
               Home
-            </a>
-            <a
-              href="/library"
+            </Link>
+            <Link
+              to="/library"
               className="hover:text-gray-400 transition-colors"
             >
               Your Library
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -92,7 +97,7 @@ const Navbar = () => {
               className="text-gray-400 hover:text-gray-300 focus:outline-none"
               aria-haspopup="true"
               aria-expanded={isDropdownOpen}
-              onClick={handleDropdownToggle}
+              onClick={toggleDropdown}
             >
               <img
                 src={profile}
@@ -102,16 +107,17 @@ const Navbar = () => {
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-700 text-gray-300 rounded-md shadow-lg z-20">
-                <a
-                  href="/profile"
-                  className="block px-4 py-2 hover:bg-gray-600 transition-colors hover:rounded-md"
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 hover:bg-gray-600 transition-colors rounded-md"
+                  onClick={closeDropdown}
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   View Profile
-                </a>
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-600 transition-colors hover:rounded-md"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-600 transition-colors rounded-md"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                   Logout
@@ -124,14 +130,14 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-gray-800" ref={mobileMenuRef}>
+        <div className="md:hidden bg-gray-800">
           <div className="flex flex-col items-center py-4 space-y-4">
-            <a href="/" className="text-white hover:text-gray-400">
+            <Link to="/" className="text-white hover:text-gray-400">
               Home
-            </a>
-            <a href="/library" className="text-white hover:text-gray-400">
+            </Link>
+            <Link to="/library" className="text-white hover:text-gray-400">
               Your Library
-            </a>
+            </Link>
           </div>
         </div>
       )}
