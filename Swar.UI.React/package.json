@@ -17,7 +17,8 @@
     "react-dom": "^18.3.1",
     "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.26.0",
-    "sweetalert2": "^11.12.4"
+    "sweetalert2": "^11.12.4",
+    "vite-plugin-pwa": "^0.20.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
