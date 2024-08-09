@@ -4,6 +4,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import NavBar from "./components/Navbar";
 import Home from "./pages/Home";
 import Player from "./pages/Player/Player";
+import Search from "./pages/Search";
 import MiniPlayer from "./components/MiniPlayer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,6 +25,7 @@ const App = () => (
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/song/:id" element={<Player />} />
+              <Route path="/search" element={<Search />} />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

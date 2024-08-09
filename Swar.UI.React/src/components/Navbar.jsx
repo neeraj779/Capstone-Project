@@ -31,6 +31,12 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const query = e.target.searchInput.value;
+    navigate(`/search/${encodeURIComponent(query)}`);
+  };
+
   useClickOutside(dropdownRef, closeDropdown);
 
   return (
@@ -66,16 +72,19 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             {accessToken && (
               <div className="relative hidden md:block">
-                <input
-                  type="text"
-                  className="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 focus:outline-none"
-                  placeholder="Search songs, artists..."
-                />
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size="lg"
-                />
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="searchInput"
+                    className="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 focus:outline-none"
+                    placeholder="Search songs, artists..."
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size="lg"
+                  />
+                </form>
               </div>
             )}
 
