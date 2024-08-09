@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { create } from "../services/CRUDService";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/img/logo.png";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -82,45 +83,29 @@ const Login = () => {
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center"
+            disabled={loading}
           >
             {loading ? (
               <>
                 <span className="mr-3">Logging in...</span>
-                <svg
-                  className="w-5 h-5 text-white animate-spin"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V2a10 10 0 00-10 10h2z"
-                  ></path>
-                </svg>
+                <LoadingSpinner />
               </>
             ) : (
               <span>Login</span>
             )}
           </button>
           {error && (
-            <div className="mt-4 text-red-500 text-center">{error}</div>
+            <div className="mt-4 text-red-500 text-center" aria-live="polite">
+              {error}
+            </div>
           )}
         </form>
         <div className="mt-6 text-center">
           <p className="text-gray-400">
-            Don&apos;t have an account?
-            <a href="/register" className="text-blue-500 hover:underline">
+            Don&apos;t have an account?{" "}
+            <Link to="/register" className="text-blue-500 hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>
