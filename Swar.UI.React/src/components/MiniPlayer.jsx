@@ -17,7 +17,7 @@ const MiniPlayer = () => {
   if (!currentSong || isSongPlayerPage) return null;
 
   return (
-    <div className="fixed bottom-0 left-2 right-2 bg-gradient-to-t from-gray-900 to-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg">
+    <div className="fixed bottom-14 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg">
       <div
         className="flex items-center space-x-2 flex-grow cursor-pointer"
         onClick={handleCardClick}
