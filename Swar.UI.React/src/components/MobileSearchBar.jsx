@@ -8,7 +8,7 @@ const MobileSearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const query = e.target.searchInput.value;
-    navigate(`/search/${encodeURIComponent(query)}`);
+    navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
   return (
