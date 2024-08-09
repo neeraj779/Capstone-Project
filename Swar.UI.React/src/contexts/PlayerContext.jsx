@@ -48,7 +48,7 @@ export const PlayerProvider = ({ children }) => {
   }, [isPlaying, pauseSong, playSong, currentSong]);
 
   const seek = useCallback((time) => {
-    audioRef.current.currentTime = time;
+    audioRef.current.currentTime += time;
     setCurrentTime(time);
   }, []);
 
