@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { create } from "../services/CRUDService";
 import useAuth from "../hooks/useAuth";
@@ -10,14 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { accessToken, updateAccessToken, updateRefreshToken } = useAuth();
+  const { updateAccessToken, updateRefreshToken } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/");
-    }
-  }, [accessToken, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
