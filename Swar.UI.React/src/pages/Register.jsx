@@ -85,7 +85,7 @@ const Register = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+    <div className="min-h-screen-minus-navbar flex items-center justify-center bg-gray-900 px-4">
       <div className="bg-gray-800 bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-md mt-8 mb-8 md:mt-12 md:mb-12">
         <div className="text-center mb-8">
           <img src={logo} alt="Swar Logo" className="h-12 mx-auto mb-4" />
