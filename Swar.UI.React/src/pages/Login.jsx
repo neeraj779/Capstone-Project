@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { create } from "../services/CRUDService";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/img/logo.png";
@@ -12,6 +12,9 @@ const Login = () => {
   const [error, setError] = useState("");
   const { updateAccessToken, updateRefreshToken } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from =
+    location.state?.from?.pathname + location.state?.from?.search || "/";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,7 +25,7 @@ const Login = () => {
       const response = await create("users/login", { email, password });
       updateAccessToken(response.accessToken);
       updateRefreshToken(response.refreshToken);
-      navigate("../", { replace: true });
+      navigate(from, { replace: true });
     } catch (error) {
       setError(error.message || "An error occurred. Please try again.");
     } finally {
