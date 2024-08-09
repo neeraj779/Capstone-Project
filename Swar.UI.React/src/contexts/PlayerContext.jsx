@@ -1,8 +1,8 @@
 import { createContext, useState, useRef, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 
 const PlayerContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 export const PlayerProvider = ({ children }) => {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -12,34 +12,61 @@ export const PlayerProvider = ({ children }) => {
 
   const audioRef = useRef(new Audio());
 
-  const loadSong = useCallback(
-    async (song) => {
-      if (currentSong?.id !== song.id) {
-        audioRef.current.src = song.media_url;
-        setCurrentSong(song);
-        await new Promise(
-          (resolve) => (audioRef.current.oncanplaythrough = resolve)
-        );
-      }
-      try {
-        await audioRef.current.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [currentSong]
-  );
-
   const pauseSong = useCallback(() => {
     audioRef.current.pause();
     setIsPlaying(false);
   }, []);
 
   const playSong = useCallback(() => {
-    audioRef.current.play();
-    setIsPlaying(true);
+    audioRef.current
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(console.error);
   }, []);
+
+  const seek = useCallback((time) => {
+    audioRef.current.currentTime += time;
+    setCurrentTime(audioRef.current.currentTime);
+  }, []);
+
+  const updateMediaSession = useCallback(
+    (data) => {
+      if (navigator.mediaSession) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: data.song,
+          artist: data.singers || data.primary_artists || "Unknown Artist",
+          artwork: [{ src: data.image, sizes: "500x500", type: "image/png" }],
+        });
+
+        navigator.mediaSession.setActionHandler("play", playSong);
+        navigator.mediaSession.setActionHandler("pause", pauseSong);
+        navigator.mediaSession.setActionHandler("seekbackward", () =>
+          seek(-10)
+        );
+        navigator.mediaSession.setActionHandler("seekforward", () => seek(10));
+        navigator.mediaSession.setActionHandler("previoustrack", () =>
+          seek(-10)
+        );
+        navigator.mediaSession.setActionHandler("nexttrack", () => seek(10));
+      }
+    },
+    [playSong, pauseSong, seek]
+  );
+
+  const loadSong = useCallback(
+    async (song) => {
+      if (currentSong?.id !== song.id) {
+        audioRef.current.src = song.media_url;
+        setCurrentSong(song);
+        await new Promise((resolve) => {
+          audioRef.current.oncanplaythrough = resolve;
+        });
+        updateMediaSession(song);
+      }
+      playSong();
+    },
+    [currentSong, playSong, updateMediaSession]
+  );
 
   const resetPlayer = useCallback(() => {
     pauseSong();
@@ -51,11 +78,6 @@ export const PlayerProvider = ({ children }) => {
   const togglePlayPause = useCallback(() => {
     isPlaying ? pauseSong() : playSong();
   }, [isPlaying, pauseSong, playSong]);
-
-  const seek = useCallback((time) => {
-    audioRef.current.currentTime += time;
-    setCurrentTime(time);
-  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -96,6 +118,10 @@ export const PlayerProvider = ({ children }) => {
   return (
     <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>
   );
+};
+
+PlayerProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default PlayerContext;
