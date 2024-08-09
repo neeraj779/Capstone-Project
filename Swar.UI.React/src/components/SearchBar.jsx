@@ -12,7 +12,7 @@ const MobileSearchBar = () => {
   };
 
   return (
-    <div className="md:hidden relative max-w-full mx-6 mb-6">
+    <>
       <form className="relative" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -26,7 +26,7 @@ const MobileSearchBar = () => {
           size="lg"
         />
       </form>
-    </div>
+    </>
   );
 };
 

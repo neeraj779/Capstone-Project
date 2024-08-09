@@ -3,7 +3,7 @@ import useSearchData from "../hooks/useSearchData";
 import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import SongCard from "../components/SongCard";
 import ArtistButton from "../components/ArtistButton";
-import MobileSearchBar from "../components/MobileSearchBar";
+import SearchBar from "../components/SearchBar";
 import SongSkeleton from "../components/SongSkeleton";
 import ArtistSkeleton from "../components/ArtistSkeleton";
 import ErrorMessage from "../components/Error/ErrorMessage";
@@ -42,7 +42,9 @@ const Search = () => {
   return (
     <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-6 md:px-20 py-10">
-        <MobileSearchBar />
+        <div className="block md:hidden mb-6">
+          <SearchBar />
+        </div>
 
         <div id="content">
           {error ? (

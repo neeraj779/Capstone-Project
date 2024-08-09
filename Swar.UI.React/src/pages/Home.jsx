@@ -3,7 +3,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import SongCard from "../components/SongCard";
 import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
-import MobileSearchBar from "../components/MobileSearchBar";
+import SearchBar from "../components/SearchBar";
 import SongSkeleton from "../components/SongSkeleton";
 
 const categoryInfo = {
@@ -53,7 +53,9 @@ const Home = () => {
   return (
     <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-6 md:px-20 py-10">
-        <MobileSearchBar />
+        <div className="block md:hidden mb-6">
+          <SearchBar />
+        </div>
 
         <div id="content">
           {Object.keys(categoryInfo).map((category) => (

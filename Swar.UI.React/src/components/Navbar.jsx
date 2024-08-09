@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faSignOutAlt,
-  faSearch,
   faHome,
   faMusic,
 } from "@fortawesome/free-solid-svg-icons";
 import useClickOutside from "../hooks/useClickOutside";
 import logo from "../assets/img/logo.png";
 import profile from "../assets/img/profile.svg";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const { accessToken, resetTokens } = useAuth();
@@ -29,12 +29,6 @@ const Navbar = () => {
     resetTokens();
     closeDropdown();
     navigate("/login");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const query = e.target.searchInput.value;
-    navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
   useClickOutside(dropdownRef, closeDropdown);
@@ -71,20 +65,8 @@ const Navbar = () => {
           {/* Search and Profile */}
           <div className="flex items-center space-x-4">
             {accessToken && (
-              <div className="relative hidden md:block">
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="searchInput"
-                    className="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 focus:outline-none"
-                    placeholder="Search songs, artists..."
-                  />
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size="lg"
-                  />
-                </form>
+              <div className="hidden md:block">
+                <SearchBar />
               </div>
             )}
 

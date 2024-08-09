@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { fetchAll, create } from "../../services/CRUDService";
-import MobileSearchBar from "../../components/MobileSearchBar";
+import SearchBar from "../../components/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlus,
@@ -109,7 +109,9 @@ const SongPlayer = () => {
   if (!song) {
     return (
       <div className="mb-3 mt-5">
-        <MobileSearchBar />
+        <div className="block md:hidden mb-6">
+          <SearchBar />
+        </div>
         <div id="skeleton-loader" className="grid gap-6 px-6">
           <div className="grid text-center place-content-center gap-3">
             <div className="h-52 w-52 bg-gray-700 rounded-full mx-auto animate-pulse"></div>
@@ -145,7 +147,10 @@ const SongPlayer = () => {
 
   return (
     <div className="mb-3 mt-5">
-      <MobileSearchBar />
+      <div className="block md:hidden mb-6">
+        <SearchBar />
+      </div>
+
       <div id="content">
         <div className="grid gap-6 px-6">
           <div className="grid text-center place-content-center gap-3">
