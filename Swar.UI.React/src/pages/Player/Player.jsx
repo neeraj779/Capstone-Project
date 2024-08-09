@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlus,
@@ -15,6 +15,7 @@ import {
 
 import { fetchAll, create } from "../../services/CRUDService";
 import SearchBar from "../../components/SearchBar";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import PlayerSkeleton from "../../components/PlayerSkeleton";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import usePlayer from "../../hooks/usePlayer";
@@ -38,6 +39,7 @@ const SongPlayer = () => {
   const [song, setSong] = useState(null);
   const [sliderValue, setSliderValue] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const fetchSong = useCallback(async () => {
     setLoading(true);
@@ -101,21 +103,18 @@ const SongPlayer = () => {
   const toggleLoop = () => setLoop((prev) => !prev);
 
   const downloadSong = async () => {
-    try {
-      const response = await fetch(currentSong.media_url);
-      if (!response.ok) throw new Error("Failed to download song");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${song.song}.mp3`;
-      a.click();
-      URL.revokeObjectURL(url);
-      Swal.fire("Success", "Song downloaded successfully", "success");
-    } catch (error) {
-      console.error("Download failed:", error);
-      Swal.fire("Error", "Failed to download song", "error");
-    }
+    setIsDownloading(true);
+    const response = await fetch(currentSong.media_url);
+    if (!response.ok) toast.error("Unable to download");
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${song.song}.mp3`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Downloaded successfully");
+    setIsDownloading(false);
   };
 
   if (loading) return <PlayerSkeleton />;
@@ -196,13 +195,18 @@ const SongPlayer = () => {
                 <FontAwesomeIcon icon={faRotateLeft} />
               </button>
             </div>
-            <button
-              id="download-btn"
-              onClick={downloadSong}
-              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              <FontAwesomeIcon icon={faDownload} size="lg" />
-            </button>
+            {isDownloading ? (
+              <div className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <button
+                onClick={downloadSong}
+                className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                <FontAwesomeIcon icon={faDownload} size="lg" />
+              </button>
+            )}
           </div>
           <div id="lyrics-container" className="lyrics-container mb-16">
             <h2 className="text-xl font-semibold mb-2">Lyrics</h2>

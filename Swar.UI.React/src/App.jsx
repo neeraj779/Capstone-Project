@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { Toaster } from "react-hot-toast";
 
 import NavBar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -16,8 +17,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 const App = () => (
   <SkeletonTheme baseColor="#6B7280" highlightColor="#4B5563">
     <BrowserRouter>
-      <PlayerProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <PlayerProvider>
           <NavBar />
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -30,8 +31,9 @@ const App = () => (
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
           <MiniPlayer />
-        </AuthProvider>
-      </PlayerProvider>
+          <Toaster />
+        </PlayerProvider>
+      </AuthProvider>
     </BrowserRouter>
   </SkeletonTheme>
 );
