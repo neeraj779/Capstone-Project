@@ -22,7 +22,7 @@ const Login = () => {
       const response = await create("users/login", { email, password });
       updateAccessToken(response.accessToken);
       updateRefreshToken(response.refreshToken);
-      navigate("/");
+      navigate("../", { replace: true });
     } catch (error) {
       setError(error.message || "An error occurred. Please try again.");
     } finally {
