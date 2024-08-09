@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import SongCard from "./SongCard";
+import SongCard from "../components/SongCard";
 import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
-import MobileSearchBar from "./MobileSearchBar";
-import SongSkeleton from "./SongSkeleton";
+import MobileSearchBar from "../components/MobileSearchBar";
+import SongSkeleton from "../components/SongSkeleton";
 
 const categoryInfo = {
   history: {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { fetchAll, create } from "../../services/CRUDService";
-import MobileSearchBar from "../MobileSearchBar";
+import MobileSearchBar from "../../components/MobileSearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlus,
@@ -14,7 +14,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import usePlayer from "../../hooks/usePlayer";
-import "./songplayer.css";
+import "./player.css";
 
 const SongPlayer = () => {
   const { id } = useParams();

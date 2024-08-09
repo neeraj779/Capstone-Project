@@ -2,10 +2,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
 
 import NavBar from "./components/Navbar";
-import Home from "./components/Home";
-import SongPlayer from "./components/SongPlayer/SongPlayer";
+import Home from "./pages/Home";
+import Player from "./pages/Player/Player";
 import MiniPlayer from "./components/MiniPlayer";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -21,7 +21,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              <Route path="/song/:id" element={<SongPlayer />} />
+              <Route path="/song/:id" element={<Player />} />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
