@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Player from "./pages/Player/Player";
 import MiniPlayer from "./components/MiniPlayer";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -19,6 +20,7 @@ const App = () => (
           <NavBar />
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/song/:id" element={<Player />} />
