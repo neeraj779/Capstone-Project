@@ -6,7 +6,7 @@ import ArtistButton from "../components/ArtistButton";
 import MobileSearchBar from "../components/MobileSearchBar";
 import SongSkeleton from "../components/SongSkeleton";
 import ArtistSkeleton from "../components/ArtistSkeleton";
-import ErrorMessage from "../components/ErrorMessage";
+import ErrorMessage from "../components/Error/ErrorMessage";
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -46,7 +46,7 @@ const Search = () => {
 
         <div id="content">
           {error ? (
-            <ErrorMessage message={error.message} />
+            <ErrorMessage statusCode={error.status} />
           ) : (
             <>
               {renderSection(

@@ -8,7 +8,10 @@ const useSearchData = (query) => {
   const [error, setError] = useState(null);
 
   const fetchSearchData = useCallback(async () => {
-    if (!query) return;
+    if (!query) {
+      setError({ message: "No search query provided.", status: 404 });
+      return;
+    }
 
     setLoading(true);
 
