@@ -17,12 +17,10 @@ export const PlayerProvider = ({ children }) => {
       if (currentSong?.id !== song.id) {
         audioRef.current.src = song.media_url;
         setCurrentSong(song);
-
-        await new Promise((resolve) => {
-          audioRef.current.oncanplaythrough = resolve;
-        });
+        await new Promise(
+          (resolve) => (audioRef.current.oncanplaythrough = resolve)
+        );
       }
-
       try {
         await audioRef.current.play();
         setIsPlaying(true);
@@ -37,6 +35,13 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current.pause();
     setIsPlaying(false);
   }, []);
+
+  const resetPlayer = useCallback(() => {
+    pauseSong();
+    audioRef.current.currentTime = 0;
+    setCurrentSong(null);
+    setCurrentTime(0);
+  }, [pauseSong]);
 
   const togglePlayPause = useCallback(() => {
     isPlaying ? pauseSong() : playSong(currentSong);
@@ -75,6 +80,7 @@ export const PlayerProvider = ({ children }) => {
     duration,
     currentTime,
     loop,
+    resetPlayer,
     setLoop,
     playSong,
     pauseSong,

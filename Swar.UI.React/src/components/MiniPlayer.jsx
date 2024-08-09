@@ -1,9 +1,11 @@
 import { useNavigate, useMatch } from "react-router-dom";
 import usePlayer from "../hooks/usePlayer";
+import useAuth from "../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 
 const MiniPlayer = () => {
+  const { accessToken } = useAuth();
   const { currentSong, isPlaying, togglePlayPause } = usePlayer();
   const isSongPlayerPage = useMatch("/song/:id");
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ const MiniPlayer = () => {
     }
   };
 
-  if (!currentSong || isSongPlayerPage) return null;
+  if (!accessToken || !currentSong || isSongPlayerPage) return null;
 
   return (
     <div className="fixed bottom-14 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg">

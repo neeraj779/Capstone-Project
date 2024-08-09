@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import usePlayer from "../hooks/usePlayer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -15,6 +16,7 @@ import profile from "../assets/img/profile.svg";
 
 const Navbar = () => {
   const { accessToken, resetTokens } = useAuth();
+  const { resetPlayer } = usePlayer();
   const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -23,6 +25,7 @@ const Navbar = () => {
   const closeDropdown = () => setDropdownOpen(false);
 
   const handleLogout = () => {
+    resetPlayer();
     resetTokens();
     closeDropdown();
     navigate("/login");
