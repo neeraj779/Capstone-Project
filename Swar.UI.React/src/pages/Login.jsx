@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
+    <div className="my-12 flex items-center justify-center bg-gray-900 px-4">
       <div className="bg-gray-800 bg-opacity-90 p-10 rounded-lg shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
           <img src={logo} alt="Swar Logo" className="h-12 mx-auto mb-4" />
