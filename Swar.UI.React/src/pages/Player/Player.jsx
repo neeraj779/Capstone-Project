@@ -2,17 +2,16 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import toast from "react-hot-toast";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCirclePlus,
-  faRepeat,
-  faRotateRight,
-  faPlay,
-  faPause,
-  faRotateLeft,
-  faDownload,
-} from "@fortawesome/free-solid-svg-icons";
-import {Spinner} from "@nextui-org/react";
+  Download,
+  Pause,
+  Play,
+  RedoDot,
+  UndoDot,
+  Repeat,
+  CirclePlus,
+} from "lucide-react";
+import { Spinner } from "@nextui-org/react";
 
 import useApiClient from "../../hooks/useApiClient";
 import SearchBar from "../../components/SearchBar";
@@ -141,7 +140,7 @@ const SongPlayer = () => {
               id="add-to-playlist-btn"
               className="text-gray-400 hover:text-blue-500 focus:outline-none"
             >
-              <FontAwesomeIcon icon={faCirclePlus} size="2x" />
+              <CirclePlus />
             </button>
           </div>
           <input
@@ -166,7 +165,7 @@ const SongPlayer = () => {
                 loop ? "bg-blue-700" : "bg-gray-700"
               }`}
             >
-              <FontAwesomeIcon icon={faRepeat} />
+              <Repeat />
             </button>
             <div className="flex items-center justify-center gap-2">
               <button
@@ -174,21 +173,21 @@ const SongPlayer = () => {
                 onClick={() => seek(10)}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <FontAwesomeIcon icon={faRotateRight} />
+                <UndoDot />
               </button>
               <button
                 id="play-pause-btn"
                 onClick={togglePlayPause}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                {isPlaying ? <Pause /> : <Play />}
               </button>
               <button
                 id="backward-btn"
                 onClick={() => seek(-10)}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <FontAwesomeIcon icon={faRotateLeft} />
+                <RedoDot />
               </button>
             </div>
             {isDownloading ? (
@@ -200,7 +199,7 @@ const SongPlayer = () => {
                 onClick={downloadSong}
                 className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <FontAwesomeIcon icon={faDownload} size="lg" />
+                <Download />
               </button>
             )}
           </div>
