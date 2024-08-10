@@ -1,15 +1,14 @@
-import { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import {
+  DropdownItem,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  Avatar,
+} from "@nextui-org/react";
 import useAuth from "../hooks/useAuth";
 import usePlayer from "../hooks/usePlayer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUser,
-  faSignOutAlt,
-  faHome,
-  faMusic,
-} from "@fortawesome/free-solid-svg-icons";
-import useClickOutside from "../hooks/useClickOutside";
+import { House, Library, User } from "lucide-react";
 import logo from "../assets/img/logo.png";
 import profile from "../assets/img/profile.svg";
 import SearchBar from "./SearchBar";
@@ -17,21 +16,14 @@ import SearchBar from "./SearchBar";
 const Navbar = () => {
   const { accessToken, resetTokens } = useAuth();
   const { resetPlayer } = usePlayer();
+  const userEmail = localStorage.getItem("email") || "User";
   const navigate = useNavigate();
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
-  const closeDropdown = () => setDropdownOpen(false);
 
   const handleLogout = () => {
     resetPlayer();
     resetTokens();
-    closeDropdown();
     navigate("/login");
   };
-
-  useClickOutside(dropdownRef, closeDropdown);
 
   return (
     <>
@@ -52,7 +44,7 @@ const Navbar = () => {
                     Home
                   </Link>
                   <Link
-                    to="/library"
+                    to="/"
                     className="hover:text-gray-400 transition-colors"
                   >
                     Your Library
@@ -72,39 +64,37 @@ const Navbar = () => {
 
             {/* Profile Dropdown */}
             {accessToken && (
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  className="text-gray-400 hover:text-gray-300 focus:outline-none"
-                  aria-haspopup="true"
-                  aria-expanded={isDropdownOpen}
-                  onClick={toggleDropdown}
-                >
-                  <img
+              <Dropdown placement="bottom-end" className="bg-gray-800">
+                <DropdownTrigger>
+                  <Avatar
+                    as="button"
+                    className="transition-transform bg-gray-800"
+                    size="sm"
                     src={profile}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
                   />
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-700 text-gray-300 rounded-md shadow-lg z-20">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 hover:bg-gray-600 transition-colors rounded-md"
-                      onClick={closeDropdown}
-                    >
-                      <FontAwesomeIcon icon={faUser} className="mr-2" />
-                      View Profile
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-600 transition-colors rounded-md"
-                    >
-                      <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                  <DropdownItem
+                    key="user"
+                    className="h-14 gap-2"
+                    textValue="profile"
+                  >
+                    <p className="font-semibold">Signed in as</p>
+                    <p className="font-semibold">{userEmail}</p>
+                  </DropdownItem>
+                  <DropdownItem key="profile">Profile</DropdownItem>
+                  <DropdownItem key="change-password">
+                    Change Password
+                  </DropdownItem>
+                  <DropdownItem
+                    key="logout"
+                    color="danger"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             )}
           </div>
         </div>
@@ -115,20 +105,15 @@ const Navbar = () => {
         <div className="fixed bottom-0 inset-x-0 bg-gray-800 text-white md:hidden z-30">
           <div className="flex justify-around items-center py-2">
             <Link to="/" className="flex flex-col items-center">
-              <FontAwesomeIcon icon={faHome} size="lg" />
+              <House />
               <span className="text-xs">Home</span>
             </Link>
-            <Link to="/library" className="flex flex-col items-center">
-              <FontAwesomeIcon icon={faMusic} size="lg" />
+            <Link to="/" className="flex flex-col items-center">
+              <Library />
               <span className="text-xs">Library</span>
             </Link>
-            <button
-              onClick={toggleDropdown}
-              className="flex flex-col items-center"
-              aria-haspopup="true"
-              aria-expanded={isDropdownOpen}
-            >
-              <FontAwesomeIcon icon={faUser} size="lg" />
+            <button className="flex flex-col items-center" aria-haspopup="true">
+              <User />
               <span className="text-xs">Profile</span>
             </button>
           </div>
