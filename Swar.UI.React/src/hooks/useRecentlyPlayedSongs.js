@@ -1,55 +1,58 @@
-import { useState, useEffect } from "react";
-import { fetchAll } from "../services/CRUDService";
+import { useState, useEffect, useCallback } from "react";
+import useApiClient from "../hooks/useApiClient";
+import toast from "react-hot-toast";
 
 const useRecentlyPlayedSongs = () => {
+  const swarApiClient = useApiClient();
+  const songApiClient = useApiClient(true);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchRecentlyPlayedSongId = async () => {
+  const fetchSong = useCallback(
+    async (songId) => {
       try {
-        const { songs } = await fetchAll(
-          `PlayHistory/GetSongHistoryByUser?=true`,
-          false
+        const cache = await caches.open("song-cache");
+        const cachedResponse = await cache.match(songId);
+        if (cachedResponse) {
+          return await cachedResponse.json();
+        }
+
+        const { data: songData } = await songApiClient(
+          `SongsData/GetSongById?id=${songId}&lyrics=false`
         );
-        if (!songs || songs.length === 0) return [];
+        await cache.put(songId, new Response(JSON.stringify(songData)));
+        return songData;
+      } catch {
+        return null;
+      }
+    },
+    [songApiClient]
+  );
+
+  useEffect(() => {
+    const fetchRecentlyPlayedSongs = async () => {
+      try {
+        const { data } = await swarApiClient.get(
+          "PlayHistory/GetSongHistoryByUser?=true"
+        );
+
+        const songs = data?.songs || [];
+        if (songs.length === 0) return;
 
         const songsToFetch = songs.slice(0, 10);
         const fetchPromises = songsToFetch.map((songId) => fetchSong(songId));
-        const data = await Promise.all(fetchPromises);
-        setRecentlyPlayed(data.filter((songData) => songData != null));
-      } catch (error) {
-        console.error("Error fetching recently played songs:", error);
+        const result = await Promise.all(fetchPromises);
+        setRecentlyPlayed(result.filter(Boolean));
+      } catch {
+        toast.error("Failed to fetch recently played songs");
         setRecentlyPlayed([]);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchSong = async (songId) => {
-      const SONG_CACHE_NAME = "songCache";
-
-      try {
-        const cache = await caches.open(SONG_CACHE_NAME);
-        const cachedResponse = await cache.match(songId);
-        if (cachedResponse) {
-          return await cachedResponse.json();
-        }
-
-        const songData = await fetchAll(
-          `SongsData/GetSongById?id=${songId}&lyrics=false`,
-          true
-        );
-        await cache.put(songId, new Response(JSON.stringify(songData)));
-        return songData;
-      } catch (error) {
-        console.error("Error fetching song:", error);
-        return null;
-      }
-    };
-
-    fetchRecentlyPlayedSongId();
-  }, []);
+    fetchRecentlyPlayedSongs();
+  }, [swarApiClient, fetchSong]);
 
   return { recentlyPlayed, loading };
 };

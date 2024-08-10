@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
-import { fetchAll } from "../services/CRUDService";
+import useApiClient from "../hooks/useApiClient";
 
 const useSearchData = (query) => {
   const [searchResults, setSearchResults] = useState([]);
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const songApiClient = useApiClient(true);
 
   const fetchSearchData = useCallback(async () => {
     if (!query) {
@@ -16,9 +17,8 @@ const useSearchData = (query) => {
     setLoading(true);
 
     try {
-      const searchData = await fetchAll(
-        `SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`,
-        true
+      const { data: searchData } = await songApiClient.get(
+        `SongsData/GetSongsByQuery?query=${query}&lyrics=false&songData=true`
       );
 
       const artistSet = new Set(
@@ -27,18 +27,17 @@ const useSearchData = (query) => {
       setArtists(Array.from(artistSet));
       setSearchResults(searchData);
     } catch (ex) {
-      console.error("Error fetching search data:", ex);
       setError({
         message:
-          ex?.status === 404
+          ex.response?.status === 404
             ? "No results found, try a different search term."
             : "Oops! Something went wrong.",
-        status: ex?.status || 500,
+        status: ex.response?.status || 500,
       });
     } finally {
       setLoading(false);
     }
-  }, [query]);
+  }, [query, songApiClient]);
 
   useEffect(() => {
     fetchSearchData();
