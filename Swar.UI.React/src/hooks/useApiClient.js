@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import useAuth from "./useAuth";
 import apiClient from "../api/axios";
 import useRefreshToken from "./useRefreshToken";
+import toast from "react-hot-toast";
 
 const useApiClient = (isSongService = false) => {
   const { accessToken, resetTokens } = useAuth();
@@ -33,6 +34,7 @@ const useApiClient = (isSongService = false) => {
             return client(originalRequest);
           } catch (refreshError) {
             resetTokens();
+            toast.error("Session expired. Please log in again");
             return Promise.reject(refreshError);
           }
         }

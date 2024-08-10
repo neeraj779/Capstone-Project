@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import useApiClient from "../hooks/useApiClient";
-import toast from "react-hot-toast";
 
 const useRecentlyPlayedSongs = () => {
   const swarApiClient = useApiClient();
@@ -44,7 +43,6 @@ const useRecentlyPlayedSongs = () => {
         const result = await Promise.all(fetchPromises);
         setRecentlyPlayed(result.filter(Boolean));
       } catch {
-        toast.error("Failed to fetch recently played songs");
         setRecentlyPlayed([]);
       } finally {
         setLoading(false);
