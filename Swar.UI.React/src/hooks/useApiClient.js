@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useAuth from "./useAuth";
 import apiClient from "../api/axios";
 import useRefreshToken from "./useRefreshToken";
 
-const useApiClient = () => {
+const useApiClient = (isSongService = false) => {
   const { accessToken, resetTokens } = useAuth();
   const refresh = useRefreshToken();
 
+  const client = useMemo(() => apiClient(isSongService), [isSongService]);
+
   useEffect(() => {
-    const requestInterceptor = apiClient.interceptors.request.use(
+    const requestInterceptor = client.interceptors.request.use(
       (config) => {
         if (!config.headers.Authorization && accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -18,7 +20,7 @@ const useApiClient = () => {
       (error) => Promise.reject(error)
     );
 
-    const responseInterceptor = apiClient.interceptors.response.use(
+    const responseInterceptor = client.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
@@ -28,7 +30,7 @@ const useApiClient = () => {
             const newAccessToken = await refresh();
             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-            return apiClient(originalRequest);
+            return client(originalRequest);
           } catch (refreshError) {
             resetTokens();
             return Promise.reject(refreshError);
@@ -39,12 +41,12 @@ const useApiClient = () => {
     );
 
     return () => {
-      apiClient.interceptors.request.eject(requestInterceptor);
-      apiClient.interceptors.response.eject(responseInterceptor);
+      client.interceptors.request.eject(requestInterceptor);
+      client.interceptors.response.eject(responseInterceptor);
     };
-  }, [accessToken, refresh, resetTokens]);
+  }, [accessToken, refresh, resetTokens, client]);
 
-  return apiClient;
+  return client;
 };
 
 export default useApiClient;
