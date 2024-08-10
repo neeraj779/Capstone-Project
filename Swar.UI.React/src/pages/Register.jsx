@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Spinner } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import useApiClient from "../hooks/useApiClient";
 import logo from "../assets/img/logo.png";
 
@@ -137,20 +137,14 @@ const Register = () => {
               </div>
             )
           )}
-          <button
+          <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center justify-center"
-            disabled={status.loading}
+            color="primary"
+            className="w-full font-bold"
+            isLoading={status.loading}
           >
-            {status.loading ? (
-              <>
-                <span className="mr-3">Registering...</span>
-                <Spinner size="sm" color="default" />
-              </>
-            ) : (
-              <span>Register</span>
-            )}
-          </button>
+            {status.loading ? "Registering..." : "Register"}
+          </Button>
           {status.error && (
             <div className="mt-4 text-red-500 text-center" aria-live="polite">
               {status.error}
