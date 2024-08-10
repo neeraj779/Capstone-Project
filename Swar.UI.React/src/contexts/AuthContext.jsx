@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }) => {
     updateLocalStorage("refreshToken", refreshToken);
   }, [refreshToken, updateLocalStorage]);
 
-  const resetTokens = useCallback(() => {
+  const resetTokens = () => {
     setAccessToken(null);
     setRefreshToken(null);
-  }, []);
+  };
 
   const contextValue = useMemo(
     () => ({
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       updateRefreshToken: setRefreshToken,
       resetTokens,
     }),
-    [accessToken, refreshToken, resetTokens]
+    [accessToken, refreshToken]
   );
 
   return (
