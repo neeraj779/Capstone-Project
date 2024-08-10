@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { create } from "../services/CRUDService";
+import useApiClient from "../hooks/useApiClient";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/img/logo.png";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const Login = () => {
+  const apiClient = useApiClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,12 +23,14 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await create("users/login", { email, password });
-      updateAccessToken(response.accessToken);
-      updateRefreshToken(response.refreshToken);
+      const response = await apiClient.post("users/login", { email, password });
+      updateAccessToken(response.data.accessToken);
+      updateRefreshToken(response.data.refreshToken);
       navigate(from, { replace: true });
     } catch (error) {
-      setError(error.message || "An error occurred. Please try again.");
+      setError(
+        error.response?.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }

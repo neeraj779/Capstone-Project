@@ -13,7 +13,7 @@ import {
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { fetchAll, create } from "../../services/CRUDService";
+import useApiClient from "../../hooks/useApiClient";
 import SearchBar from "../../components/SearchBar";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import PlayerSkeleton from "../../components/PlayerSkeleton";
@@ -22,6 +22,9 @@ import usePlayer from "../../hooks/usePlayer";
 import "./player.css";
 
 const SongPlayer = () => {
+  const swarApiClient = useApiClient();
+  const songApiClient = useApiClient(true);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const {
@@ -51,15 +54,14 @@ const SongPlayer = () => {
     }
 
     try {
-      const data = await fetchAll(
-        `SongsData/GetSongById?id=${id}&lyrics=true`,
-        true
+      const { data } = await songApiClient.get(
+        `SongsData/GetSongById?id=${id}&lyrics=true`
       );
       document.title = data.song;
       setSong(data);
       if (currentSong?.id !== data.id) {
         loadSong(data);
-        await logSongHistory(id);
+        await swarApiClient.post("PlayHistory/LogSongHistory", id);
       }
     } catch (error) {
       console.error(error);
@@ -67,15 +69,7 @@ const SongPlayer = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate, loadSong, currentSong]);
-
-  const logSongHistory = async (songId) => {
-    try {
-      await create("PlayHistory/LogSongHistory", songId);
-    } catch (error) {
-      console.error("Failed to log song history:", error);
-    }
-  };
+  }, [id, navigate, loadSong, currentSong, swarApiClient, songApiClient]);
 
   useEffect(() => {
     fetchSong();

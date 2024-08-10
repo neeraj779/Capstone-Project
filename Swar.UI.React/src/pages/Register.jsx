@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { create } from "../services/CRUDService";
+import useApiClient from "../hooks/useApiClient";
 import logo from "../assets/img/logo.png";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const Register = () => {
+  const swarApiClient = useApiClient();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -38,7 +39,7 @@ const Register = () => {
     }
 
     try {
-      await create("users/register", formData);
+      await swarApiClient.post("users/register", formData);
       setStatus({
         loading: false,
         error: "",
@@ -48,7 +49,9 @@ const Register = () => {
     } catch (error) {
       setStatus({
         loading: false,
-        error: error.message || "An error occurred. Please try again.",
+        error:
+          error.response?.data.message ||
+          "An error occurred. Please try again.",
         success: "",
       });
     }
