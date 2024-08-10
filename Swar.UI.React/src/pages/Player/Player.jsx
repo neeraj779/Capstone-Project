@@ -107,7 +107,9 @@ const SongPlayer = () => {
     a.download = `${song.song}.mp3`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Downloaded successfully");
+    toast.success("Downloaded successfully", {
+      position: "bottom-center",
+    });
     setIsDownloading(false);
   };
 
