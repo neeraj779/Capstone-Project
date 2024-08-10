@@ -12,10 +12,10 @@ import {
   faRotateLeft,
   faDownload,
 } from "@fortawesome/free-solid-svg-icons";
+import {Spinner} from "@nextui-org/react";
 
 import useApiClient from "../../hooks/useApiClient";
 import SearchBar from "../../components/SearchBar";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import PlayerSkeleton from "../../components/PlayerSkeleton";
 import LikeButton from "../../components/LikeButton/LikeButton";
 import usePlayer from "../../hooks/usePlayer";
@@ -193,7 +193,7 @@ const SongPlayer = () => {
             </div>
             {isDownloading ? (
               <div className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
-                <LoadingSpinner />
+                <Spinner size="sm" color="default" />
               </div>
             ) : (
               <button

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Spinner } from "@nextui-org/react";
 import useApiClient from "../hooks/useApiClient";
 import logo from "../assets/img/logo.png";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 const Register = () => {
   const swarApiClient = useApiClient();
@@ -145,7 +145,7 @@ const Register = () => {
             {status.loading ? (
               <>
                 <span className="mr-3">Registering...</span>
-                <LoadingSpinner />
+                <Spinner size="sm" color="default" />
               </>
             ) : (
               <span>Register</span>

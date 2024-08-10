@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import useApiClient from "../hooks/useApiClient";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/img/logo.png";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { Spinner } from "@nextui-org/react";
 
 const Login = () => {
   const apiClient = useApiClient();
@@ -26,6 +26,7 @@ const Login = () => {
       const response = await apiClient.post("users/login", { email, password });
       updateAccessToken(response.data.accessToken);
       updateRefreshToken(response.data.refreshToken);
+      localStorage.setItem("email", email);
       navigate(from, { replace: true });
     } catch (error) {
       setError(
@@ -88,7 +89,7 @@ const Login = () => {
             {loading ? (
               <>
                 <span className="mr-3">Logging in...</span>
-                <LoadingSpinner />
+                <Spinner size="sm" color="default" />
               </>
             ) : (
               <span>Login</span>
