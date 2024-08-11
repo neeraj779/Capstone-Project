@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
   const { isPlaying } = usePlayer();
 
   const isMobile = window.innerWidth < 768;
-  const bottomPadding = isPlaying && isMobile ? "pb-24" : "pb-12";
+  const bottomPadding = isPlaying && isMobile ? "pb-24" : "pb-16";
 
   return (
     <div

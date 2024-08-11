@@ -166,7 +166,7 @@ const Profile = () => {
                   Recent Activity
                 </h2>
                 <CustomScroll>
-                  <div className="space-y-4 max-h-[calc(5*5rem)]">
+                  <div className="space-y-4 max-h-[calc(4*5rem)]">
                     {recentlyPlayed.length > 0 ? (
                       recentlyPlayed.map((activity) => (
                         <div
