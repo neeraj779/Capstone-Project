@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Image, Slider } from "@nextui-org/react";
+import { CustomScroll } from "react-custom-scroll";
 
 import toast from "react-hot-toast";
 import {
@@ -194,12 +195,16 @@ const SongPlayer = () => {
               </button>
             )}
           </div>
-          <div className="bg-custom-dark rounded-lg p-4 mt-4 max-w-full overflow-y-auto">
-            <h2 className="text-xl font-semibold mb-2">Lyrics</h2>
-            <p
-              className="text-sm whitespace-pre-line"
-              dangerouslySetInnerHTML={{ __html: song.lyrics }}
-            />
+          <div className="bg-custom-dark rounded-lg p-6 mt-6 mb-8 max-w-full shadow-lg border border-gray-700">
+            <CustomScroll>
+              <div className="max-h-96">
+                <h2 className="text-2xl font-bold text-white mb-4">Lyrics</h2>
+                <p
+                  className="text-base text-gray-200 leading-relaxed whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: song.lyrics }}
+                />
+              </div>
+            </CustomScroll>
           </div>
         </div>
       </div>
