@@ -5,13 +5,13 @@ const skeletonCircleProps = { circle: true, height: 40, width: 40 };
 
 const PlayerSkeleton = () => {
   return (
-    <div className="grid gap-6 px-6 mb-3 mt-5">
+    <div className="grid gap-6 px-6 mt-5">
       <div className="block md:hidden mb-6 mx-6">
         <Skeleton height={40} width="100%" borderRadius={12} />
       </div>
 
       <div className="grid text-center place-content-center gap-3">
-        <Skeleton circle height={208} width={208} />
+        <Skeleton height={208} width={208} />
         <Skeleton height={24} width="75%" />
         <Skeleton height={16} width="50%" />
       </div>
