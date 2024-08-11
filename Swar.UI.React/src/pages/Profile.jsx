@@ -131,7 +131,7 @@ const Profile = () => {
                     {playlists.length > 0 ? (
                       playlists.map((playlist) => (
                         <div
-                          key={playlist.id}
+                          key={playlist.playlistId}
                           className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 min-w-[250px] mr-4"
                         >
                           <img
@@ -166,7 +166,7 @@ const Profile = () => {
                   Recent Activity
                 </h2>
                 <CustomScroll>
-                  <div className="space-y-4 max-h-[calc(2*6rem)]">
+                  <div className="space-y-4 max-h-[calc(5*5rem)]">
                     {recentlyPlayed.length > 0 ? (
                       recentlyPlayed.map((activity) => (
                         <div
