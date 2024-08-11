@@ -15,6 +15,7 @@ const useSearchData = (query) => {
     }
 
     setLoading(true);
+    setError(null);
 
     try {
       const { data: searchData } = await songApiClient.get(
