@@ -9,6 +9,7 @@ import Search from "./pages/Search";
 import MiniPlayer from "./components/MiniPlayer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/song/:id" element={<Player />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
