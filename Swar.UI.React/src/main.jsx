@@ -7,9 +7,7 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <main className="bg-gray-900 text-white min-h-screen">
-        <App />
-      </main>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -51,7 +51,7 @@ const Home = () => {
   );
 
   return (
-    <div className="bg-gray-900 text-white">
+    <div>
       <div className="container mx-auto px-6 md:px-20 py-10">
         <div className="block md:hidden mb-6">
           <SearchBar />

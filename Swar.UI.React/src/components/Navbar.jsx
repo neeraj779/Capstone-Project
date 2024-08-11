@@ -8,7 +8,6 @@ import {
 } from "@nextui-org/react";
 import useAuth from "../hooks/useAuth";
 import usePlayer from "../hooks/usePlayer";
-import { House, Library, User } from "lucide-react";
 import logo from "../assets/img/logo.png";
 import profile from "../assets/img/profile.svg";
 import SearchBar from "./SearchBar";
@@ -27,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-gray-800 py-4 shadow-md text-white">
+      <nav className="bg-gray-800 py-4 shadow-md">
         <div className="container mx-auto flex items-center justify-between px-4 md:px-8">
           {/* Logo and Navigation Links */}
           <div className="flex items-center space-x-6">
@@ -105,26 +104,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Mobile Bottom Navigation */}
-      {accessToken && (
-        <div className="fixed bottom-0 inset-x-0 bg-gray-800 text-white md:hidden z-30">
-          <div className="flex justify-around items-center py-2">
-            <Link to="/" className="flex flex-col items-center">
-              <House />
-              <span className="text-xs">Home</span>
-            </Link>
-            <Link to="/" className="flex flex-col items-center">
-              <Library />
-              <span className="text-xs">Library</span>
-            </Link>
-            <Link to="/profile" className="flex flex-col items-center">
-              <User />
-              <span className="text-xs">Profile</span>
-            </Link>
-          </div>
-        </div>
-      )}
     </>
   );
 };
