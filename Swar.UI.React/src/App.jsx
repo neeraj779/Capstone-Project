@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Player from "./pages/Player/Player";
+import Player from "./pages/Player";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
 import Register from "./pages/Register";

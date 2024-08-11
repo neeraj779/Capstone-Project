@@ -14,12 +14,11 @@ import {
 } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
 
-import useApiClient from "../../hooks/useApiClient";
-import SearchBar from "../../components/SearchBar";
-import PlayerSkeleton from "../../components/PlayerSkeleton";
-import LikeButton from "../../components/LikeButton/LikeButton";
-import usePlayer from "../../hooks/usePlayer";
-import "./player.css";
+import useApiClient from "../hooks/useApiClient";
+import SearchBar from "../components/SearchBar";
+import PlayerSkeleton from "../components/PlayerSkeleton";
+import LikeButton from "../components/LikeButton/LikeButton";
+import usePlayer from "../hooks/usePlayer";
 
 const SongPlayer = () => {
   const swarApiClient = useApiClient();
