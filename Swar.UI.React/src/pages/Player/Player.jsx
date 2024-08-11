@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Image, Slider } from "@nextui-org/react";
 
 import toast from "react-hot-toast";
 import {
@@ -78,10 +79,9 @@ const SongPlayer = () => {
     setSliderValue(currentTime);
   }, [currentTime]);
 
-  const handleSeek = (e) => {
-    const newValue = Number(e.target.value);
-    seek(newValue, false);
-    setSliderValue(newValue);
+  const handleSeek = (value) => {
+    seek(value, false);
+    setSliderValue(value);
   };
 
   const formatTime = useMemo(
@@ -115,18 +115,14 @@ const SongPlayer = () => {
   if (loading) return <PlayerSkeleton />;
 
   return (
-    <div className="mb-3 mt-5">
+    <div className="mt-7">
       <div className="block md:hidden mb-6 mx-6">
         <SearchBar />
       </div>
       <div>
         <div className="grid gap-6 px-6">
           <div className="grid text-center place-content-center gap-3">
-            <img
-              src={song.image}
-              alt={song.song}
-              className="h-52 w-52 rounded-full object-cover mx-auto"
-            />
+            <Image isBlurred src={song.image} width={240} alt={song.song} />
             <h1 className="text-lg mx-auto font-bold md:max-w-lg max-w-[260px]">
               {song.song}
             </h1>
@@ -140,14 +136,15 @@ const SongPlayer = () => {
               <CirclePlus />
             </button>
           </div>
-          <input
-            type="range"
-            className="w-full max-w-[400px] mx-auto"
-            min="0"
-            max={duration}
-            step="1"
-            value={sliderValue}
+          <Slider
+            aria-label="Music progress"
+            color="primary"
+            step={1}
+            maxValue={duration}
+            minValue={0}
             onChange={handleSeek}
+            value={sliderValue}
+            className="w-full max-w-[400px] mx-auto"
           />
           <div className="-mt-6 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
             <span className="text-xs">{formatTime(currentTime)}</span>
