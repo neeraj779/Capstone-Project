@@ -19,7 +19,7 @@ const MiniPlayer = () => {
   if (!accessToken || !currentSong || isSongPlayerPage) return null;
 
   return (
-    <div className="fixed bottom-14 mb-1 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg">
+    <div className="fixed bottom-14 mb-1 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg z-20">
       <div
         className="flex items-center space-x-2 flex-grow cursor-pointer"
         onClick={handleCardClick}
