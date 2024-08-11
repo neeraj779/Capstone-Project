@@ -121,8 +121,11 @@ const SongPlayer = () => {
       </div>
       <div>
         <div className="grid gap-6 px-6">
-          <div className="grid text-center place-content-center gap-3">
-            <Image isBlurred src={song.image} width={240} alt={song.song} />
+          <div className="grid text-center place-content-center gap-3 mx-auto">
+            <div className="flex justify-center">
+              <Image isBlurred src={song.image} width={240} alt={song.song} />
+            </div>
+
             <h1 className="text-lg mx-auto font-bold md:max-w-lg max-w-[260px]">
               {song.song}
             </h1>
