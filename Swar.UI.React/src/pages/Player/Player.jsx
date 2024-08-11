@@ -80,7 +80,7 @@ const SongPlayer = () => {
 
   const handleSeek = (e) => {
     const newValue = Number(e.target.value);
-    seek(newValue);
+    seek(newValue, false);
     setSliderValue(newValue);
   };
 
@@ -119,7 +119,7 @@ const SongPlayer = () => {
       <div className="block md:hidden mb-6 mx-6">
         <SearchBar />
       </div>
-      <div id="content">
+      <div>
         <div className="grid gap-6 px-6">
           <div className="grid text-center place-content-center gap-3">
             <img
@@ -136,16 +136,12 @@ const SongPlayer = () => {
           </div>
           <div className="-mt-3 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
             <LikeButton songId={song.id} />
-            <button
-              id="add-to-playlist-btn"
-              className="text-gray-400 hover:text-blue-500 focus:outline-none"
-            >
+            <button className="text-gray-400 hover:text-blue-500 focus:outline-none">
               <CirclePlus />
             </button>
           </div>
           <input
             type="range"
-            id="slider"
             className="w-full max-w-[400px] mx-auto"
             min="0"
             max={duration}
@@ -159,7 +155,6 @@ const SongPlayer = () => {
           </div>
           <div className="flex items-center justify-center gap-4">
             <button
-              id="loop-btn"
               onClick={toggleLoop}
               className={`icon-button text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 ${
                 loop ? "bg-blue-700" : "bg-gray-700"
@@ -169,25 +164,22 @@ const SongPlayer = () => {
             </button>
             <div className="flex items-center justify-center gap-2">
               <button
-                id="forward-btn"
                 onClick={() => seek(10)}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <UndoDot />
+                <RedoDot />
               </button>
               <button
-                id="play-pause-btn"
                 onClick={togglePlayPause}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 {isPlaying ? <Pause /> : <Play />}
               </button>
               <button
-                id="backward-btn"
                 onClick={() => seek(-10)}
                 className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <RedoDot />
+                <UndoDot />
               </button>
             </div>
             {isDownloading ? (
@@ -206,7 +198,6 @@ const SongPlayer = () => {
           <div id="lyrics-container" className="lyrics-container mb-16">
             <h2 className="text-xl font-semibold mb-2">Lyrics</h2>
             <p
-              id="song-lyrics"
               className="text-sm whitespace-pre-line"
               dangerouslySetInnerHTML={{ __html: song.lyrics }}
             />

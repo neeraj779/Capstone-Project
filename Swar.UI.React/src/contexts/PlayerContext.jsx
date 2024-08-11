@@ -24,8 +24,12 @@ export const PlayerProvider = ({ children }) => {
       .catch(console.error);
   }, []);
 
-  const seek = useCallback((time) => {
-    audioRef.current.currentTime += time;
+  const seek = useCallback((time, isSeek = true) => {
+    if (isSeek) {
+      audioRef.current.currentTime += time;
+    } else {
+      audioRef.current.currentTime = time;
+    }
     setCurrentTime(audioRef.current.currentTime);
   }, []);
 
