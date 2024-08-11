@@ -156,7 +156,7 @@ const SongPlayer = () => {
           <div className="flex items-center justify-center gap-4">
             <button
               onClick={toggleLoop}
-              className={`icon-button text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 ${
+              className={`text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 ${
                 loop ? "bg-blue-700" : "bg-gray-700"
               }`}
             >
@@ -165,19 +165,19 @@ const SongPlayer = () => {
             <div className="flex items-center justify-center gap-2">
               <button
                 onClick={() => seek(10)}
-                className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <RedoDot />
               </button>
               <button
                 onClick={togglePlayPause}
-                className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 {isPlaying ? <Pause /> : <Play />}
               </button>
               <button
                 onClick={() => seek(-10)}
-                className="icon-button bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <UndoDot />
               </button>
@@ -195,7 +195,7 @@ const SongPlayer = () => {
               </button>
             )}
           </div>
-          <div id="lyrics-container" className="lyrics-container mb-16">
+          <div className="bg-custom-dark rounded-lg p-4 mt-4 max-w-full overflow-y-auto">
             <h2 className="text-xl font-semibold mb-2">Lyrics</h2>
             <p
               className="text-sm whitespace-pre-line"

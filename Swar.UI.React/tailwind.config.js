@@ -12,6 +12,9 @@ export default {
       minHeight: {
         "screen-minus-navbar": "calc(100vh - 72px)",
       },
+      colors: {
+        "custom-dark": "#1a202c;",
+      },
     },
   },
   darkMode: "class",
