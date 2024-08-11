@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Image } from "@nextui-org/react";
 
 const SongCard = ({ id, title, image, song, primary_artists }) => (
   <Link to={`/song/${id}`} className="cursor-pointer" title={title}>
-    <div className="card rounded-md h-fit grid gap-2 min-w-[200px] max-w-[200px]">
+    <div className="grid gap-2 min-w-[200px] max-w-[200px]">
       <div>
-        <img
-          className="transition hover:opacity-75 rounded-md w-full h-[200px] bg-secondary aspect-square object-cover"
-          src={image}
-          alt={title}
-        />
+        <Image isZoomed width={240} src={image} alt={title} className="z-0" />
       </div>
       <div className="grid place-content-center text-center">
         <h1 className="text-sm text-ellipsis overflow-hidden max-w-[200px] font-bold">
