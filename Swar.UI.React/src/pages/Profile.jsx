@@ -4,6 +4,8 @@ import { Avatar, Button } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 import toast from "react-hot-toast";
 import useApiClient from "../hooks/useApiClient";
+import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
+
 import playlistImg from "../assets/img/playlist.png";
 import maleAvatar from "../assets/img/male-avatar.svg";
 import femaleAvatar from "../assets/img/female-avatar.svg";
@@ -22,6 +24,7 @@ const Profile = () => {
   });
   const { recentlyPlayed, loading: recentlyPlayedLoading } =
     useRecentlyPlayedSongs();
+  const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,9 +106,17 @@ const Profile = () => {
                   <Button color="primary" variant="shadow">
                     Edit Profile
                   </Button>
-                  <Button color="secondary" variant="shadow">
+                  <Button
+                    onClick={() => setIsUpdatePasswordOpen(true)}
+                    color="secondary"
+                    variant="shadow"
+                  >
                     Change Password
                   </Button>
+                  <UpdatePasswordModal
+                    isOpen={isUpdatePasswordOpen}
+                    onOpenChange={() => setIsUpdatePasswordOpen(false)}
+                  />
                   <Button color="danger" variant="shadow">
                     Delete Account
                   </Button>
