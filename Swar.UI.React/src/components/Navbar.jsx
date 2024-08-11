@@ -64,7 +64,10 @@ const Navbar = () => {
 
             {/* Profile Dropdown */}
             {accessToken && (
-              <Dropdown placement="bottom-end" className="bg-gray-800">
+              <Dropdown
+                placement="bottom-end"
+                className="bg-gray-800 text-white"
+              >
                 <DropdownTrigger>
                   <Avatar
                     as="button"
@@ -73,7 +76,7 @@ const Navbar = () => {
                     src={profile}
                   />
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownMenu aria-label="Profile Actions" variant="shadow">
                   <DropdownItem
                     key="user"
                     className="h-14 gap-2"
