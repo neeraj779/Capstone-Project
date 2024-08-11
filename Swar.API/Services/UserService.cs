@@ -240,9 +240,8 @@ namespace Swar.API.Services
             bool hasUpperCase = password.Any(char.IsUpper);
             bool hasLowerCase = password.Any(char.IsLower);
             bool hasDigit = password.Any(char.IsDigit);
-            bool hasSpecialChar = password.Any(ch => !char.IsLetterOrDigit(ch));
 
-            return password.Length >= minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+            return password.Length >= minLength && hasUpperCase && hasLowerCase && hasDigit;
         }
 
         private bool IsPasswordCorrect(string password, byte[] passwordHashKey, byte[] storedPasswordHash)
