@@ -29,9 +29,13 @@ const Login = () => {
       localStorage.setItem("email", email);
       navigate(from, { replace: true });
     } catch (error) {
-      setError(
-        error.response?.data.message || "An error occurred. Please try again."
-      );
+      if (error.response?.status === 401) {
+        setError("Invalid email or password. Please try again.");
+      } else {
+        setError(
+          error.response?.data.message || "An error occurred. Please try again."
+        );
+      }
     } finally {
       setLoading(false);
     }
