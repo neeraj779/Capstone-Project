@@ -78,14 +78,17 @@ const Navbar = () => {
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="shadow">
                   <DropdownItem
+                    textValue="profile"
                     key="user"
                     className="h-14 gap-2"
-                    textValue="profile"
+                    href="/profile"
                   >
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">{userEmail}</p>
                   </DropdownItem>
-                  <DropdownItem key="profile">Profile</DropdownItem>
+                  <DropdownItem key="profile" href="/profile">
+                    Profile
+                  </DropdownItem>
                   <DropdownItem key="change-password">
                     Change Password
                   </DropdownItem>
@@ -115,10 +118,10 @@ const Navbar = () => {
               <Library />
               <span className="text-xs">Library</span>
             </Link>
-            <button className="flex flex-col items-center" aria-haspopup="true">
+            <Link to="/profile" className="flex flex-col items-center">
               <User />
               <span className="text-xs">Profile</span>
-            </button>
+            </Link>
           </div>
         </div>
       )}

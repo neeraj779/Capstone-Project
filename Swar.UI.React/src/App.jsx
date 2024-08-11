@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { useNavigate, Route, Routes, Navigate } from "react-router-dom";
+import { NextUIProvider } from "@nextui-org/react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { Toaster } from "react-hot-toast";
 
@@ -15,29 +16,33 @@ import { PlayerProvider } from "./contexts/PlayerContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-const App = () => (
-  <SkeletonTheme baseColor="#6B7280" highlightColor="#4B5563">
-    <BrowserRouter>
-      <AuthProvider>
-        <PlayerProvider>
-          <NavBar />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/song/:id" element={<Player />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          <MiniPlayer />
-          <Toaster />
-        </PlayerProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </SkeletonTheme>
-);
+const App = () => {
+  const navigate = useNavigate();
+
+  return (
+    <NextUIProvider navigate={navigate}>
+      <SkeletonTheme baseColor="#6B7280" highlightColor="#4B5563">
+        <AuthProvider>
+          <PlayerProvider>
+            <NavBar />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/song/:id" element={<Player />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <MiniPlayer />
+            <Toaster />
+          </PlayerProvider>
+        </AuthProvider>
+      </SkeletonTheme>
+    </NextUIProvider>
+  );
+};
 
 export default App;
