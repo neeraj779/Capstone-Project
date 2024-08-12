@@ -11,3 +11,8 @@
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: white !important;
+    caret-color: white !important;
+}
