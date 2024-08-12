@@ -91,9 +91,13 @@ const Library = () => {
               </h2>
               <div className="space-y-4">
                 <PlaylistCard playlist={defaultPlaylist} />
-                {playlists.map((playlist) => (
-                  <PlaylistCard key={playlist.playlistId} playlist={playlist} />
-                ))}
+                {playlists.length &&
+                  playlists.map((playlist) => (
+                    <PlaylistCard
+                      key={playlist.playlistId}
+                      playlist={playlist}
+                    />
+                  ))}
               </div>
             </>
           )}
