@@ -88,6 +88,7 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={false}
+      scrollBehavior="outside"
       placement="auto"
       size="full"
       radius="lg"
