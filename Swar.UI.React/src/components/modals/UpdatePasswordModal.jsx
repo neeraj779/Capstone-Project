@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { object, string, ref } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,9 +10,8 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Input,
 } from "@nextui-org/react";
-import { EyeFilledIcon, EyeSlashFilledIcon } from "./EyeIcons";
+import PasswordInput from "./PasswordInput";
 import { toast } from "react-hot-toast";
 import useApiClient from "../../hooks/useApiClient";
 
@@ -35,7 +35,6 @@ const schema = object().shape({
     .oneOf([ref("newPassword")], "Passwords do not match"),
 });
 
-// eslint-disable-next-line react/prop-types
 export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
   const {
     register,
@@ -111,87 +110,32 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
         </ModalHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <ModalBody>
-            <Input
-              autoFocus
-              isRequired
-              endContent={
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={() => toggleVisibility("currentPassword")}
-                  aria-label="toggle password visibility"
-                >
-                  {visibility.currentPassword ? (
-                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  ) : (
-                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  )}
-                </button>
-              }
+            <PasswordInput
               label="Current Password"
-              classNames={{
-                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
-              }}
               placeholder="Enter your current password"
-              type={visibility.currentPassword ? "text" : "password"}
-              variant="bordered"
-              {...register("currentPassword")}
-              isInvalid={!!errors.currentPassword}
-              errorMessage={errors.currentPassword?.message}
+              name="currentPassword"
+              register={register}
+              errors={errors}
+              visibility={visibility.currentPassword}
+              toggleVisibility={toggleVisibility}
             />
-            <Input
-              isRequired
-              endContent={
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={() => toggleVisibility("newPassword")}
-                  aria-label="toggle password visibility"
-                >
-                  {visibility.newPassword ? (
-                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  ) : (
-                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  )}
-                </button>
-              }
+            <PasswordInput
               label="New Password"
-              classNames={{
-                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
-              }}
               placeholder="Enter your new password"
-              type={visibility.newPassword ? "text" : "password"}
-              variant="bordered"
-              {...register("newPassword")}
-              isInvalid={!!errors.newPassword}
-              errorMessage={errors.newPassword?.message}
+              name="newPassword"
+              register={register}
+              errors={errors}
+              visibility={visibility.newPassword}
+              toggleVisibility={toggleVisibility}
             />
-            <Input
-              isRequired
-              endContent={
-                <button
-                  className="focus:outline-none"
-                  type="button"
-                  onClick={() => toggleVisibility("confirmPassword")}
-                  aria-label="toggle password visibility"
-                >
-                  {visibility.confirmPassword ? (
-                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  ) : (
-                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                  )}
-                </button>
-              }
+            <PasswordInput
               label="Confirm New Password"
-              classNames={{
-                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
-              }}
               placeholder="Confirm your new password"
-              type={visibility.confirmPassword ? "text" : "password"}
-              variant="bordered"
-              {...register("confirmPassword")}
-              isInvalid={!!errors.confirmPassword}
-              errorMessage={errors.confirmPassword?.message}
+              name="confirmPassword"
+              register={register}
+              errors={errors}
+              visibility={visibility.confirmPassword}
+              toggleVisibility={toggleVisibility}
             />
           </ModalBody>
           <ModalFooter>
@@ -211,3 +155,8 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
     </Modal>
   );
 }
+
+UpdatePasswordModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onOpenChange: PropTypes.func.isRequired,
+};
