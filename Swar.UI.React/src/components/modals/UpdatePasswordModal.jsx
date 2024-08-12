@@ -35,7 +35,7 @@ const schema = object().shape({
     .oneOf([ref("newPassword")], "Passwords do not match"),
 });
 
-export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
+const UpdatePasswordModal = ({ isOpen, onOpenChange }) => {
   const {
     register,
     handleSubmit,
@@ -154,9 +154,11 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
       </ModalContent>
     </Modal>
   );
-}
+};
 
 UpdatePasswordModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onOpenChange: PropTypes.func.isRequired,
 };
+
+export default UpdatePasswordModal;
