@@ -88,7 +88,7 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={false}
-      placement="center"
+      placement="auto"
       size="full"
       radius="lg"
       classNames={{
