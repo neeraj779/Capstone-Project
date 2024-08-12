@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - main
+    paths:
+      - 'Swar.API/**'
 env:
   AZURE_WEBAPP_NAME: SwarAPI
   AZURE_WEBAPP_PACKAGE_PATH: Swar.API\publish

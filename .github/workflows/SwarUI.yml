@@ -2,7 +2,10 @@ name: Deploy SwarUI content to GitHub Page
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+    paths:
+      - 'Swar.UI/**'
   workflow_dispatch:
 
 permissions:
