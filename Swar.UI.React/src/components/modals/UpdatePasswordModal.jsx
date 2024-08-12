@@ -88,14 +88,12 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       isDismissable={false}
-      scrollBehavior="inside"
-      placement="auto"
       size="full"
       radius="lg"
       classNames={{
         body: "py-6",
         backdrop: "blur",
-        base: "bg-[#1a202c] text-[#fff]",
+        base: "bg-gradient-to-br from-gray-800 to-gray-900 p-2 shadow-2xl text-white",
         header: "border-b-[1px] border-[#292f46]",
         footer: "border-t-[1px] border-[#292f46]",
         closeButton: "hover:bg-white/5 active:bg-white/10",
@@ -103,7 +101,11 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
-          Update Password
+          Change Password
+          <p className="text-sm text-default-400">
+            Your password must be at least 8 characters and should include a
+            combination of uppercase, lowercase, and numbers.
+          </p>
         </ModalHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <ModalBody>
@@ -190,7 +192,7 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
               Cancel
             </Button>
             <Button color="primary" type="submit">
-              Update Password
+              Change Password
             </Button>
           </ModalFooter>
         </form>
