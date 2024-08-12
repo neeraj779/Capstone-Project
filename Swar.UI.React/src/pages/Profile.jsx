@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import useApiClient from "../hooks/useApiClient";
 import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
 
-import playlistImg from "../assets/img/playlist.png";
+import playlistSvg from "../assets/img/playlist.svg";
 import maleAvatar from "../assets/img/male-avatar.svg";
 import femaleAvatar from "../assets/img/female-avatar.svg";
 import neutralAvatar from "../assets/img/neutral-avatar.svg";
@@ -138,23 +138,25 @@ const Profile = () => {
                   Your Playlists
                 </h2>
                 <CustomScroll>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-h-[calc(2*6rem)]">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     {playlists.length > 0 ? (
                       playlists.map((playlist) => (
                         <div
                           key={playlist.playlistId}
-                          className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 min-w-[250px] mr-4"
+                          className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 mr-4"
                         >
                           <img
-                            src={playlistImg}
+                            src={playlistSvg}
                             alt="Playlist Thumbnail"
                             className="w-12 h-12 rounded-full"
                           />
-                          <div>
-                            <h3 className="text-xl font-semibold text-white">
+                          <div className="flex-1 overflow-hidden">
+                            <h3 className="text-xl font-semibold text-white truncate overflow-hidden whitespace-nowrap">
                               {playlist.playlistName}
                             </h3>
-                            {playlist.description}
+                            <p className="text-gray-300 text-sm truncate overflow-hidden whitespace-nowrap">
+                              {playlist.description}
+                            </p>
                           </div>
                         </div>
                       ))
