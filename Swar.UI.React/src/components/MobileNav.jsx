@@ -9,7 +9,7 @@ const MobileNav = () => {
           <House />
           <span className="text-xs">Home</span>
         </Link>
-        <Link to="/" className="flex flex-col items-center">
+        <Link to="/library" className="flex flex-col items-center">
           <Library />
           <span className="text-xs">Library</span>
         </Link>

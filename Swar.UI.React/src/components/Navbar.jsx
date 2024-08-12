@@ -47,7 +47,7 @@ const Navbar = () => {
                     Home
                   </Link>
                   <Link
-                    to="/"
+                    to="/library"
                     className="hover:text-gray-400 transition-colors"
                   >
                     Your Library
