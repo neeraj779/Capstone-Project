@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { object, string, ref } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,7 +11,8 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
-import { LockIcon } from "./LockIcon.jsx";
+import { EyeFilledIcon } from "./EyeFilledIcon";
+import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 import { toast } from "react-hot-toast";
 import useApiClient from "../../hooks/useApiClient";
 
@@ -39,8 +41,24 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
     formState: { errors },
     reset,
     setError,
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
   const swarApiClient = useApiClient();
+  const [visibility, setVisibility] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+
+  const toggleVisibility = (field) => {
+    setVisibility((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
+  };
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -71,6 +89,7 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
       onOpenChange={onOpenChange}
       isDismissable={false}
       placement="center"
+      size="full"
       radius="lg"
       classNames={{
         body: "py-6",
@@ -91,11 +110,22 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
               autoFocus
               isRequired
               endContent={
-                <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => toggleVisibility("currentPassword")}
+                  aria-label="toggle password visibility"
+                >
+                  {visibility.currentPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
               }
               label="Current Password"
               placeholder="Enter your current password"
-              type="password"
+              type={visibility.currentPassword ? "text" : "password"}
               variant="bordered"
               {...register("currentPassword")}
               isInvalid={!!errors.currentPassword}
@@ -104,11 +134,22 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
             <Input
               isRequired
               endContent={
-                <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => toggleVisibility("newPassword")}
+                  aria-label="toggle password visibility"
+                >
+                  {visibility.newPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
               }
               label="New Password"
               placeholder="Enter your new password"
-              type="password"
+              type={visibility.newPassword ? "text" : "password"}
               variant="bordered"
               {...register("newPassword")}
               isInvalid={!!errors.newPassword}
@@ -117,11 +158,22 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
             <Input
               isRequired
               endContent={
-                <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={() => toggleVisibility("confirmPassword")}
+                  aria-label="toggle password visibility"
+                >
+                  {visibility.confirmPassword ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
               }
               label="Confirm New Password"
               placeholder="Confirm your new password"
-              type="password"
+              type={visibility.confirmPassword ? "text" : "password"}
               variant="bordered"
               {...register("confirmPassword")}
               isInvalid={!!errors.confirmPassword}
