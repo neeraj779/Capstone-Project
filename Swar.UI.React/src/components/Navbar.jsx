@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   DropdownItem,
@@ -8,6 +9,8 @@ import {
 } from "@nextui-org/react";
 import useAuth from "../hooks/useAuth";
 import usePlayer from "../hooks/usePlayer";
+import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
+
 import logo from "../assets/img/logo.png";
 import profile from "../assets/img/profile.svg";
 import SearchBar from "./SearchBar";
@@ -15,6 +18,7 @@ import SearchBar from "./SearchBar";
 const Navbar = () => {
   const { accessToken, resetTokens } = useAuth();
   const { resetPlayer } = usePlayer();
+  const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
   const userEmail = localStorage.getItem("email") || "User";
   const navigate = useNavigate();
 
@@ -88,7 +92,10 @@ const Navbar = () => {
                   <DropdownItem key="profile" href="/profile">
                     Profile
                   </DropdownItem>
-                  <DropdownItem key="change-password">
+                  <DropdownItem
+                    key="change-password"
+                    onClick={() => setIsUpdatePasswordOpen(true)}
+                  >
                     Change Password
                   </DropdownItem>
                   <DropdownItem
@@ -101,6 +108,10 @@ const Navbar = () => {
                 </DropdownMenu>
               </Dropdown>
             )}
+            <UpdatePasswordModal
+              isOpen={isUpdatePasswordOpen}
+              onOpenChange={() => setIsUpdatePasswordOpen(false)}
+            />
           </div>
         </div>
       </nav>
