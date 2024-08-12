@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { FaDownload } from "react-icons/fa6";
 import SongCard from "../components/SongCard";
 import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
@@ -91,7 +90,7 @@ const Home = () => {
           id="install-button"
           className="fixed bottom-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-lg z-50 hidden"
         >
-          <FontAwesomeIcon icon={faDownload} className="fa-lg" />
+          <FaDownload />
         </button>
       </div>
     </div>

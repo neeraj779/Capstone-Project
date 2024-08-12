@@ -1,8 +1,7 @@
 import { useNavigate, useMatch } from "react-router-dom";
 import usePlayer from "../hooks/usePlayer";
 import useAuth from "../hooks/useAuth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { Pause, Play } from "lucide-react";
 
 const MiniPlayer = () => {
   const { accessToken } = useAuth();
@@ -45,7 +44,7 @@ const MiniPlayer = () => {
         className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 ml-1 sm:ml-2 mr-3 bg-gray-700 text-white rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500"
         title={isPlaying ? "Pause" : "Play"}
       >
-        <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} size="lg" />
+        {isPlaying ? <Pause /> : <Play />}
       </button>
     </div>
   );
