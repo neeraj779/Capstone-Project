@@ -11,8 +11,7 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
-import { EyeFilledIcon } from "./EyeFilledIcon";
-import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "./EyeIcons";
 import { toast } from "react-hot-toast";
 import useApiClient from "../../hooks/useApiClient";
 
@@ -24,9 +23,12 @@ const schema = object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W_]{8,}$/,
       "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, and a number."
     )
-    .notOneOf(
-      [ref("currentPassword")],
-      "New password must be different from the current password"
+    .test(
+      "not-same-as-current",
+      "New password must be different from the current password",
+      function (value) {
+        return value !== this.parent.currentPassword;
+      }
     ),
   confirmPassword: string()
     .required("Please confirm your new password")
@@ -127,6 +129,9 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
                 </button>
               }
               label="Current Password"
+              classNames={{
+                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
+              }}
               placeholder="Enter your current password"
               type={visibility.currentPassword ? "text" : "password"}
               variant="bordered"
@@ -151,6 +156,9 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
                 </button>
               }
               label="New Password"
+              classNames={{
+                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
+              }}
               placeholder="Enter your new password"
               type={visibility.newPassword ? "text" : "password"}
               variant="bordered"
@@ -175,6 +183,9 @@ export default function UpdatePasswordModal({ isOpen, onOpenChange }) {
                 </button>
               }
               label="Confirm New Password"
+              classNames={{
+                inputWrapper: ["border-gray-600", "focus-within:!border-white"],
+              }}
               placeholder="Confirm your new password"
               type={visibility.confirmPassword ? "text" : "password"}
               variant="bordered"
