@@ -138,12 +138,12 @@ const Profile = () => {
                   Your Playlists
                 </h2>
                 <CustomScroll>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mr-4">
                     {playlists.length > 0 ? (
                       playlists.map((playlist) => (
                         <div
                           key={playlist.playlistId}
-                          className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 mr-4"
+                          className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4"
                         >
                           <img
                             src={playlistSvg}
