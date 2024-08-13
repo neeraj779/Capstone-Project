@@ -85,9 +85,7 @@ namespace Swar.API.Services
             }
 
             var songsIdList = userPlaylistSongs.Select(ps => ps.SongId).ToList();
-
-            _logger.LogInformation($"Returning all Playlist songs for user with id {userId}.");
-            return new PlaylistSongsDTO
+            PlaylistInfoDTO playlistInfo = new PlaylistInfoDTO
             {
                 PlaylistId = playlistId,
                 PublicId = playlist.PublicId,
@@ -97,6 +95,12 @@ namespace Swar.API.Services
                 IsPrivate = playlist.IsPrivate,
                 CreatedAt = playlist.CreatedAt,
                 SongsCount = songsIdList.Count,
+            };
+
+            _logger.LogInformation($"Returning all Playlist songs for user with id {userId}.");
+            return new PlaylistSongsDTO
+            {
+                PlaylistInfo = playlistInfo,
                 Songs = songsIdList
             };
         }
