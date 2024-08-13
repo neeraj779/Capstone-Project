@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   Dropdown,
@@ -17,6 +18,7 @@ import heartSvg from "../assets/img/heart.svg";
 import usePlaylistActions from "../hooks/usePlaylistActions";
 
 const PlaylistCard = ({ playlist, onUpdate }) => {
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [playlistName, setPlaylistName] = useState(playlist.playlistName);
   const [playlistDescription, setPlaylistDescription] = useState(
@@ -42,8 +44,15 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
     onClose();
   };
 
+  const handleCardClick = () => {
+    if (!isDefaultPlaylist) navigate(`/playlist/${playlist.playlistId}`);
+  };
+
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center">
+    <div
+      onClick={handleCardClick}
+      className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center"
+    >
       <img
         src={playlistIcon}
         alt="Playlist Thumbnail"
@@ -136,7 +145,7 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
 PlaylistCard.propTypes = {
   playlist: PropTypes.shape({
     playlistId: PropTypes.number.isRequired,
-    ownerName: PropTypes.string.isRequired,
+    ownerName: PropTypes.string,
     playlistName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     isPrivate: PropTypes.bool,
