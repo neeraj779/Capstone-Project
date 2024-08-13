@@ -78,11 +78,6 @@ namespace Swar.API.Services
                 throw new EntityNotFoundException("No Playlist songs found.");
 
             var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlistId).ToList();
-            if (!userPlaylistSongs.Any())
-            {
-                _logger.LogInformation($"No Playlist songs found for user with id {userId}.");
-                throw new EntityNotFoundException("No songs found in playlist.");
-            }
 
             var songsIdList = userPlaylistSongs.Select(ps => ps.SongId).ToList();
             PlaylistInfoDTO playlistInfo = new PlaylistInfoDTO
