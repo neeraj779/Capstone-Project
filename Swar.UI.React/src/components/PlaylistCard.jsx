@@ -49,25 +49,24 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
   };
 
   return (
-    <div
-      onClick={handleCardClick}
-      className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center"
-    >
-      <img
-        src={playlistIcon}
-        alt="Playlist Thumbnail"
-        className="w-16 h-16 object-cover rounded-md"
-      />
-      <div className="flex-grow flex flex-col ml-4 overflow-hidden">
-        <h3 className="text-lg font-bold text-white mb-1 truncate">
-          {playlist.playlistName}
-        </h3>
-        <p className="text-sm text-gray-300 truncate mb-1">
-          {playlist.description}
-        </p>
-        <p className="text-xs text-gray-400 truncate">
-          Playlist {!isDefaultPlaylist ? `• ${playlist.ownerName}` : ""}
-        </p>
+    <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center">
+      <div onClick={handleCardClick} className="flex items-center flex-grow">
+        <img
+          src={playlistIcon}
+          alt="Playlist Thumbnail"
+          className="w-16 h-16 object-cover rounded-md"
+        />
+        <div className="flex-grow flex flex-col ml-4 overflow-hidden">
+          <h3 className="text-lg font-bold text-white mb-1 truncate">
+            {playlist.playlistName}
+          </h3>
+          <p className="text-sm text-gray-300 truncate mb-1">
+            {playlist.description}
+          </p>
+          <p className="text-xs text-gray-400 truncate">
+            Playlist {!isDefaultPlaylist ? `• ${playlist.ownerName}` : ""}
+          </p>
+        </div>
       </div>
       {!isDefaultPlaylist && (
         <>
