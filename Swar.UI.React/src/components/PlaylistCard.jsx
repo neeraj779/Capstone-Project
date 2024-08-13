@@ -9,7 +9,7 @@ import {
   useDisclosure,
   cn,
 } from "@nextui-org/react";
-import EditPlaylistModal from "./modals/EditPlaylistModal";
+import PlaylistModal from "./modals/PlaylistModal";
 import { CopyIcon, EditIcon, DeleteIcon } from "../components/Icons";
 import { IoMdMore, IoMdLock, IoMdUnlock } from "react-icons/io";
 import playlistSvg from "../assets/img/playlist.svg";
@@ -109,14 +109,17 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
             </DropdownMenu>
           </Dropdown>
 
-          <EditPlaylistModal
+          <PlaylistModal
             isOpen={isOpen}
             onClose={onClose}
+            isEditMode={true}
+            modalTitle="Edit Playlist"
+            buttonTitle="Update"
             playlistName={playlistName}
             setPlaylistName={setPlaylistName}
             playlistDescription={playlistDescription}
             setPlaylistDescription={setPlaylistDescription}
-            handleEditPlaylist={handleEdit}
+            handlePlaylistOperation={handleEdit}
             isEditing={isEditing}
           />
         </>
