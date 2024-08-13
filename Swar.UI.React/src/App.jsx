@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
+import Playlist from "./pages/Playlist";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -34,6 +35,7 @@ const App = () => {
                   <Route path="/search" element={<Search />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/library" element={<Library />} />
+                  <Route path="/playlist/:id" element={<Playlist />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
