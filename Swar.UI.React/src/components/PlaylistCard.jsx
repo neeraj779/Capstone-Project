@@ -50,10 +50,15 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
         className="w-16 h-16 object-cover rounded-md"
       />
       <div className="flex-grow flex flex-col ml-4 overflow-hidden">
-        <h3 className="text-xl font-semibold text-white mb-1 truncate">
+        <h3 className="text-lg font-bold text-white mb-1 truncate">
           {playlist.playlistName}
         </h3>
-        <p className="text-gray-300 truncate">{playlist.description}</p>
+        <p className="text-sm text-gray-300 truncate mb-1">
+          {playlist.description}
+        </p>
+        <p className="text-xs text-gray-400 truncate">
+          Playlist {!isDefaultPlaylist ? `• ${playlist.ownerName}` : ""}
+        </p>
       </div>
       {!isDefaultPlaylist && (
         <>
@@ -131,6 +136,7 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
 PlaylistCard.propTypes = {
   playlist: PropTypes.shape({
     playlistId: PropTypes.number.isRequired,
+    ownerName: PropTypes.string.isRequired,
     playlistName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     isPrivate: PropTypes.bool,
