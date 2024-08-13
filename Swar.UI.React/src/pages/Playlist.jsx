@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Image } from "@nextui-org/react";
 import useUserplaylistSongs from "../hooks/useUserPlaylistSongs";
@@ -8,9 +9,12 @@ import { Button } from "@nextui-org/react";
 import { IoMdMore, IoMdList, IoMdGlobe, IoMdCalendar } from "react-icons/io";
 
 const Playlist = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { playlistInfo, playlistSongs, loading, error } =
     useUserplaylistSongs(id);
+
+  const handleSongClick = (songId) => navigate(`/song/${songId}`);
 
   const firstSong = playlistSongs[0] || {};
 
@@ -77,25 +81,19 @@ const Playlist = () => {
                   <div
                     key={song.id}
                     className="p-2 flex items-start items-center"
+                    onClick={() => handleSongClick(song.id)}
                   >
-                    <a
-                      href={`songPlayer.html?id=${song.id}`}
-                      className="flex-shrink-0"
-                    >
-                      <Image
-                        isBlurred
-                        radius="sm"
-                        src={song.image || playlistSvg}
-                        alt="Album Cover"
-                        className="w-12 h-12"
-                      />
-                    </a>
+                    <Image
+                      isBlurred
+                      radius="sm"
+                      src={song.image || playlistSvg}
+                      alt="Album Cover"
+                      className="w-12 h-12"
+                    />
                     <div className="ml-4 flex-grow flex flex-col justify-center overflow-hidden mr-6">
-                      <a href={`songPlayer.html?id=${song.id}`}>
-                        <h3 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">
-                          {song.song}
-                        </h3>
-                      </a>
+                      <h3 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">
+                        {song.song}
+                      </h3>
                       <p className="text-xs sm:text-sm text-gray-400 truncate mb-1">
                         {song.primary_artists}
                       </p>
