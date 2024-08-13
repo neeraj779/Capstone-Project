@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
+import { Button, useDisclosure } from "@nextui-org/react";
+import toast from "react-hot-toast";
+import PlaylistModal from "../components/modals/PlaylistModal";
 import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
 import PlaylistCard from "../components/PlaylistCard";
 import useApiClient from "../hooks/useApiClient";
+import { FaPlus } from "react-icons/fa";
 
 const Library = () => {
   const swarApiClient = useApiClient();
@@ -9,6 +13,13 @@ const Library = () => {
     playlists: [],
     loading: true,
     error: null,
+  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isAdding, setIsAdding] = useState(false);
+  const [newPlaylist, setNewPlaylist] = useState({
+    playlistName: "",
+    description: "",
+    isPrivate: false,
   });
 
   const fetchPlaylists = useCallback(async () => {
@@ -42,6 +53,24 @@ const Library = () => {
     description: "Your favorite tracks all in one place.",
   };
 
+  const handleCreate = async () => {
+    setIsAdding(true);
+    try {
+      await swarApiClient.post("Playlist/CreatePlaylist", {
+        playlistName: newPlaylist.playlistName,
+        description: newPlaylist.description,
+        isPrivate: newPlaylist.isPrivate,
+      });
+      fetchPlaylists();
+      toast.success("Playlist created successfully.");
+    } catch {
+      toast.error("An error occurred while creating the playlist.");
+    } finally {
+      setIsAdding(false);
+      onClose();
+    }
+  };
+
   return (
     <div className="mx-auto px-6 py-12">
       <div className="flex flex-col gap-8">
@@ -52,9 +81,19 @@ const Library = () => {
             <div className="text-red-500">{`Error: ${error}`}</div>
           ) : (
             <>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Your Playlists
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-3xl font-bold text-white">
+                  Your Playlists
+                </h2>
+                <Button
+                  isIconOnly
+                  onClick={onOpen}
+                  color="primary"
+                  variant="shadow"
+                >
+                  <FaPlus className="text-white text-xl" />
+                </Button>
+              </div>
               <div className="space-y-4">
                 <PlaylistCard
                   playlist={defaultPlaylist}
@@ -69,6 +108,27 @@ const Library = () => {
                     />
                   ))}
               </div>
+              <PlaylistModal
+                isOpen={isOpen}
+                onClose={onClose}
+                isEditMode={false}
+                modalTitle="Create Playlist"
+                buttonTitle="Add"
+                playlistName={newPlaylist.playlistName}
+                setPlaylistName={(name) =>
+                  setNewPlaylist((prev) => ({ ...prev, playlistName: name }))
+                }
+                playlistDescription={newPlaylist.description}
+                setPlaylistDescription={(desc) =>
+                  setNewPlaylist((prev) => ({ ...prev, description: desc }))
+                }
+                isPrivate={newPlaylist.isPrivate}
+                setIsPrivate={(isPrivate) =>
+                  setNewPlaylist((prev) => ({ ...prev, isPrivate }))
+                }
+                handlePlaylistOperation={handleCreate}
+                isEditing={isAdding}
+              />
             </>
           )}
         </div>
