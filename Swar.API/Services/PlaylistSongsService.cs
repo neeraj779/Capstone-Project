@@ -71,7 +71,7 @@ namespace Swar.API.Services
 
         public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId)
         {
-            await ValidateUserAndPlaylist(userId, playlistId, true);
+            Playlist playlist = await ValidateUserAndPlaylist(userId, playlistId, true);
 
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
@@ -90,6 +90,13 @@ namespace Swar.API.Services
             return new PlaylistSongsDTO
             {
                 PlaylistId = playlistId,
+                PublicId = playlist.PublicId,
+                OwnerName = playlist.OwnerName,
+                PlaylistName = playlist.PlaylistName,
+                Description = playlist.Description,
+                IsPrivate = playlist.IsPrivate,
+                CreatedAt = playlist.CreatedAt,
+                SongsCount = songsIdList.Count,
                 Songs = songsIdList
             };
         }
@@ -111,7 +118,7 @@ namespace Swar.API.Services
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
-        private async Task ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
+        private async Task<Playlist> ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
         {
             var playlist = await _playlistRepository.GetById(playlistId)
                 ?? throw new EntityNotFoundException("Playlist not found.");
@@ -141,6 +148,8 @@ namespace Swar.API.Services
                     throw new UnauthorizedAccessException("You are not authorized to modify this playlist.");
                 }
             }
+
+            return playlist;
         }
 
 
