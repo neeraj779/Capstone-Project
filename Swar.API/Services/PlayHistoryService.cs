@@ -39,7 +39,7 @@ namespace Swar.API.Services
             {
                 UserId = userId,
                 SongId = songId,
-                PlayedAt = DateTime.Now
+                PlayedAt = DateTime.UtcNow
             };
 
             _logger.LogInformation($"User {userId} logged song {songId} to history.");

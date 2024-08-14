@@ -85,7 +85,7 @@ namespace Swar.API.Services
             newUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
             newUser.UserStatus = UserStatusEnum.UserStatus.Active;
             newUser.Role = role;
-            newUser.RegistrationDate = DateTime.Now;
+            newUser.RegistrationDate = DateTime.UtcNow;
 
             await _userRepo.Add(newUser);
 
