@@ -10,8 +10,10 @@ const usePlaylistActionsBase = () => {
       try {
         await apiCall();
         toast.success(successMessage);
-      } catch {
-        toast.error(errorMessage);
+      } catch (error) {
+        if (error.response?.status === 409)
+          return toast.error("Song already exists in the playlist.");
+        else toast.error(errorMessage);
       }
     },
     []
