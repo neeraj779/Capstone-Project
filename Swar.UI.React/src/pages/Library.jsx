@@ -99,7 +99,7 @@ const Library = () => {
                   playlist={defaultPlaylist}
                   onUpdate={fetchPlaylists}
                 />
-                {playlists.length &&
+                {playlists.length > 0 &&
                   playlists.map((playlist) => (
                     <PlaylistCard
                       key={playlist.playlistId}
