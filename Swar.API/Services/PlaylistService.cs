@@ -39,7 +39,6 @@ namespace Swar.API.Services
             Playlist playlist = new Playlist
             {
                 UserId = userId,
-                OwnerName = user.Name,
                 PlaylistName = addPlaylistDTO.PlaylistName,
                 Description = addPlaylistDTO.Description,
                 IsPrivate = addPlaylistDTO.IsPrivate,
@@ -172,7 +171,6 @@ namespace Swar.API.Services
                 UserId = playlist.UserId,
                 PublicId = playlist.PublicId,
                 PlaylistId = playlist.PlaylistId,
-                OwnerName = playlist.OwnerName,
                 PlaylistName = playlist.PlaylistName,
                 Description = playlist.Description,
                 IsPrivate = playlist.IsPrivate,

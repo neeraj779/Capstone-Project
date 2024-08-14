@@ -71,7 +71,7 @@ namespace Swar.API.Services
 
         public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId)
         {
-            Playlist playlist = await ValidateUserAndPlaylist(userId, playlistId, true);
+            var (user, playlist) = await ValidateUserAndPlaylist(userId, playlistId, true);
 
             var playlistSongs = await _playlistSongRepository.GetAll();
             if (!playlistSongs.Any())
@@ -84,7 +84,7 @@ namespace Swar.API.Services
             {
                 PlaylistId = playlistId,
                 PublicId = playlist.PublicId,
-                OwnerName = playlist.OwnerName,
+                OwnerName = user.Name,
                 PlaylistName = playlist.PlaylistName,
                 Description = playlist.Description,
                 IsPrivate = playlist.IsPrivate,
@@ -117,15 +117,17 @@ namespace Swar.API.Services
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
-        private async Task<Playlist> ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
+        private async Task<(User user, Playlist playlist)> ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
         {
-            var playlist = await _playlistRepository.GetById(playlistId)
+            Playlist playlist = await _playlistRepository.GetById(playlistId)
                 ?? throw new EntityNotFoundException("Playlist not found.");
+
+            User user = await _userRepository.GetById(userId);
 
             if (userId != 0)
             {
-                var user = await _userRepository.GetById(userId)
-                    ?? throw new EntityNotFoundException("User not found.");
+                if (user == null)
+                    throw new EntityNotFoundException("User not found.");
 
                 if (user.UserStatus != UserStatusEnum.UserStatus.Active)
                 {
@@ -148,7 +150,7 @@ namespace Swar.API.Services
                 }
             }
 
-            return playlist;
+            return (user, playlist);
         }
 
 

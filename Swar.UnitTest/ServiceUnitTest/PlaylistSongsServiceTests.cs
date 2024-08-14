@@ -185,7 +185,7 @@ namespace Swar.UnitTest.ServiceUnitTest
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.That(result.PlaylistId, Is.EqualTo(playlist.PlaylistId));
+            Assert.That(result.PlaylistInfo.PlaylistId, Is.EqualTo(playlist.PlaylistId));
             Assert.Contains("song1", result.Songs);
         }
 
