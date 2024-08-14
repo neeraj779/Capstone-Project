@@ -113,15 +113,15 @@ namespace Swar.API.Controllers
         /// <summary>
         /// Gets all songs in a specific user’s playlist.
         /// </summary>
-        /// <param name="playlistId">The ID of the playlist.</param>
+        /// <param name="publicId">The ID of the playlist.</param>
         /// <returns>Returns a list of songs in the specified user's playlist.</returns>
-        [HttpGet("GetAllSongsInUserPlaylist/{playlistId}")]
-        public async Task<IActionResult> GetAllSongsInUserPlaylist(int playlistId)
+        [HttpGet("GetAllSongsInUserPlaylist/{publicId}")]
+        public async Task<IActionResult> GetAllSongsInUserPlaylist(string publicId)
         {
             try
             {
                 int userId = UserHelper.GetUserId(User);
-                var result = await _playlistSongsService.GetAllSongsInUserPlaylist(userId, playlistId);
+                var result = await _playlistSongsService.GetAllSongsInUserPlaylist(userId, publicId);
 
                 return Ok(result);
             }

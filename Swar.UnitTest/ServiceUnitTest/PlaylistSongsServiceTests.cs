@@ -18,7 +18,7 @@ namespace Swar.UnitTest.ServiceUnitTest
         private DbContextOptions<SwarContext> _dbContextOptions;
         private SwarContext _dbContext;
         private IPlaylistSongsRepository _playlistSongRepository;
-        private IRepository<int, Playlist> _playlistRepository;
+        private IPlaylistRepository _playlistRepository;
         private IRepository<int, User> _userRepository;
         private PlaylistSongsService _playlistSongsService;
 
@@ -151,7 +151,7 @@ namespace Swar.UnitTest.ServiceUnitTest
             await _dbContext.SaveChangesAsync();
 
             // Act
-            var result = await _playlistSongsService.GetAllSongsInUserPlaylist(user.UserId, playlist.PlaylistId);
+            var result = await _playlistSongsService.GetAllSongsInUserPlaylist(user.UserId, playlist.PublicId);
 
             // Assert
             Assert.IsNotNull(result);
@@ -170,7 +170,7 @@ namespace Swar.UnitTest.ServiceUnitTest
             await _dbContext.SaveChangesAsync();
 
             // Act & Assert
-            Assert.ThrowsAsync<UnauthorizedAccessException>(() => _playlistSongsService.GetAllSongsInUserPlaylist(1, playlist.PlaylistId));
+            Assert.ThrowsAsync<UnauthorizedAccessException>(() => _playlistSongsService.GetAllSongsInUserPlaylist(1, playlist.PublicId));
         }
 
         [Test]

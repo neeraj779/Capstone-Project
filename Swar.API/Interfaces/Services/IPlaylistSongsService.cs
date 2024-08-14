@@ -26,9 +26,9 @@ namespace Swar.API.Interfaces.Services
         /// Gets all songs in a specific playlist for a user.
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
-        /// <param name="playlistId">The ID of the playlist.</param>
+        /// <param name="publicId">The PublicId of the playlist.</param>
         /// <returns>A collection of DTOs representing the songs in the playlist.</returns>
-        public Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId);
+        public Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, string publicId);
 
         /// <summary>
         /// Gets all songs in a specific playlist.

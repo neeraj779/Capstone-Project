@@ -113,6 +113,7 @@ namespace Swar.API
             #region Repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
+            builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             builder.Services.AddScoped<IRepository<int, Playlist>, PlaylistRepository>();
             builder.Services.AddScoped<IPlaylistSongsRepository, PlaylistSongsRepository>();
             builder.Services.AddScoped<IRepository<int, LikedSong>, LikedSongsRepository>();

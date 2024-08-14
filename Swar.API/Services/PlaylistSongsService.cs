@@ -10,11 +10,11 @@ namespace Swar.API.Services
     public class PlaylistSongsService : IPlaylistSongsService
     {
         private readonly IPlaylistSongsRepository _playlistSongRepository;
-        private readonly IRepository<int, Playlist> _playlistRepository;
+        private readonly IPlaylistRepository _playlistRepository;
         private readonly IRepository<int, User> _userRepository;
         private readonly ILogger<PlaylistSongsService> _logger;
 
-        public PlaylistSongsService(IPlaylistSongsRepository playlistSongRepository, IRepository<int, Playlist> playlistRepository, IRepository<int, User> userRepository, ILogger<PlaylistSongsService> logger)
+        public PlaylistSongsService(IPlaylistSongsRepository playlistSongRepository, IPlaylistRepository playlistRepository, IRepository<int, User> userRepository, ILogger<PlaylistSongsService> logger)
         {
             _playlistSongRepository = playlistSongRepository;
             _playlistRepository = playlistRepository;
@@ -62,20 +62,18 @@ namespace Swar.API.Services
             return playlistSongs.Select(MapPlaylistSongToReturnPlaylistSongDTO);
         }
 
-        public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, int playlistId)
+        public async Task<PlaylistSongsDTO> GetAllSongsInUserPlaylist(int userId, string publicId)
         {
-            var (user, playlist) = await ValidateUserAndPlaylist(userId, playlistId, true);
+            var (user, playlist) = await ValidateUserAndPlaylist(userId, publicId, true);
 
             var playlistSongs = await _playlistSongRepository.GetAll();
-            if (!playlistSongs.Any())
-                throw new EntityNotFoundException("No Playlist songs found.");
-
-            var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlistId).ToList();
+            var userPlaylistSongs = playlistSongs.Where(ps => ps.PlaylistId == playlist.PlaylistId).ToList();
 
             var songsIdList = userPlaylistSongs.Select(ps => ps.SongId).ToList();
             PlaylistInfoDTO playlistInfo = new PlaylistInfoDTO
             {
-                PlaylistId = playlistId,
+                UserId = user.UserId,
+                PlaylistId = playlist.PlaylistId,
                 PublicId = playlist.PublicId,
                 OwnerName = user.Name,
                 PlaylistName = playlist.PlaylistName,
@@ -110,10 +108,17 @@ namespace Swar.API.Services
             return MapPlaylistSongToReturnPlaylistSongDTO(playlistSong);
         }
 
-        private async Task<(User user, Playlist playlist)> ValidateUserAndPlaylist(int userId, int playlistId, bool isGetRequest = false)
+        private async Task<(User user, Playlist playlist)> ValidateUserAndPlaylist(int userId, object playlistIdentifier, bool isGetRequest = false)
         {
-            Playlist playlist = await _playlistRepository.GetById(playlistId)
-                ?? throw new EntityNotFoundException("Playlist not found.");
+            Playlist? playlist = playlistIdentifier switch
+            {
+                int playlistId => await _playlistRepository.GetById(playlistId),
+                string publicId => await _playlistRepository.GetByPublicId(publicId),
+                _ => throw new ArgumentException("Invalid playlist identifier type.")
+            };
+
+            if (playlist == null)
+                throw new EntityNotFoundException("Playlist not found.");
 
             User user = await _userRepository.GetById(userId);
 
