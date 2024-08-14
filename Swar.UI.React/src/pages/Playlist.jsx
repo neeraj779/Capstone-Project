@@ -28,28 +28,31 @@ const Playlist = () => {
         <PlaylistsSkeleton />
       ) : (
         <>
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-700 mb-8 flex flex-row items-start items-center">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl shadow-lg border border-gray-700 mb-8 flex flex-row items-start items-center">
             <div className="flex-shrink-0 mr-6">
-              {firstSong.image ? (
-                <Image
-                  isBlurred
-                  src={firstSong.image || playlistSvg}
-                  alt="First Song"
-                  className="w-32 h-32"
-                />
-              ) : (
-                <div className="w-full h-auto max-w-xs bg-gray-700 rounded-md border border-gray-700" />
-              )}
+              <Image
+                isBlurred
+                src={firstSong.image || playlistSvg}
+                alt="First Song"
+                className="w-32 h-32"
+              />
             </div>
-            <div className="flex-grow">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-                {`${playlistInfo?.playlistName || "N/A"} ${
-                  id ? `• ${playlistInfo?.ownerName || "N/A"}` : ""
-                }`}
-              </h2>
-              <p className="text-gray-300 mb-2">
-                {playlistInfo?.description || "N/A"}
-              </p>
+            <div className="flex-grow overflow-hidden">
+              <div className="mb-2">
+                <p className="text-lg font-bold truncate">
+                  {playlistInfo?.playlistName}
+                </p>
+                {id && (
+                  <p className="text-gray-300 text-lg truncate">
+                    {playlistInfo?.ownerName}{" "}
+                    {`${
+                      playlistInfo?.description
+                        ? ` • ${playlistInfo?.description}`
+                        : ""
+                    }`}
+                  </p>
+                )}
+              </div>
               <div className="text-gray-300 mb-2 flex flex-col sm:flex-row sm:items-center">
                 <div className="flex items-center mb-2 sm:mb-0 sm:mr-6">
                   <IoMdGlobe className="text-white text-xl mr-1" />
