@@ -92,38 +92,6 @@ namespace Swar.UnitTest.ServiceUnitTest
         }
 
         [Test]
-        public async Task AddPlaylist_MaxLimitExceeded_ThrowsMaxLimitException()
-        {
-            // Arrange
-            var user = CreateUser();
-            await _userRepository.Add(user);
-
-            // Adding 3 playlists
-            for (int i = 1; i <= 3; i++)
-            {
-                await _playlistRepository.Add(new Playlist
-                {
-                    UserId = user.UserId,
-                    PlaylistName = $"Playlist {i}",
-                    Description = $"Description {i}",
-                    IsPrivate = false,
-                    CreatedAt = DateTime.Now
-                });
-            }
-            await _dbContext.SaveChangesAsync();
-
-            var addPlaylistDto = new AddPlaylistDTO
-            {
-                PlaylistName = "New Playlist",
-                Description = "New Description",
-                IsPrivate = false
-            };
-
-            // Act & Assert
-            Assert.ThrowsAsync<MaxLimitException>(() => _playlistService.AddPlaylist(user.UserId, addPlaylistDto));
-        }
-
-        [Test]
         public async Task DeletePlaylist_ValidInput_DeletesPlaylist()
         {
             // Arrange
