@@ -45,7 +45,11 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
   };
 
   const handleCardClick = () => {
-    if (!isDefaultPlaylist) navigate(`/playlist/${playlist.playlistId}`);
+    if (!isDefaultPlaylist) {
+      navigate(`/playlist/${playlist.playlistId}`);
+    } else {
+      navigate("/playlist/liked");
+    }
   };
 
   return (
