@@ -175,18 +175,6 @@ namespace Swar.UnitTest.ServiceUnitTest
         }
 
         [Test]
-        public async Task GetAllLikedSongs_NoSongs_ThrowsEntityNotFoundException()
-        {
-            // Arrange
-            var user = CreateUser();
-            await _userRepository.Add(user);
-            await _dbContext.SaveChangesAsync();
-
-            // Act & Assert
-            Assert.ThrowsAsync<EntityNotFoundException>(() => _likedSongsService.GetAllLikedSongs(user.UserId));
-        }
-
-        [Test]
         public async Task IsSongLikedByUser_SongLiked_ReturnsTrue()
         {
             // Arrange

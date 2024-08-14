@@ -67,14 +67,11 @@ namespace Swar.API.Services
 
         public async Task<SongsListDTO> GetAllLikedSongs(int userId)
         {
+            User user = await _userRepository.GetById(userId)
+                ?? throw new EntityNotFoundException("User not found.");
+
             var likedSongs = await _likedSongRepository.GetAll();
             var userLikedSongs = likedSongs.Where(ls => ls.UserId == userId).ToList();
-
-            if (!userLikedSongs.Any())
-            {
-                _logger.LogInformation($"User {userId} tried to get liked songs but no songs found.");
-                throw new EntityNotFoundException("No liked songs found.");
-            }
 
             var songIds = userLikedSongs.Select(ls => ls.SongId).ToList();
 
