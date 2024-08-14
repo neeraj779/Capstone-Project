@@ -76,12 +76,6 @@ namespace Swar.API.Services
                     .ToList();
             }
 
-            if (!userPlayHistory.Any())
-            {
-                _logger.LogInformation($"User {userId} tried to get song history but no songs found.");
-                throw new EntityNotFoundException();
-            }
-
             _logger.LogInformation($"Returning song history for user {userId}.");
             return new SongsListDTO
             {
