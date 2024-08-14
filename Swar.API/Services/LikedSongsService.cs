@@ -79,6 +79,7 @@ namespace Swar.API.Services
             return new SongsListDTO
             {
                 UserId = userId,
+                songsCount = songIds.Count,
                 Songs = songIds
             };
         }
