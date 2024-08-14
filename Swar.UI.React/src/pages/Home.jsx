@@ -59,29 +59,37 @@ const Home = () => {
         <div id="content">
           {Object.keys(categoryInfo).map((category) => (
             <div key={category} className="-mb-[3px]">
-              {category === "history" && recentlyPlayed.length > 0 ? (
+              {category === "history" && (
                 <>
-                  <h1 className="font-bold text-lg">
-                    {categoryInfo[category].title}
-                  </h1>
-                  <p className="text-xs mb-4">
-                    {categoryInfo[category].description}
-                  </p>
-                  <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
-                    {recentlyPlayedLoading && <SongSkeleton cards={5} />}
-                    {recentlyPlayed.map((song) => (
-                      <SongCard
-                        key={song.id}
-                        id={song.id}
-                        title={song.title}
-                        image={song.image}
-                        song={song.song}
-                        primary_artists={song.primary_artists}
-                      />
-                    ))}
-                  </div>
+                  {recentlyPlayedLoading ? (
+                    <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
+                      <SongSkeleton cards={5} />
+                    </div>
+                  ) : recentlyPlayed.length > 0 ? (
+                    <>
+                      <h1 className="font-bold text-lg">
+                        {categoryInfo[category].title}
+                      </h1>
+                      <p className="text-xs mb-4">
+                        {categoryInfo[category].description}
+                      </p>
+                      <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
+                        {recentlyPlayed.map((song) => (
+                          <SongCard
+                            key={song.id}
+                            id={song.id}
+                            title={song.title}
+                            image={song.image}
+                            song={song.song}
+                            primary_artists={song.primary_artists}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  ) : null}
                 </>
-              ) : category !== "history" ? (
+              )}
+              {category !== "history" && (
                 <>
                   <h1 className="font-bold text-lg">
                     {categoryInfo[category].title}
@@ -91,7 +99,7 @@ const Home = () => {
                   </p>
                   {renderSongs(category)}
                 </>
-              ) : null}
+              )}
             </div>
           ))}
         </div>
