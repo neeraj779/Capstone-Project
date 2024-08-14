@@ -48,7 +48,7 @@ const PlaylistModal = ({
   return (
     <Modal
       isOpen={isOpen}
-      placement="center"
+      placement="auto"
       onOpenChange={onClose}
       classNames={{
         body: "py-6",
