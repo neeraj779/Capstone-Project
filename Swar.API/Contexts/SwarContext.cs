@@ -8,10 +8,7 @@ namespace Swar.API.Contexts
 {
     public class SwarContext : DbContext
     {
-        public SwarContext(DbContextOptions options) : base(options)
-        {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        }
+        public SwarContext(DbContextOptions options) : base(options) {}
 
         public DbSet<User> Users { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
@@ -100,6 +97,10 @@ namespace Swar.API.Contexts
             modelBuilder.Entity<LikedSong>()
                 .HasIndex(ul => new { ul.UserId, ul.SongId })
                 .IsUnique();
+
+            modelBuilder.Entity<Playlist>()
+                .HasIndex(p => p.PublicId)
+                .IsUnique(); 
         }
     }
 }
