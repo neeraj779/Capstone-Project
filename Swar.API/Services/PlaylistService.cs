@@ -74,12 +74,6 @@ namespace Swar.API.Services
                 .Where(p => p.UserId == userId)
                 .ToList();
 
-            if (!playlists.Any())
-            {
-                _logger.LogInformation($"No playlists found for user with ID {userId}.");
-                throw new EntityNotFoundException($"No playlists found for user with ID {userId}.");
-            }
-
             _logger.LogInformation($"Returning all playlists for user with ID {userId}.");
             return playlists.Select(p => MapPlaylistToReturnPlaylistDTO(p, user)).ToList();
         }
