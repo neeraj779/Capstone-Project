@@ -4,18 +4,11 @@ import { Image, Slider } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 
 import toast from "react-hot-toast";
-import {
-  Download,
-  Pause,
-  Play,
-  RedoDot,
-  UndoDot,
-  Repeat,
-  CirclePlus,
-} from "lucide-react";
+import { Download, Pause, Play, RedoDot, UndoDot, Repeat } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
 
 import useApiClient from "../hooks/useApiClient";
+import PlaylistInfoModal from "../components/modals/PlaylistInfoModal";
 import SearchBar from "../components/SearchBar";
 import PlayerSkeleton from "../components/PlayerSkeleton";
 import LikeButton from "../components/LikeButton/LikeButton";
@@ -135,9 +128,7 @@ const SongPlayer = () => {
           </div>
           <div className="-mt-3 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
             <LikeButton songId={song.id} />
-            <button className="text-gray-400 hover:text-blue-500 focus:outline-none">
-              <CirclePlus />
-            </button>
+            <PlaylistInfoModal songId={song.id} />
           </div>
           <Slider
             aria-label="Music progress"
