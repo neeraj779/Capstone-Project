@@ -45,12 +45,12 @@ const usePlaylistActions = (playlist, onUpdate) => {
   }, [handleApiAction, playlist, swarApiClient]);
 
   const handleCopyLink = useCallback(() => {
-    const link = `${window.location.origin}/playlist/${playlist.playlistId}`;
+    const link = `${window.location.origin}/playlist/${playlist.publicId}`;
     navigator.clipboard
       .writeText(link)
       .then(() => toast.success("Playlist link copied to clipboard!"))
       .catch(() => toast.error("Failed to copy playlist link."));
-  }, [playlist.playlistId]);
+  }, [playlist.publicId]);
 
   const handleEditPlaylist = useCallback(
     async (playlistName, playlistDescription) => {
