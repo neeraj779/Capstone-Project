@@ -25,7 +25,7 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
     playlist.description
   );
   const [isEditing, setIsEditing] = useState(false);
-  const isDefaultPlaylist = playlist.playlistId === 0;
+  const isDefaultPlaylist = playlist.publicId === "0";
   const playlistIcon = isDefaultPlaylist ? heartSvg : playlistSvg;
   const iconClasses =
     "text-xl text-default-500 pointer-events-none flex-shrink-0";
@@ -46,7 +46,7 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
 
   const handleCardClick = () => {
     if (!isDefaultPlaylist) {
-      navigate(`/playlist/${playlist.playlistId}`);
+      navigate(`/playlist/${playlist.publicId}`);
     } else {
       navigate("/playlist/liked");
     }
@@ -147,7 +147,7 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
 
 PlaylistCard.propTypes = {
   playlist: PropTypes.shape({
-    playlistId: PropTypes.number.isRequired,
+    publicId: PropTypes.string.isRequired,
     ownerName: PropTypes.string,
     playlistName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

@@ -48,7 +48,7 @@ const Library = () => {
   const { playlists, loading, error } = data;
 
   const defaultPlaylist = {
-    playlistId: 0,
+    publicId: "0",
     playlistName: "Liked Songs",
     description: "Your favorite tracks all in one place.",
   };
