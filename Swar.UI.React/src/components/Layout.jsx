@@ -11,11 +11,11 @@ const Layout = ({ children }) => {
   const { isPlaying } = usePlayer();
 
   const isMobile = window.innerWidth < 768;
-  const bottomPadding = isPlaying && isMobile ? "pb-24" : "pb-16";
+  const bottomPadding = isPlaying && isMobile ? "pb-24" : "pb-2";
 
   return (
     <div
-      className={`flex flex-col bg-gray-900 text-white min-h-screen ${bottomPadding} md:pb-0`}
+      className={`flex flex-col bg-gray-900 text-white min-h-screen ${bottomPadding}`}
     >
       <Navbar />
 
