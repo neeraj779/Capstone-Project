@@ -59,6 +59,10 @@ const PlaylistInfoModal = ({ songId }) => {
                 <p className="text-red-500">
                   Failed to load playlists. Please try again later.
                 </p>
+              ) : playlistInfo.length === 0 ? (
+                <p className="text-center text-gray-500">
+                  You don&apos;t have any playlists. Please create one first.
+                </p>
               ) : (
                 <Select
                   isRequired
@@ -87,6 +91,9 @@ const PlaylistInfoModal = ({ songId }) => {
               </Button>
               <Button
                 color="primary"
+                isDisabled={
+                  !selectedPlaylistId || isAdding || playlistInfo.length === 0
+                }
                 isLoading={isAdding}
                 onPress={handleSubmit}
               >
