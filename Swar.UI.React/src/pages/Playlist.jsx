@@ -58,14 +58,14 @@ const Playlist = () => {
                   <IoMdGlobe className="text-white text-xl mr-1" />
                   <p>{playlistInfo?.isPrivate ? "Private" : "Public"}</p>
                 </div>
-                <div className="flex items-center mb-2 sm:mb-0 sm:mr-6">
-                  <IoMdCalendar className="text-white text-xl mr-1" />
-                  <p>
-                    {playlistInfo?.createdAt
-                      ? new Date(playlistInfo?.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </p>
-                </div>
+                {playlistInfo?.createdAt && (
+                  <div className="flex items-center mb-2 sm:mb-0 sm:mr-6">
+                    <IoMdCalendar className="text-white text-xl mr-1" />
+                    <p>
+                      {new Date(playlistInfo?.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
                 <div className="flex items-center">
                   <IoMdList className="text-white text-xl mr-1" />
                   <p>Total Tracks: {playlistInfo?.songsCount || "0"}</p>
