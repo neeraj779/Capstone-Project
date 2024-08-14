@@ -11,10 +11,9 @@ namespace Swar.API.Repositories
         {
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<User?> GetByEmail(string email)
         {
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            return user;
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }
