@@ -76,36 +76,6 @@ namespace Swar.UnitTest.ServiceUnitTest
         }
 
         [Test]
-        public async Task AddSongToPlaylist_MaxLimit_ThrowsMaxLimitException()
-        {
-            // Arrange
-            var user = CreateUser();
-            user = await _userRepository.Add(user);
-            var playlist = CreatePlaylist(user.UserId);
-            await _playlistRepository.Add(playlist);
-
-            // Adding 5 songs to the playlist
-            for (int i = 1; i <= 5; i++)
-            {
-                await _playlistSongRepository.Add(new PlaylistSong
-                {
-                    PlaylistId = playlist.PlaylistId,
-                    SongId = $"song{i}"
-                });
-            }
-            await _dbContext.SaveChangesAsync();
-
-            var addSongDto = new AddSongToPlaylistDTO
-            {
-                PlaylistId = playlist.PlaylistId,
-                SongId = "song6"
-            };
-
-            // Act & Assert
-            Assert.ThrowsAsync<MaxLimitException>(() => _playlistSongsService.AddSongToPlaylist(user.UserId, addSongDto));
-        }
-
-        [Test]
         public async Task AddSongToPlaylist_SongAlreadyExists_ThrowsEntityAlreadyExistsException()
         {
             // Arrange

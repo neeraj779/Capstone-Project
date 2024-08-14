@@ -31,13 +31,6 @@ namespace Swar.API.Services
             var playlistSongsCount = await _playlistSongRepository.GetAll();
             playlistSongsCount = playlistSongsCount.Where(ps => ps.PlaylistId == addSongToPlaylistDTO.PlaylistId);
 
-            if (playlistSongsCount.Count() >= 5)
-            {
-                _logger.LogInformation($"User {userId} tried to add more than 5 songs to playlist {addSongToPlaylistDTO.PlaylistId}");
-                throw new MaxLimitException("A playlist can only have 5 songs.");
-            }
-
-
             if (playlistSongExists != null)
             {
                 _logger.LogInformation($"User {userId} tried to add song {addSongToPlaylistDTO.SongId} to playlist {addSongToPlaylistDTO.PlaylistId} but it already exists.");
