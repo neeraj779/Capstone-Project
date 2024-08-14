@@ -36,29 +36,32 @@ const useUserPlaylistSongs = (playlistId) => {
   useEffect(() => {
     const fetchPlaylistSongs = async () => {
       try {
-        const { data } = await swarApiClient.get(
-          `PlaylistSongs/GetAllSongsInUserPlaylist/${playlistId}`
-        );
+        const isLikedPlaylist = playlistId === "liked";
+        const url = isLikedPlaylist
+          ? "LikedSongs/GetLikedSongs"
+          : `PlaylistSongs/GetAllSongsInUserPlaylist/${playlistId}`;
+
+        const { data } = await swarApiClient.get(url);
+
+        const playlistInfo = isLikedPlaylist
+          ? {
+              playlistName: "Liked Songs",
+              songsCount: data?.songsCount || 0,
+              isPrivate: true,
+            }
+          : data?.playlistInfo || {};
 
         const songs = data?.songs || [];
-        const playlistInfo = data?.playlistInfo || {};
 
-        if (songs.length > 0) {
-          const fetchedSongs = await Promise.all(songs.map(fetchSong));
-          setState((prevState) => ({
-            ...prevState,
-            playlistInfo,
-            playlistSongs: fetchedSongs.filter(Boolean),
-          }));
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            playlistInfo,
-            playlistSongs: [],
-          }));
-        }
+        const fetchedSongs =
+          songs.length > 0 ? await Promise.all(songs.map(fetchSong)) : [];
+
+        setState((prevState) => ({
+          ...prevState,
+          playlistInfo,
+          playlistSongs: fetchedSongs.filter(Boolean),
+        }));
       } catch (ex) {
-        console.info(ex);
         setState({
           playlistInfo: {},
           playlistSongs: [],
