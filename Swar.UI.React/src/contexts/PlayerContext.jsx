@@ -71,6 +71,7 @@ export const PlayerProvider = ({ children }) => {
         );
 
         audioRef.current.src = songData.media_url;
+        document.title = `${songData.song} | Swar`;
         setCurrentSong(songData);
         await new Promise((resolve) => {
           audioRef.current.oncanplaythrough = resolve;
