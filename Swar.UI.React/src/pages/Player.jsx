@@ -54,7 +54,7 @@ const SongPlayer = () => {
       setSong(data);
       if (currentSong?.id !== data.id) {
         loadSong(data);
-        await swarApiClient.post("PlayHistory/LogSongHistory", id);
+        swarApiClient.post("PlayHistory/LogSongHistory", id);
       }
     } catch (error) {
       console.error(error);
