@@ -37,6 +37,7 @@ const PlaylistInfoModal = ({ songId }) => {
 
     setIsAdding(true);
     await handleAddToPlaylist(selectedPlaylistId, songId);
+    toast.success("Song added to playlist successfully.");
     setIsAdding(false);
     onClose();
   }, [selectedPlaylistId, songId, handleAddToPlaylist, onClose]);
