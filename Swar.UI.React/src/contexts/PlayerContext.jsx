@@ -1,14 +1,21 @@
 import { createContext, useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import useApiClient from "../hooks/useApiClient";
 
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
+  const songApiClient = useApiClient(true);
+  const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [loop, setLoop] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
+  const [suggestedSongs, setSuggestedSongs] = useState([]);
+  const [suggestedSongIndex, setSuggestedSongIndex] = useState(0);
 
   const audioRef = useRef(new Audio());
 
@@ -66,10 +73,26 @@ export const PlayerProvider = ({ children }) => {
           audioRef.current.oncanplaythrough = resolve;
         });
         updateMediaSession(song);
+        if (suggestedSongIndex === 9 || suggestedSongs.length === 0) {
+          const { data } = await songApiClient.get(
+            `SongsData/GetSongSuggestions?songId=${song.id}`
+          );
+          console.log(suggestedSongIndex);
+          setSuggestedSongs(data);
+          setSuggestedSongIndex(0);
+        }
+        setIsEnded(false);
       }
       playSong();
     },
-    [currentSong, playSong, updateMediaSession]
+    [
+      currentSong,
+      playSong,
+      updateMediaSession,
+      songApiClient,
+      setSuggestedSongs,
+      suggestedSongIndex,
+    ]
   );
 
   const resetPlayer = useCallback(() => {
@@ -77,6 +100,7 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current.currentTime = 0;
     setCurrentSong(null);
     setCurrentTime(0);
+    setIsEnded(false);
   }, [pauseSong]);
 
   const togglePlayPause = useCallback(() => {
@@ -88,7 +112,10 @@ export const PlayerProvider = ({ children }) => {
 
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration);
-    const handleEnded = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setIsEnded(true);
+    };
 
     audio.addEventListener("timeupdate", handleTimeUpdate);
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
@@ -100,6 +127,16 @@ export const PlayerProvider = ({ children }) => {
       audio.removeEventListener("ended", handleEnded);
     };
   }, []);
+
+  useEffect(() => {
+    if (isEnded && !loop) {
+      const nextIndex = (suggestedSongIndex + 1) % suggestedSongs.length;
+      const nextSongId = suggestedSongs[nextIndex];
+      setSuggestedSongIndex(nextIndex);
+
+      navigate(`/song/${nextSongId}`);
+    }
+  }, [isEnded]);
 
   useEffect(() => {
     audioRef.current.loop = loop;
