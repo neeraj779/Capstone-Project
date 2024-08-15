@@ -158,17 +158,20 @@ const SongPlayer = () => {
               </button>
             )}
           </div>
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700 mt-9">
-            <h2 className="text-3xl font-bold text-white mb-4">Lyrics</h2>
-            <CustomScroll>
-              <div className="max-h-[36rem]">
-                <p
-                  className="text-base text-gray-200 leading-relaxed whitespace-pre-line text-lg"
-                  dangerouslySetInnerHTML={{ __html: song.lyrics }}
-                />
-              </div>
-            </CustomScroll>
-          </div>
+
+          {song?.lyrics && (
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700 mt-9">
+              <h2 className="text-3xl font-bold text-white mb-4">Lyrics</h2>
+              <CustomScroll>
+                <div className="max-h-[36rem]">
+                  <p
+                    className="text-base text-gray-200 leading-relaxed whitespace-pre-line text-md"
+                    dangerouslySetInnerHTML={{ __html: song.lyrics }}
+                  />
+                </div>
+              </CustomScroll>
+            </div>
+          )}
         </div>
       </div>
     </div>
