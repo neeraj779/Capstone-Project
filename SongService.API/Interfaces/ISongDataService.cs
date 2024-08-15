@@ -5,6 +5,7 @@ namespace SongService.API.Interfaces
     public interface ISongDataService
     {
         Task<JArray> SearchForSong(string query, bool lyrics, bool songData);
+        Task<List<string>> GetSongSuggestions(string songId);
         Task<JObject> GetSong(string id, bool lyrics);
         Task<string> GetSongId(string url);
         Task<JObject> GetAlbum(string albumId, bool lyrics);

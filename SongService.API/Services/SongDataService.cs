@@ -73,6 +73,29 @@ namespace SongService.API.Services
             return songs;
         }
 
+        public async Task<List<string>> GetSongSuggestions(string songId)
+        {
+            string stationId = await CreateSongStationId(songId);
+            string searchUrl = $"{_configuration["MusicAPIs:SongSuggestionsBaseUrl"]}{stationId}";
+            var response = await FetchDataFromApi(searchUrl);
+            var jsonResponse = JObject.Parse(response);
+
+            List<string> suggestions = new List<string>();
+            foreach (var property in jsonResponse.Properties())
+            {
+                if (property.Value is JObject songObject && songObject["song"] != null)
+                {
+                    var song = songObject["song"];
+                    string? id = song["id"]?.ToString();
+                    if (id != null)
+                    {
+                        suggestions.Add(id);
+                    }
+                }
+            }
+            return suggestions;
+        }
+
         public async Task<JObject> GetSong(string id, bool lyrics)
         {
             var songDetailsUrl = $"{_configuration["MusicAPIs:SongDetailsBaseUrl"]}{id}";
@@ -170,6 +193,19 @@ namespace SongService.API.Services
                 throw new InvalidQueryException();
             }
             throw new InvalidQueryException();
+        }
+
+        private async Task<string> CreateSongStationId(string songId)
+        {
+            string id = $"{songId}%22%5D";
+            string url = $"{_configuration["MusicAPIs:StationIdBaseUrl"]}{id}";
+            var response = await FetchDataFromApi(url);
+            var jsonResponse = JObject.Parse(response);
+            string? stationId = jsonResponse["stationid"]?.ToString();
+            if (string.IsNullOrEmpty(stationId))
+                throw new EntityNotFoundException("Station not found");
+
+            return stationId;
         }
     }
 }

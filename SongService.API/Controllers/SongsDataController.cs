@@ -59,6 +59,31 @@ namespace SongService.API.Controllers
         }
 
         /// <summary>
+        /// Get song suggestions based on a song ID.
+        /// </summary>
+        /// <param name="songId"> The ID of the song to get suggestions for.</param>
+        /// <returns>An <see cref="ActionResult"/> with the search results or an error message.</returns>
+        [HttpGet("GetSongSuggestions")]
+        [Authorize]
+        public async Task<ActionResult> GetSongSuggestions(string songId)
+        {
+            try
+            {
+                var suggestions = await _songService.GetSongSuggestions(songId);
+                return Ok(suggestions);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(new ErrorModel
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Message = ex.Message
+                });
+            }
+        }
+
+
+        /// <summary>
         /// Retrieves a song by its ID.
         /// </summary>
         /// <param name="id">The ID of the song to retrieve.</param>
