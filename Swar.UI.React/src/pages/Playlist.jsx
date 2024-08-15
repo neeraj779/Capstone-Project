@@ -60,7 +60,7 @@ const Playlist = () => {
             <div className="flex-shrink-0 mr-6">
               <Image
                 isBlurred
-                src={songs[0].image || playlistSvg}
+                src={songs[0]?.image || playlistSvg}
                 alt="First Song"
                 className="w-32 h-32"
               />
