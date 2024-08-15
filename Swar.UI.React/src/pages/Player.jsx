@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { Image, Slider } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 
@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { Download, Pause, Play, RedoDot, UndoDot, Repeat } from "lucide-react";
 import { Spinner } from "@nextui-org/react";
 
-import useApiClient from "../hooks/useApiClient";
 import PlaylistInfoModal from "../components/modals/PlaylistInfoModal";
 import SearchBar from "../components/SearchBar";
 import PlayerSkeleton from "../components/PlayerSkeleton";
@@ -15,13 +14,9 @@ import LikeButton from "../components/LikeButton/LikeButton";
 import usePlayer from "../hooks/usePlayer";
 
 const SongPlayer = () => {
-  const swarApiClient = useApiClient();
-  const songApiClient = useApiClient(true);
-
   const { id } = useParams();
-  const navigate = useNavigate();
   const {
-    currentSong,
+    currentSong: song,
     isPlaying,
     duration,
     currentTime,
@@ -32,41 +27,18 @@ const SongPlayer = () => {
     seek,
   } = usePlayer();
 
-  const [song, setSong] = useState(null);
   const [sliderValue, setSliderValue] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const fetchSong = useCallback(async () => {
-    setLoading(true);
-    if (currentSong?.id === id) {
-      setSong(currentSong);
-      document.title = currentSong.song;
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const { data } = await songApiClient.get(
-        `SongsData/GetSongById?id=${id}&lyrics=true`
-      );
-      document.title = data.song;
-      setSong(data);
-      if (currentSong?.id !== data.id) {
-        loadSong(data);
-        swarApiClient.post("PlayHistory/LogSongHistory", id);
-      }
-    } catch (error) {
-      console.error(error);
-      navigate("/");
-    } finally {
-      setLoading(false);
-    }
-  }, [id, navigate, loadSong, currentSong, swarApiClient, songApiClient]);
-
   useEffect(() => {
+    const fetchSong = async () => {
+      setLoading(true);
+      await loadSong(id, true);
+      setLoading(false);
+    };
     fetchSong();
-  }, [fetchSong]);
+  }, [id]);
 
   useEffect(() => {
     setSliderValue(currentTime);
@@ -90,7 +62,7 @@ const SongPlayer = () => {
 
   const downloadSong = async () => {
     setIsDownloading(true);
-    const response = await fetch(currentSong.media_url);
+    const response = await fetch(song.media_url);
     if (!response.ok) toast.error("Unable to download");
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);

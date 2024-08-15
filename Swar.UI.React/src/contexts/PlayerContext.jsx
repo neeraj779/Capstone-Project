@@ -1,5 +1,4 @@
 import { createContext, useState, useRef, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import useApiClient from "../hooks/useApiClient";
 
@@ -7,7 +6,6 @@ const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
   const songApiClient = useApiClient(true);
-  const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -65,19 +63,28 @@ export const PlayerProvider = ({ children }) => {
   );
 
   const loadSong = useCallback(
-    async (song) => {
-      if (currentSong?.id !== song.id) {
-        audioRef.current.src = song.media_url;
-        setCurrentSong(song);
+    async (songId, isFromPlayer) => {
+      console.log(songId);
+      if (currentSong?.id !== songId) {
+        const { data: songData } = await songApiClient.get(
+          `SongsData/GetSongById?id=${songId}&lyrics=true`
+        );
+
+        audioRef.current.src = songData.media_url;
+        setCurrentSong(songData);
         await new Promise((resolve) => {
           audioRef.current.oncanplaythrough = resolve;
         });
-        updateMediaSession(song);
-        if (suggestedSongIndex === 9 || suggestedSongs.length === 0) {
+
+        updateMediaSession(songData);
+        if (
+          suggestedSongIndex === 9 ||
+          suggestedSongs.length === 0 ||
+          isFromPlayer
+        ) {
           const { data } = await songApiClient.get(
-            `SongsData/GetSongSuggestions?songId=${song.id}`
+            `SongsData/GetSongSuggestions?songId=${songId}`
           );
-          console.log(suggestedSongIndex);
           setSuggestedSongs(data);
           setSuggestedSongIndex(0);
         }
@@ -90,6 +97,7 @@ export const PlayerProvider = ({ children }) => {
       playSong,
       updateMediaSession,
       songApiClient,
+      suggestedSongs,
       setSuggestedSongs,
       suggestedSongIndex,
     ]
@@ -133,8 +141,8 @@ export const PlayerProvider = ({ children }) => {
       const nextIndex = (suggestedSongIndex + 1) % suggestedSongs.length;
       const nextSongId = suggestedSongs[nextIndex];
       setSuggestedSongIndex(nextIndex);
-
-      navigate(`/song/${nextSongId}`);
+      console.log(suggestedSongs);
+      loadSong(nextSongId, false);
     }
   }, [isEnded]);
 
