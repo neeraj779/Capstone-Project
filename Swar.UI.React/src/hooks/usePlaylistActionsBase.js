@@ -34,8 +34,23 @@ const usePlaylistActionsBase = () => {
     [handleApiAction, swarApiClient]
   );
 
+  const handleRemoveFromPlaylist = useCallback(
+    async (playlistId, songId) => {
+      await handleApiAction(
+        () =>
+          swarApiClient.delete(
+            `PlaylistSongs/RemoveSongFromPlaylist/${playlistId}/${songId}`
+          ),
+        "Song removed from playlist successfully.",
+        "Failed to remove song from playlist."
+      );
+    },
+    [handleApiAction, swarApiClient]
+  );
+
   return {
     handleAddToPlaylist,
+    handleRemoveFromPlaylist,
   };
 };
 

@@ -1,11 +1,21 @@
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { Image } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Image,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  cn,
+} from "@nextui-org/react";
+import { DeleteIcon } from "../components/Icons";
+
 import useUserplaylistSongs from "../hooks/useUserPlaylistSongs";
+import usePlaylistActionsBase from "../hooks/usePlaylistActionsBase";
 import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
 import playlistSvg from "../assets/img/playlist.svg";
 import ErrorMessage from "../components/Error/ErrorMessage";
-import { Button } from "@nextui-org/react";
 import { IoMdMore, IoMdList, IoMdGlobe, IoMdCalendar } from "react-icons/io";
 
 const Playlist = () => {
@@ -13,10 +23,28 @@ const Playlist = () => {
   const { id } = useParams();
   const { playlistInfo, playlistSongs, loading, error } =
     useUserplaylistSongs(id);
+  const { handleRemoveFromPlaylist } = usePlaylistActionsBase();
+  const [songs, setSongs] = useState(playlistSongs);
+
+  useEffect(() => {
+    setSongs(playlistSongs);
+  }, [playlistSongs]);
 
   const handleSongClick = (songId) => navigate(`/song/${songId}`);
 
-  const firstSong = playlistSongs[0] || {};
+  const handleRemoveSong = async (songId) => {
+    const updatedSongs = songs.filter((song) => song.id !== songId);
+    setSongs(updatedSongs);
+
+    try {
+      await handleRemoveFromPlaylist(playlistInfo.playlistId, songId);
+    } catch {
+      setSongs(playlistSongs);
+    }
+  };
+
+  const iconClasses =
+    "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
   if (error) {
     return <ErrorMessage statusCode={error.status} />;
@@ -32,7 +60,7 @@ const Playlist = () => {
             <div className="flex-shrink-0 mr-6">
               <Image
                 isBlurred
-                src={firstSong.image || playlistSvg}
+                src={songs[0].image || playlistSvg}
                 alt="First Song"
                 className="w-32 h-32"
               />
@@ -79,8 +107,8 @@ const Playlist = () => {
               Playlist Songs
             </h2>
             <div>
-              {playlistSongs.length ? (
-                playlistSongs.map((song) => (
+              {songs.length ? (
+                songs.map((song) => (
                   <div
                     key={song.id}
                     className="p-2 flex items-start items-center"
@@ -103,13 +131,35 @@ const Playlist = () => {
                         </p>
                       </div>
                     </div>
-                    <Button
-                      isIconOnly
-                      className="bg-transparent"
-                      aria-label="More options"
-                    >
-                      <IoMdMore className="text-white text-2xl" />
-                    </Button>
+                    <Dropdown className="bg-gray-800 text-white">
+                      <DropdownTrigger>
+                        <Button
+                          isIconOnly
+                          className="bg-transparent"
+                          aria-label="More options"
+                        >
+                          <IoMdMore className="text-white text-2xl" />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu
+                        variant="faded"
+                        aria-label="Playlist options"
+                      >
+                        <DropdownItem
+                          key="delete"
+                          className="text-danger"
+                          color="danger"
+                          startContent={
+                            <DeleteIcon
+                              className={cn(iconClasses, "text-danger")}
+                            />
+                          }
+                          onClick={() => handleRemoveSong(song.id)}
+                        >
+                          Remove
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                   </div>
                 ))
               ) : (
