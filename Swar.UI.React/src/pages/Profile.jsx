@@ -13,6 +13,7 @@ import neutralAvatar from "../assets/img/neutral-avatar.svg";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
 import { LuBadgeCheck } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const swarApiClient = useApiClient();
@@ -141,8 +142,9 @@ const Profile = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mr-4">
                     {playlists.length > 0 ? (
                       playlists.map((playlist) => (
-                        <div
+                        <Link
                           key={playlist.playlistId}
+                          to={`/playlist/${playlist.publicId}`}
                           className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4"
                         >
                           <img
@@ -158,7 +160,7 @@ const Profile = () => {
                               {playlist.description}
                             </p>
                           </div>
-                        </div>
+                        </Link>
                       ))
                     ) : (
                       <div>No playlists available</div>
@@ -182,8 +184,9 @@ const Profile = () => {
                   <div className="space-y-4 max-h-[calc(4*5rem)]">
                     {recentlyPlayed.length > 0 ? (
                       recentlyPlayed.map((activity) => (
-                        <div
+                        <Link
                           key={activity.id}
+                          to={`/song/${activity.id}`}
                           className="bg-gray-700 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 min-w-[250px] mr-4"
                         >
                           <img
@@ -197,7 +200,7 @@ const Profile = () => {
                             </h3>
                             {activity.primary_artists}
                           </div>
-                        </div>
+                        </Link>
                       ))
                     ) : (
                       <div>No recent activity available</div>
