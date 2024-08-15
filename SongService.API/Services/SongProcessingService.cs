@@ -46,7 +46,6 @@ namespace SongService.API.Services
             }
 
             FormatBasicSongInfo(data);
-            FormatCopyrightText(data);
 
             return (JObject)data;
         }
@@ -138,18 +137,6 @@ namespace SongService.API.Services
 
             var decryptedUrl = reader.ReadToEnd();
             return decryptedUrl.Replace("_96.mp4", HighQualitySuffix);
-        }
-
-        private void FormatCopyrightText(JToken data)
-        {
-            try
-            {
-                data["copyright_text"] = data["copyright_text"]?.ToString().Replace("&copy;", "©");
-            }
-            catch (KeyNotFoundException)
-            {
-                Console.WriteLine("Key not found");
-            }
         }
     }
 }
