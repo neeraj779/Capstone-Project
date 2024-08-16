@@ -45,6 +45,7 @@ const useUserPlaylistSongs = (playlistId) => {
 
         const playlistInfo = isLikedPlaylist
           ? {
+              playlistId: 0,
               playlistName: "Liked Songs",
               songsCount: data?.songsCount || 0,
               isPrivate: true,

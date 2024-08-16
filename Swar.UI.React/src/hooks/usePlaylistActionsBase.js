@@ -31,11 +31,13 @@ const usePlaylistActionsBase = () => {
 
   const handleRemoveFromPlaylist = useCallback(
     async (playlistId, songId) => {
+      const url =
+        playlistId === 0
+          ? `LikedSongs/UnlikeSong/${songId}`
+          : `PlaylistSongs/RemoveSongFromPlaylist/${playlistId}/${songId}`;
+
       await handleApiAction(
-        () =>
-          swarApiClient.delete(
-            `PlaylistSongs/RemoveSongFromPlaylist/${playlistId}/${songId}`
-          ),
+        () => swarApiClient.delete(url),
         "Failed to remove song from playlist."
       );
     },
