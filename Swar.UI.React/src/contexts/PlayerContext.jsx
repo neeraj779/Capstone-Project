@@ -28,10 +28,7 @@ export const PlayerProvider = ({ children }) => {
   }, []);
 
   const playSong = useCallback(() => {
-    audioRef.current
-      .play()
-      .then(() => setIsPlaying(true))
-      .catch(toast.error("Opps! We couldn't play the song.", { icon: "😥" }));
+    audioRef.current.play().then(() => setIsPlaying(true));
   }, []);
 
   const seek = useCallback((time, isSeek = true) => {
