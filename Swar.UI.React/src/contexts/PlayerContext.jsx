@@ -10,11 +10,13 @@ export const PlayerProvider = ({ children }) => {
   const songApiClient = useApiClient(true);
   const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
+  const [isLoadingSong, setIsLoadingSong] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [loop, setLoop] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
+  const [currentSongId, setCurrentSongId] = useState(null);
   const [suggestedSongs, setSuggestedSongs] = useState([]);
   const [suggestedSongIndex, setSuggestedSongIndex] = useState(-1);
 
@@ -68,6 +70,7 @@ export const PlayerProvider = ({ children }) => {
   const loadSong = useCallback(
     async (songId, isFromPlayer) => {
       if (currentSong?.id === songId) return;
+      setIsLoadingSong(true);
 
       try {
         const { data: songData } = await songApiClient.get(
@@ -84,27 +87,35 @@ export const PlayerProvider = ({ children }) => {
 
         playSong();
         updateMediaSession(songData);
+        if (isFromPlayer) setCurrentSongId(songData.id);
+
+        if (
+          isFromPlayer ||
+          !suggestedSongs.length ||
+          suggestedSongIndex === suggestedSongs.length - 2
+        ) {
+          try {
+            console.log("Fetching suggestions");
+            const { data: suggestions } = await songApiClient.get(
+              `SongsData/GetSongSuggestions?songId=${songId}`
+            );
+            console.log("Suggestions");
+
+            if (suggestions.length) {
+              setSuggestedSongs((prevSongs) => [...prevSongs, ...suggestions]);
+            }
+          } catch {
+            setSuggestedSongs([]);
+            setSuggestedSongIndex(-1);
+          }
+        }
       } catch {
         toast.error("Opps! We couldn't load the song.", {
           icon: "😥",
         });
         return navigate("/");
-      }
-
-      if (isFromPlayer || !suggestedSongs.length || suggestedSongIndex === 8) {
-        try {
-          const { data: suggestions } = await songApiClient.get(
-            `SongsData/GetSongSuggestions?songId=${songId}`
-          );
-
-          if (suggestions.length) {
-            setSuggestedSongs(suggestions);
-            setSuggestedSongIndex(-1);
-          }
-        } catch {
-          setSuggestedSongs([]);
-          setSuggestedSongIndex(-1);
-        }
+      } finally {
+        setIsLoadingSong(false);
       }
     },
     [
@@ -120,19 +131,44 @@ export const PlayerProvider = ({ children }) => {
     ]
   );
 
+  const goToNextSong = useCallback(() => {
+    if (isLoadingSong) return;
+    if (suggestedSongs.length === 0) return;
+    setSuggestedSongIndex((prevIndex) => {
+      const nextIndex = (prevIndex + 1) % suggestedSongs.length;
+      const nextSongId = suggestedSongs[nextIndex];
+      console.log(nextIndex, nextSongId);
+      console.log(suggestedSongs);
+      if (nextSongId) {
+        loadSong(nextSongId, false);
+        return nextIndex;
+      }
+    });
+  }, [isLoadingSong, suggestedSongs, loadSong]);
+
+  const goToPreviousSong = useCallback(() => {
+    if (isLoadingSong) return;
+    if (suggestedSongs.length === 0) return;
+
+    setSuggestedSongIndex((prevIndex) => {
+      const newIndex =
+        prevIndex > 0
+          ? (prevIndex - 1 + suggestedSongs.length) % suggestedSongs.length
+          : -1;
+
+      const songId = newIndex >= 0 ? suggestedSongs[newIndex] : currentSongId;
+
+      if (songId) loadSong(songId, false);
+      return newIndex;
+    });
+  }, [currentSongId, isLoadingSong, loadSong, suggestedSongs]);
+
   useEffect(() => {
     if (isEnded && !loop) {
-      setSuggestedSongIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % suggestedSongs.length;
-        const nextSongId = suggestedSongs[nextIndex];
-        if (nextSongId) {
-          loadSong(nextSongId, false);
-          return nextIndex;
-        }
-      });
+      goToNextSong();
       setIsEnded(false);
     }
-  }, [isEnded, loadSong, loop, suggestedSongs]);
+  }, [goToNextSong, isEnded, loop]);
 
   const resetPlayer = useCallback(() => {
     pauseSong();
@@ -183,6 +219,8 @@ export const PlayerProvider = ({ children }) => {
     pauseSong,
     togglePlayPause,
     seek,
+    goToNextSong,
+    goToPreviousSong,
   };
 
   return (
