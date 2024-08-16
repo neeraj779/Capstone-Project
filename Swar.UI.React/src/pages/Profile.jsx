@@ -104,9 +104,9 @@ const Profile = () => {
                   Gender: {profile?.gender || "N/A"}
                 </p>
                 <div className="flex flex-col space-y-4">
-                  <Button color="primary" variant="shadow">
+                  {/* <Button color="primary" variant="shadow">
                     Edit Profile
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={() => setIsUpdatePasswordOpen(true)}
                     color="secondary"
@@ -118,9 +118,9 @@ const Profile = () => {
                     isOpen={isUpdatePasswordOpen}
                     onOpenChange={() => setIsUpdatePasswordOpen(false)}
                   />
-                  <Button color="danger" variant="shadow">
+                  {/* <Button color="danger" variant="shadow">
                     Delete Account
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
