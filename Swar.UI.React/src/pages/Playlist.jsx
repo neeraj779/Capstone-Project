@@ -62,12 +62,26 @@ const Playlist = () => {
         <>
           <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl shadow-lg border border-gray-700 mb-8 flex flex-row items-start items-center">
             <div className="flex-shrink-0 mr-6">
-              <Image
-                isBlurred
-                src={playlistSongs[0]?.image || playlistSvg}
-                alt="First Song"
-                className="w-32 h-32"
-              />
+              {playlistSongs.length >= 4 ? (
+                <div className="grid grid-cols-2 grid-rows-2 w-32 h-32 overflow-hidden rounded-xl">
+                  {playlistSongs.slice(0, 4).map((song, index) => (
+                    <Image
+                      key={index}
+                      radius="none"
+                      isBlurred
+                      src={song?.image || playlistSvg}
+                      alt={`Song ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Image
+                  isBlurred
+                  src={playlistSongs[0]?.image || playlistSvg}
+                  alt="playlist"
+                  className="w-32 h-32"
+                />
+              )}
             </div>
             <div className="flex-grow overflow-hidden">
               <div className="mb-2">
