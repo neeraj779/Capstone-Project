@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
+  const swarApiClient = useApiClient();
   const songApiClient = useApiClient(true);
   const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
@@ -56,6 +57,7 @@ export const PlayerProvider = ({ children }) => {
 
         playSong();
         if (isFromPlayer) setCurrentSongId(songData.id);
+        swarApiClient.post("PlayHistory/LogSongHistory", songData.id);
 
         if (
           isFromPlayer ||
@@ -95,6 +97,7 @@ export const PlayerProvider = ({ children }) => {
     [
       currentSong?.id,
       playSong,
+      swarApiClient,
       songApiClient,
       suggestedSongs.length,
       suggestedSongIndex,
