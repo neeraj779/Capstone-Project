@@ -31,38 +31,10 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current.play().then(() => setIsPlaying(true));
   }, []);
 
-  const seek = useCallback((time, isSeek = true) => {
-    if (isSeek) {
-      audioRef.current.currentTime += time;
-    } else {
-      audioRef.current.currentTime = time;
-    }
+  const seek = useCallback((time) => {
+    audioRef.current.currentTime = time;
     setCurrentTime(audioRef.current.currentTime);
   }, []);
-
-  const updateMediaSession = useCallback(
-    (data) => {
-      if (navigator.mediaSession) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: data.song,
-          artist: data.singers || data.primary_artists || "Unknown Artist",
-          artwork: [{ src: data.image, sizes: "500x500", type: "image/png" }],
-        });
-
-        navigator.mediaSession.setActionHandler("play", playSong);
-        navigator.mediaSession.setActionHandler("pause", pauseSong);
-        navigator.mediaSession.setActionHandler("seekbackward", () =>
-          seek(-10)
-        );
-        navigator.mediaSession.setActionHandler("seekforward", () => seek(10));
-        navigator.mediaSession.setActionHandler("previoustrack", () =>
-          seek(-10)
-        );
-        navigator.mediaSession.setActionHandler("nexttrack", () => seek(10));
-      }
-    },
-    [playSong, pauseSong, seek]
-  );
 
   const loadSong = useCallback(
     async (songId, isFromPlayer) => {
@@ -83,7 +55,6 @@ export const PlayerProvider = ({ children }) => {
         );
 
         playSong();
-        updateMediaSession(songData);
         if (isFromPlayer) setCurrentSongId(songData.id);
 
         if (
@@ -124,7 +95,6 @@ export const PlayerProvider = ({ children }) => {
     [
       currentSong?.id,
       playSong,
-      updateMediaSession,
       songApiClient,
       suggestedSongs.length,
       suggestedSongIndex,
@@ -170,6 +140,31 @@ export const PlayerProvider = ({ children }) => {
       setIsEnded(false);
     }
   }, [goToNextSong, isEnded, loop]);
+
+  const updateMediaSession = useCallback(
+    (data) => {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: data.song,
+        artist: data.singers || data.primary_artists || "Unknown Artist",
+        artwork: [{ src: data.image, sizes: "500x500", type: "image/png" }],
+      });
+
+      navigator.mediaSession.setActionHandler("play", playSong);
+      navigator.mediaSession.setActionHandler("pause", pauseSong);
+      navigator.mediaSession.setActionHandler(
+        "previoustrack",
+        goToPreviousSong
+      );
+      navigator.mediaSession.setActionHandler("nexttrack", goToNextSong);
+    },
+    [goToNextSong, goToPreviousSong, pauseSong, playSong]
+  );
+
+  useEffect(() => {
+    if (currentSong && navigator.mediaSession) {
+      updateMediaSession(currentSong);
+    }
+  }, [currentSong, updateMediaSession]);
 
   const resetPlayer = useCallback(() => {
     pauseSong();
