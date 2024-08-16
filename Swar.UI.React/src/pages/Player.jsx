@@ -119,7 +119,7 @@ const SongPlayer = () => {
               {song.singers || song.primary_artists || "Unknown Artist"}
             </p>
           </div>
-          <div className="-mt-3 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
+          <div className="-mt-3 -mb-3 px-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
             <LikeButton songId={song.id} />
             <PlaylistInfoModal songId={song.id} />
           </div>
@@ -131,9 +131,9 @@ const SongPlayer = () => {
             minValue={0}
             onChange={handleSeek}
             value={sliderValue}
-            className="w-full max-w-[400px] mx-auto"
+            className="w-full max-w-[400px] mx-auto px-3"
           />
-          <div className="-mt-6 -mb-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
+          <div className="-mt-6 -mb-3 px-3 w-full max-w-[400px] mx-auto flex items-center justify-between">
             <span className="text-xs">{formatTime(currentTime)}</span>
             <span className="text-xs">{formatTime(duration)}</span>
           </div>
