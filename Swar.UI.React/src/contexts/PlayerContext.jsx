@@ -146,7 +146,7 @@ export const PlayerProvider = ({ children }) => {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: data.song,
         artist: data.singers || data.primary_artists || "Unknown Artist",
-        artwork: [{ src: data.image, sizes: "500x500", type: "image/png" }],
+        artwork: [{ src: data.image, sizes: "512x512", type: "image/png" }],
       });
 
       navigator.mediaSession.setActionHandler("play", playSong);
