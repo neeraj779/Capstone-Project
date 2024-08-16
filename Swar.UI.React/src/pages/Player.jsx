@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   Image,
@@ -9,9 +9,9 @@ import {
   CardBody,
   CardHeader,
   Divider,
+  Spinner,
 } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
-
 import toast from "react-hot-toast";
 import { Download, Pause, Play, Repeat } from "lucide-react";
 import {
@@ -20,8 +20,6 @@ import {
   MdInfoOutline,
   MdLyrics,
 } from "react-icons/md";
-import { Spinner } from "@nextui-org/react";
-
 import PlaylistInfoModal from "../components/modals/PlaylistInfoModal";
 import SearchBar from "../components/SearchBar";
 import PlayerSkeleton from "../components/PlayerSkeleton";
@@ -62,37 +60,42 @@ const SongPlayer = () => {
     setSliderValue(currentTime);
   }, [currentTime]);
 
-  const handleSeek = (value) => {
-    seek(value, false);
-    setSliderValue(value);
-  };
+  const handleSeek = useCallback(
+    (value) => {
+      seek(value, false);
+      setSliderValue(value);
+    },
+    [seek]
+  );
 
-  const formatTime = useMemo(
-    () => (seconds) => {
+  const formatTime = useMemo(() => {
+    return (seconds) => {
       const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
       const secs = String(Math.floor(seconds % 60)).padStart(2, "0");
       return `${minutes}:${secs}`;
-    },
-    []
-  );
+    };
+  }, []);
 
   const toggleLoop = () => setLoop((prev) => !prev);
 
   const downloadSong = async () => {
     setIsDownloading(true);
-    const response = await fetch(song.media_url);
-    if (!response.ok) toast.error("Unable to download");
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${song.song}.mp3`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Downloaded successfully", {
-      position: "bottom-center",
-    });
-    setIsDownloading(false);
+    try {
+      const response = await fetch(song.media_url);
+      if (!response.ok) throw new Error("Unable to download");
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${song.song}.mp3`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Downloaded successfully", { position: "bottom-center" });
+    } catch {
+      toast.error("Failed to download", { position: "bottom-center" });
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   if (loading) return <PlayerSkeleton />;
@@ -103,7 +106,7 @@ const SongPlayer = () => {
         <SearchBar />
       </div>
       <div>
-        <div className="grid gap-6 px-6">
+        <div className="grid gap-6">
           <div className="grid text-center place-content-center gap-3 mx-auto">
             <div className="flex justify-center">
               <Image isBlurred src={song.image} width={240} alt={song.song} />
@@ -145,7 +148,7 @@ const SongPlayer = () => {
             </button>
             <div className="flex items-center justify-center gap-2">
               <button
-                onClick={() => goToPreviousSong()}
+                onClick={goToPreviousSong}
                 className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <MdSkipPrevious className="text-2xl" />
@@ -157,24 +160,27 @@ const SongPlayer = () => {
                 {isPlaying ? <Pause /> : <Play />}
               </button>
               <button
-                onClick={() => goToNextSong()}
+                onClick={goToNextSong}
                 className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <MdSkipNext className="text-2xl" />
               </button>
             </div>
-            {isDownloading ? (
-              <div className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <button
+              onClick={downloadSong}
+              className={`bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 ${
+                isDownloading
+                  ? "cursor-not-allowed opacity-60"
+                  : "hover:bg-gray-600"
+              }`}
+              disabled={isDownloading}
+            >
+              {isDownloading ? (
                 <Spinner size="sm" color="default" />
-              </div>
-            ) : (
-              <button
-                onClick={downloadSong}
-                className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
+              ) : (
                 <Download />
-              </button>
-            )}
+              )}
+            </button>
           </div>
 
           <div className="flex w-full flex-col items-center justify-center gap-4 mt-6">
@@ -195,7 +201,7 @@ const SongPlayer = () => {
                   </div>
                 }
               >
-                <Card className="w-[82vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
+                <Card className="w-[94vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
                   <CardHeader className="flex gap-3">
                     <h2 className="text-3xl font-bold text-white mb-4">
                       Song Details
@@ -204,64 +210,33 @@ const SongPlayer = () => {
                   <Divider />
                   <CardBody>
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Album
-                        </h3>
-                        <p className="text-gray-300">{song.album}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Song
-                        </h3>
-                        <p className="text-gray-300">{song.song}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Artists
-                        </h3>
-                        <p className="text-gray-300">{song.primary_artists}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Release Date
-                        </h3>
-                        <p className="text-gray-300">{song.release_date}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Year
-                        </h3>
-                        <p className="text-gray-300">{song.year}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Language
-                        </h3>
-                        <p className="text-gray-300">{song.language}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Song Duration
-                        </h3>
-                        <p className="text-gray-300">{song.duration} seconds</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Play Count
-                        </h3>
-                        <p className="text-gray-300">{song.play_count}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-200">
-                          Lyrics
-                        </h3>
-                        <p className="text-gray-300">
-                          {song.has_lyrics == "true"
-                            ? "Available"
-                            : "Not Available"}
-                        </p>
-                      </div>
+                      {[
+                        { label: "Album", value: song.album },
+                        { label: "Song", value: song.song },
+                        { label: "Artists", value: song.primary_artists },
+                        { label: "Release Date", value: song.release_date },
+                        { label: "Year", value: song.year },
+                        { label: "Language", value: song.language },
+                        {
+                          label: "Song Duration",
+                          value: `${song.duration} seconds`,
+                        },
+                        { label: "Play Count", value: song.play_count },
+                        {
+                          label: "Lyrics",
+                          value:
+                            song.has_lyrics === "true"
+                              ? "Available"
+                              : "Not Available",
+                        },
+                      ].map(({ label, value }) => (
+                        <div key={label}>
+                          <h3 className="text-xl font-semibold text-gray-200">
+                            {label}
+                          </h3>
+                          <p className="text-gray-300">{value}</p>
+                        </div>
+                      ))}
                     </div>
                   </CardBody>
                 </Card>
@@ -275,7 +250,7 @@ const SongPlayer = () => {
                   </div>
                 }
               >
-                <Card className="w-[82vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
+                <Card className="w-[94vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
                   <CardHeader className="flex gap-3">
                     <h2 className="text-3xl font-bold text-white mb-4">
                       Lyrics
