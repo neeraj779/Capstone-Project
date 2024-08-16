@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import useApiClient from "../hooks/useApiClient";
 
-const ENDPOINT = "SongsData/GetPlaylistById?listId=1220338282&lyrics=false";
+const ENDPOINT = "SongsData/GetPlaylistById?listId=1221137350&lyrics=false";
 
 const usePlaylistSongs = () => {
   const songApiClient = useApiClient(true);
@@ -46,10 +46,10 @@ const usePlaylistSongs = () => {
       content_list.slice(start, end).map((id) => songMap.get(id) || {});
 
     const categories = {
-      trending: getCategorySongs(0, 5),
-      relaxing: getCategorySongs(5, 10),
-      romance: getCategorySongs(10, 15),
-      lofi: getCategorySongs(15, 20),
+      trending: getCategorySongs(0, 7),
+      relaxing: getCategorySongs(7, 14),
+      romance: getCategorySongs(14, 21),
+      lofi: getCategorySongs(21, 28),
     };
 
     setPlaylistSongs(categories);
