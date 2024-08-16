@@ -97,7 +97,15 @@ export const PlayerProvider = ({ children }) => {
             );
 
             if (suggestions.length) {
-              setSuggestedSongs((prevSongs) => [...prevSongs, ...suggestions]);
+              if (isFromPlayer) {
+                setSuggestedSongs(suggestions);
+                setSuggestedSongIndex(-1);
+              } else {
+                setSuggestedSongs((prevSongs) => [
+                  ...prevSongs,
+                  ...suggestions,
+                ]);
+              }
             }
           } catch {
             setSuggestedSongs([]);
