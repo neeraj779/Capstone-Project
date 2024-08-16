@@ -10,7 +10,7 @@ export const PlayerProvider = ({ children }) => {
   const songApiClient = useApiClient(true);
   const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
-  const [isLoadingSong, setIsLoadingSong] = useState(false);
+  const [isLoadingSong, setIsLoadingSong] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -31,7 +31,7 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current
       .play()
       .then(() => setIsPlaying(true))
-      .catch(console.error);
+      .catch(toast.error("Opps! We couldn't play the song.", { icon: "😥" }));
   }, []);
 
   const seek = useCallback((time, isSeek = true) => {
@@ -95,11 +95,9 @@ export const PlayerProvider = ({ children }) => {
           suggestedSongIndex === suggestedSongs.length - 2
         ) {
           try {
-            console.log("Fetching suggestions");
             const { data: suggestions } = await songApiClient.get(
               `SongsData/GetSongSuggestions?songId=${songId}`
             );
-            console.log("Suggestions");
 
             if (suggestions.length) {
               setSuggestedSongs((prevSongs) => [...prevSongs, ...suggestions]);
@@ -137,8 +135,6 @@ export const PlayerProvider = ({ children }) => {
     setSuggestedSongIndex((prevIndex) => {
       const nextIndex = (prevIndex + 1) % suggestedSongs.length;
       const nextSongId = suggestedSongs[nextIndex];
-      console.log(nextIndex, nextSongId);
-      console.log(suggestedSongs);
       if (nextSongId) {
         loadSong(nextSongId, false);
         return nextIndex;
