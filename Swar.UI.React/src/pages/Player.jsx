@@ -1,11 +1,25 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { Image, Slider } from "@nextui-org/react";
+import {
+  Image,
+  Slider,
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+} from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 
 import toast from "react-hot-toast";
 import { Download, Pause, Play, Repeat } from "lucide-react";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import {
+  MdSkipNext,
+  MdSkipPrevious,
+  MdInfoOutline,
+  MdLyrics,
+} from "react-icons/md";
 import { Spinner } from "@nextui-org/react";
 
 import PlaylistInfoModal from "../components/modals/PlaylistInfoModal";
@@ -163,19 +177,136 @@ const SongPlayer = () => {
             )}
           </div>
 
-          {song?.lyrics && (
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700 mt-9">
-              <h2 className="text-3xl font-bold text-white mb-4">Lyrics</h2>
-              <CustomScroll>
-                <div className="max-h-[36rem] mr-4">
-                  <p
-                    className="text-base text-gray-200 leading-relaxed whitespace-pre-line text-md"
-                    dangerouslySetInnerHTML={{ __html: song.lyrics }}
-                  />
-                </div>
-              </CustomScroll>
-            </div>
-          )}
+          <div className="flex w-full flex-col items-center justify-center gap-4 mt-6">
+            <Tabs
+              aria-label="Tabs sizes"
+              color="primary"
+              classNames={{
+                tabList: "bg-gray-600 text-white",
+                tabContent: "text-white",
+              }}
+            >
+              <Tab
+                key="info"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <MdInfoOutline className="text-2xl" />
+                    <span>Song Details</span>
+                  </div>
+                }
+              >
+                <Card className="w-[82vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
+                  <CardHeader className="flex gap-3">
+                    <h2 className="text-3xl font-bold text-white mb-4">
+                      Song Details
+                    </h2>
+                  </CardHeader>
+                  <Divider />
+                  <CardBody>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Album
+                        </h3>
+                        <p className="text-gray-300">{song.album}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Song
+                        </h3>
+                        <p className="text-gray-300">{song.song}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Artists
+                        </h3>
+                        <p className="text-gray-300">{song.primary_artists}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Release Date
+                        </h3>
+                        <p className="text-gray-300">{song.release_date}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Year
+                        </h3>
+                        <p className="text-gray-300">{song.year}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Language
+                        </h3>
+                        <p className="text-gray-300">{song.language}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Song Duration
+                        </h3>
+                        <p className="text-gray-300">{song.duration} seconds</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Play Count
+                        </h3>
+                        <p className="text-gray-300">{song.play_count}</p>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-200">
+                          Lyrics
+                        </h3>
+                        <p className="text-gray-300">
+                          {song.has_lyrics == "true"
+                            ? "Available"
+                            : "Not Available"}
+                        </p>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Tab>
+              <Tab
+                key="lyrics"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <MdLyrics className="text-2xl" />
+                    <span>Lyrics</span>
+                  </div>
+                }
+              >
+                <Card className="w-[82vw] bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700">
+                  <CardHeader className="flex gap-3">
+                    <h2 className="text-3xl font-bold text-white mb-4">
+                      Lyrics
+                    </h2>
+                  </CardHeader>
+                  <Divider />
+                  <CardBody>
+                    <>
+                      {song?.lyrics ? (
+                        <CustomScroll>
+                          <div className="max-h-[36rem] mr-4">
+                            <p
+                              className="text-base text-gray-200 leading-relaxed whitespace-pre-line text-md"
+                              dangerouslySetInnerHTML={{
+                                __html: song.lyrics,
+                              }}
+                            />
+                          </div>
+                        </CustomScroll>
+                      ) : (
+                        <p className="text-gray-300 text-center">
+                          It looks like the lyrics for this song aren&apos;t
+                          available right now.
+                        </p>
+                      )}
+                    </>
+                  </CardBody>
+                </Card>
+              </Tab>
+            </Tabs>
+          </div>
         </div>
       </div>
     </div>
