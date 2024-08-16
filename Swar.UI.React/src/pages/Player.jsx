@@ -4,7 +4,8 @@ import { Image, Slider } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 
 import toast from "react-hot-toast";
-import { Download, Pause, Play, RedoDot, UndoDot, Repeat } from "lucide-react";
+import { Download, Pause, Play, Repeat } from "lucide-react";
+import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import { Spinner } from "@nextui-org/react";
 
 import PlaylistInfoModal from "../components/modals/PlaylistInfoModal";
@@ -25,6 +26,8 @@ const SongPlayer = () => {
     loadSong,
     togglePlayPause,
     seek,
+    goToNextSong,
+    goToPreviousSong,
   } = usePlayer();
 
   const [sliderValue, setSliderValue] = useState(0);
@@ -38,6 +41,7 @@ const SongPlayer = () => {
       setLoading(false);
     };
     fetchSong();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -127,10 +131,10 @@ const SongPlayer = () => {
             </button>
             <div className="flex items-center justify-center gap-2">
               <button
-                onClick={() => seek(10)}
+                onClick={() => goToPreviousSong()}
                 className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <RedoDot />
+                <MdSkipPrevious className="text-2xl" />
               </button>
               <button
                 onClick={togglePlayPause}
@@ -139,10 +143,10 @@ const SongPlayer = () => {
                 {isPlaying ? <Pause /> : <Play />}
               </button>
               <button
-                onClick={() => seek(-10)}
+                onClick={() => goToNextSong()}
                 className="bg-gray-700 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
-                <UndoDot />
+                <MdSkipNext className="text-2xl" />
               </button>
             </div>
             {isDownloading ? (
