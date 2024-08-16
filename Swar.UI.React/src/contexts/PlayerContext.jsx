@@ -1,11 +1,14 @@
 import { createContext, useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import useApiClient from "../hooks/useApiClient";
+import toast from "react-hot-toast";
 
 const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
   const songApiClient = useApiClient(true);
+  const navigate = useNavigate();
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -13,7 +16,7 @@ export const PlayerProvider = ({ children }) => {
   const [loop, setLoop] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
   const [suggestedSongs, setSuggestedSongs] = useState([]);
-  const [suggestedSongIndex, setSuggestedSongIndex] = useState(0);
+  const [suggestedSongIndex, setSuggestedSongIndex] = useState(-1);
 
   const audioRef = useRef(new Audio());
 
@@ -64,8 +67,9 @@ export const PlayerProvider = ({ children }) => {
 
   const loadSong = useCallback(
     async (songId, isFromPlayer) => {
-      console.log(songId);
-      if (currentSong?.id !== songId) {
+      if (currentSong?.id === songId) return;
+
+      try {
         const { data: songData } = await songApiClient.get(
           `SongsData/GetSongById?id=${songId}&lyrics=true`
         );
@@ -73,36 +77,62 @@ export const PlayerProvider = ({ children }) => {
         audioRef.current.src = songData.media_url;
         document.title = `${songData.song} | Swar`;
         setCurrentSong(songData);
-        await new Promise((resolve) => {
-          audioRef.current.oncanplaythrough = resolve;
-        });
 
+        await new Promise(
+          (resolve) => (audioRef.current.oncanplaythrough = resolve)
+        );
+
+        playSong();
         updateMediaSession(songData);
-        if (
-          suggestedSongIndex === 9 ||
-          suggestedSongs.length === 0 ||
-          isFromPlayer
-        ) {
-          const { data } = await songApiClient.get(
+      } catch {
+        toast.error("Opps! We couldn't load the song.", {
+          icon: "😥",
+        });
+        return navigate("/");
+      }
+
+      if (isFromPlayer || !suggestedSongs.length || suggestedSongIndex === 8) {
+        try {
+          const { data: suggestions } = await songApiClient.get(
             `SongsData/GetSongSuggestions?songId=${songId}`
           );
-          setSuggestedSongs(data);
-          setSuggestedSongIndex(0);
+
+          if (suggestions.length) {
+            setSuggestedSongs(suggestions);
+            setSuggestedSongIndex(-1);
+          }
+        } catch {
+          setSuggestedSongs([]);
+          setSuggestedSongIndex(-1);
         }
-        setIsEnded(false);
       }
-      playSong();
     },
     [
-      currentSong,
+      currentSong?.id,
       playSong,
       updateMediaSession,
       songApiClient,
-      suggestedSongs,
-      setSuggestedSongs,
+      suggestedSongs.length,
       suggestedSongIndex,
+      setSuggestedSongs,
+      setSuggestedSongIndex,
+      navigate,
     ]
   );
+
+  useEffect(() => {
+    if (isEnded && !loop) {
+      setSuggestedSongIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % suggestedSongs.length;
+        const nextSongId = suggestedSongs[nextIndex];
+        if (nextSongId) {
+          loadSong(nextSongId, false);
+          return nextIndex;
+        }
+      });
+      setIsEnded(false);
+    }
+  }, [isEnded, loadSong, loop, suggestedSongs]);
 
   const resetPlayer = useCallback(() => {
     pauseSong();
@@ -136,16 +166,6 @@ export const PlayerProvider = ({ children }) => {
       audio.removeEventListener("ended", handleEnded);
     };
   }, []);
-
-  useEffect(() => {
-    if (isEnded && !loop) {
-      const nextIndex = (suggestedSongIndex + 1) % suggestedSongs.length;
-      const nextSongId = suggestedSongs[nextIndex];
-      setSuggestedSongIndex(nextIndex);
-      console.log(suggestedSongs);
-      loadSong(nextSongId, false);
-    }
-  }, [isEnded]);
 
   useEffect(() => {
     audioRef.current.loop = loop;
