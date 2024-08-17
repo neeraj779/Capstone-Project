@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swar.API.Exceptions;
-using Swar.API.Helpers;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
 using Swar.API.Models.DTOs;
@@ -94,6 +93,37 @@ namespace Swar.API.Controllers
         }
 
         /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="userDTO">User registration details.</param>
+        /// <returns>Returns the registered user details.</returns>
+        [HttpPost("register/external")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RegisteredUserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RegisterExternal([FromBody] UserRegisterExternalDTO userDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var registeredUser = await _userService.RegisterExternal(userDTO);
+                return Ok(registeredUser);
+            }
+            catch (EntityAlreadyExistsException ex)
+            {
+                return Conflict(new ErrorModel { Status = StatusCodes.Status409Conflict, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Refreshes the user's access token.
         /// </summary>
         /// <returns>Returns the new access token.</returns>
@@ -108,7 +138,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                int userId = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
+                    throw new EntityNotFoundException("User does not exist");
 
                 var accessToken = await _userService.RefreshToken(userId);
                 return Ok(accessToken);
@@ -168,7 +199,9 @@ namespace Swar.API.Controllers
         {
             try
             {
-                int id = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
+                    throw new EntityNotFoundException("User does not exist");
+
                 var user = await _userService.GetUserById(id);
                 return Ok(user);
             }
@@ -202,7 +235,8 @@ namespace Swar.API.Controllers
 
             try
             {
-                int id = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
+                    throw new EntityNotFoundException("User does not exist");
                 var user = await _userService.UpdateUser(id, userUpdateDTO);
                 return Ok(user);
             }
@@ -244,7 +278,8 @@ namespace Swar.API.Controllers
 
             try
             {
-                int id = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
+                    throw new EntityNotFoundException("User does not exist");
                 var user = await _userService.UpdateUserPassword(id, userPasswordUpdateDTO);
                 return Ok(user);
             }
@@ -284,7 +319,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                int id = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
+                    throw new EntityNotFoundException("User does not exist");
                 var user = await _userService.DeleteUser(id);
                 return Ok(user);
             }
@@ -314,7 +350,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                int adminId = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int adminId)
+                    throw new EntityNotFoundException("User does not exist");
                 var user = await _userService.DeactivateUser(id, adminId);
                 return Ok(user);
             }
@@ -348,7 +385,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                int adminId = UserHelper.GetUserId(User);
+                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int adminId)
+                    throw new EntityNotFoundException("User does not exist");
                 var user = await _userService.ActivateUser(id, adminId);
                 return Ok(user);
             }

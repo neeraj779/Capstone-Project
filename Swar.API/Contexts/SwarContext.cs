@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Swar.API.Models.DBModels;
-using Swar.API.Models.ENUMs;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Swar.API.Contexts
 {
@@ -18,30 +15,9 @@ namespace Swar.API.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ConfigureAdminUser(modelBuilder);
             ConfigureRelationships(modelBuilder);
             ConfigureCompositeKeys(modelBuilder);
             ConfigureUniqueIndices(modelBuilder);
-        }
-
-        private void ConfigureAdminUser(ModelBuilder modelBuilder)
-        {
-            var adminUser = new User
-            {
-                UserId = 100,
-                Email = "admin@gmail.com",
-                Name = "admin",
-                Gender = "Male",
-                UserStatus = UserStatusEnum.UserStatus.Active,
-                Role = UserRoleEnum.UserRole.Admin,
-                RegistrationDate = DateTime.UtcNow
-            };
-
-            using var hmac = new HMACSHA512();
-            adminUser.PasswordHashKey = hmac.Key;
-            adminUser.HashedPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes("admin123"));
-
-            modelBuilder.Entity<User>().HasData(adminUser);
         }
 
         private void ConfigureRelationships(ModelBuilder modelBuilder)
@@ -94,6 +70,10 @@ namespace Swar.API.Contexts
 
         private void ConfigureUniqueIndices(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             modelBuilder.Entity<LikedSong>()
                 .HasIndex(ul => new { ul.UserId, ul.SongId })
                 .IsUnique();

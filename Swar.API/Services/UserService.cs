@@ -59,6 +59,26 @@ namespace Swar.API.Services
             return MapUserToReturnDTO(newUser);
         }
 
+        public async Task<RegisteredUserDTO> RegisterExternal(UserRegisterExternalDTO userDTO)
+        {
+            var user = await _userRepo.GetByEmail(userDTO.Email);
+
+            if (user != null)
+            {
+                _logger.LogWarning("Registration attempt for already registered userid {UserId}", user.UserId);
+                throw new EntityAlreadyExistsException("You are already registered. Please login");
+            }
+
+            User newUser = new User
+            {
+                ExternalId = userDTO.ExternalId,
+                Name = userDTO.Name,
+                Email = userDTO.Email,
+            };
+
+            return MapUserToReturnDTO(newUser);
+        }
+
         public async Task<AccessTokenDTO> RefreshToken(int userId)
         {
             var user = await _userRepo.GetById(userId);
@@ -216,6 +236,12 @@ namespace Swar.API.Services
 
             _logger.LogInformation("User deactivated for user ID: {UserId}", user.UserId);
             return MapUserToReturnDTO(user);
+        }
+
+        public async Task<int?> GetUserIdByEmail(string email)
+        {
+            User user = await _userRepo.GetByEmail(email);
+            return user?.UserId;
         }
 
         private void ValidateUser(User user, bool isAdmin = false)

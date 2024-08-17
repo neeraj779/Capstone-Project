@@ -226,8 +226,11 @@ namespace Swar.UnitTest.ServiceUnitTest
             await _userRepository.Add(user);
             await _dbContext.SaveChangesAsync();
 
-            // Act & Assert
-            Assert.ThrowsAsync<EntityNotFoundException>(() => _playlistService.GetAllPlaylistsByUserId(user.UserId));
+            // Action
+            var playlists = await _playlistService.GetAllPlaylistsByUserId(user.UserId);
+
+            // Assert
+            Assert.That(playlists, Is.Empty);
         }
 
         [Test]

@@ -79,8 +79,10 @@ namespace Swar.API
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://go-swar.us.auth0.com/",
+                    ValidateAudience = true,
+                    ValidAudience = "https://swarapi.azurewebsites.net/api/v1/",
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:Access"])),
                     ValidateLifetime = true
@@ -150,6 +152,7 @@ namespace Swar.API
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseUserMiddleware();
 
 
             app.MapControllers();
