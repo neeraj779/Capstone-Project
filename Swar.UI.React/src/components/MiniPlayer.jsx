@@ -1,10 +1,10 @@
 import { useNavigate, useMatch } from "react-router-dom";
 import usePlayer from "../hooks/usePlayer";
-import useAuth from "../hooks/useAuth";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Pause, Play } from "lucide-react";
 
 const MiniPlayer = () => {
-  const { accessToken } = useAuth();
+  const { isAuthenticated } = useAuth0();
   const { currentSong, isPlaying, togglePlayPause } = usePlayer();
   const isSongPlayerPage = useMatch("/song/:id");
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const MiniPlayer = () => {
     }
   };
 
-  if (!accessToken || !currentSong || isSongPlayerPage) return null;
+  if (!isAuthenticated || !currentSong || isSongPlayerPage) return null;
 
   return (
     <div className="fixed bottom-14 mb-1 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg z-20">

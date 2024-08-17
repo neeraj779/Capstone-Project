@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   DropdownItem,
   DropdownTrigger,
@@ -7,8 +8,6 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import useAuth from "../hooks/useAuth";
-import usePlayer from "../hooks/usePlayer";
 import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
 
 import logo from "../assets/img/logo.png";
@@ -16,17 +15,9 @@ import profile from "../assets/img/profile.svg";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
-  const { accessToken, resetTokens } = useAuth();
-  const { resetPlayer } = usePlayer();
+  const { isAuthenticated, logout } = useAuth0();
   const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
   const userEmail = localStorage.getItem("email") || "User";
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    resetPlayer();
-    resetTokens();
-    navigate("/login");
-  };
 
   return (
     <>
@@ -38,7 +29,7 @@ const Navbar = () => {
               <img src={logo} alt="Logo" className="h-10 w-auto" />
             </Link>
             <div className="hidden md:flex space-x-6">
-              {accessToken && (
+              {isAuthenticated && (
                 <>
                   <Link
                     to="/"
@@ -59,14 +50,14 @@ const Navbar = () => {
 
           {/* Search and Profile */}
           <div className="flex items-center space-x-4">
-            {accessToken && (
+            {isAuthenticated && (
               <div className="hidden md:block">
                 <SearchBar />
               </div>
             )}
 
             {/* Profile Dropdown */}
-            {accessToken && (
+            {isAuthenticated && (
               <Dropdown
                 placement="bottom-end"
                 className="bg-gray-800 text-white"
@@ -98,11 +89,7 @@ const Navbar = () => {
                   >
                     Change Password
                   </DropdownItem>
-                  <DropdownItem
-                    key="logout"
-                    color="danger"
-                    onClick={handleLogout}
-                  >
+                  <DropdownItem key="logout" color="danger" onClick={logout}>
                     Log Out
                   </DropdownItem>
                 </DropdownMenu>

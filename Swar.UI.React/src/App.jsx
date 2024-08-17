@@ -14,7 +14,6 @@ import Library from "./pages/Library";
 import Playlist from "./pages/Playlist";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
-import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 const App = () => {
@@ -23,26 +22,24 @@ const App = () => {
   return (
     <NextUIProvider navigate={navigate}>
       <SkeletonTheme baseColor="#6B7280" highlightColor="#4B5563">
-        <AuthProvider>
-          <PlayerProvider>
-            <Layout>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/song/:id" element={<Player />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/library" element={<Library />} />
-                  <Route path="/playlist/:id" element={<Playlist />} />
-                </Route>
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
-              <Toaster />
-            </Layout>
-          </PlayerProvider>
-        </AuthProvider>
+        <PlayerProvider>
+          <Layout>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/song/:id" element={<Player />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/library" element={<Library />} />
+                <Route path="/playlist/:id" element={<Playlist />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <Toaster />
+          </Layout>
+        </PlayerProvider>
       </SkeletonTheme>
     </NextUIProvider>
   );

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import useAuth from "../hooks/useAuth";
+import { useAuth0 } from "@auth0/auth0-react";
 import usePlayer from "../hooks/usePlayer";
 
 import Navbar from "./Navbar";
@@ -7,7 +7,7 @@ import MobileNav from "./MobileNav";
 import MiniPlayer from "./MiniPlayer";
 
 const Layout = ({ children }) => {
-  const { accessToken } = useAuth();
+  const { isAuthenticated } = useAuth0();
   const { isPlaying } = usePlayer();
 
   const isMobile = window.innerWidth < 768;
@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
       <main className="flex-grow">{children}</main>
 
       <MiniPlayer />
-      {accessToken && <MobileNav />}
+      {isAuthenticated && <MobileNav />}
     </div>
   );
 };

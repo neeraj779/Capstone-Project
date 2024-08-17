@@ -1,12 +1,21 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { Outlet } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Spinner } from "@nextui-org/react";
 
 const ProtectedRoute = () => {
-  const { accessToken } = useAuth();
-  const location = useLocation();
+  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
-  if (!accessToken) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <Spinner label="Loading..." color="default" labelColor="secondary" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    loginWithRedirect();
+    return null;
   }
 
   return <Outlet />;
