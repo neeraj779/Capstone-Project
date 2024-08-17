@@ -74,9 +74,11 @@ namespace Swar.API.Services
                 ExternalId = userDTO.ExternalId,
                 Name = userDTO.Name,
                 Email = userDTO.Email,
+                RegistrationDate = userDTO.createdAt,
             };
 
-            return MapUserToReturnDTO(newUser);
+            User registeredUser = await _userRepo.Add(newUser);
+            return MapUserToReturnDTO(registeredUser);
         }
 
         public async Task<AccessTokenDTO> RefreshToken(int userId)

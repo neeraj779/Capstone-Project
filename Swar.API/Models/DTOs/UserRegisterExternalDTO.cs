@@ -15,5 +15,8 @@ namespace Swar.API.Models.DTOs
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
         [StringLength(255, ErrorMessage = "Email cannot be longer than 255 characters.")]
         public string Email { get; set; } = string.Empty;
+
+        [Required]
+        public DateTime createdAt { get; set; } = DateTime.Now;
     }
 }
