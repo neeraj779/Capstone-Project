@@ -70,8 +70,10 @@ namespace SongService.API
                 {
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://go-swar.us.auth0.com/",
+                        ValidateAudience = true,
+                        ValidAudience = "https://swarapi.azurewebsites.net/api/v1/",
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey:Access"])),
                         ValidateLifetime = true
