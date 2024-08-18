@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         authorizationParams={{
           audience: import.meta.env.VITE_AUTH0_AUDIENCE,
           scope: "openid profile email",
-          redirect_uri: window.location.origin,
+          redirect_uri: `${window.location.origin}/home`,
         }}
       >
         <App />
