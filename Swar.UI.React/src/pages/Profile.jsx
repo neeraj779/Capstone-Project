@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
 import { Avatar, Button } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
@@ -7,8 +8,6 @@ import useApiClient from "../hooks/useApiClient";
 import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
 
 import playlistSvg from "../assets/img/playlist.svg";
-import maleAvatar from "../assets/img/male-avatar.svg";
-import femaleAvatar from "../assets/img/female-avatar.svg";
 import neutralAvatar from "../assets/img/neutral-avatar.svg";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
@@ -18,11 +17,10 @@ import { Link } from "react-router-dom";
 const Profile = () => {
   const swarApiClient = useApiClient();
   const [data, setData] = useState({
-    profile: null,
     playlists: [],
-    loadingProfile: true,
     loadingPlaylists: true,
   });
+  const { user, isLoading } = useAuth0();
   const { recentlyPlayed, loading: recentlyPlayedLoading } =
     useRecentlyPlayedSongs();
   const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
@@ -30,22 +28,18 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileResponse, playlistsResponse] = await Promise.all([
-          swarApiClient.get("users/me"),
-          swarApiClient.get("Playlist/GetAllPlaylistsByUserId"),
-        ]);
+        const { data } = await swarApiClient.get(
+          "Playlist/GetAllPlaylistsByUserId"
+        );
 
         setData({
-          profile: profileResponse.data,
-          playlists: playlistsResponse.data,
-          loadingProfile: false,
+          playlists: data,
           loadingPlaylists: false,
         });
       } catch {
         toast.error("Failed to fetch profile data");
         setData((prev) => ({
           ...prev,
-          loadingProfile: false,
           loadingPlaylists: false,
         }));
       }
@@ -54,33 +48,20 @@ const Profile = () => {
     fetchData();
   }, [swarApiClient]);
 
-  const getProfileImage = (gender) => {
-    switch (gender) {
-      case "Male":
-        return maleAvatar;
-      case "Female":
-        return femaleAvatar;
-      default:
-        return neutralAvatar;
-    }
-  };
-
-  const { profile, playlists, loadingProfile, loadingPlaylists } = data;
+  const { playlists, loadingPlaylists } = data;
 
   return (
     <div className="mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row gap-8">
         {/* Profile Section */}
         <div className="w-full md:w-1/2 lg:w-1/3 bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
-          {loadingProfile ? (
+          {isLoading ? (
             <ProfileSkeleton />
           ) : (
             <div className="flex flex-col items-center text-center">
               <div className="relative mb-8">
                 <Avatar
-                  src={
-                    profile ? getProfileImage(profile.gender) : neutralAvatar
-                  }
+                  src={user ? user?.picture : neutralAvatar}
                   className="w-36 h-36 rounded-full border-4 border-gradient-to-r from-blue-500 to-teal-400 shadow-xl"
                 />
                 <span className="absolute bottom-0 right-0 bg-green-500 text-white text-xs font-bold rounded-full px-3 py-1 shadow-md">
@@ -89,21 +70,22 @@ const Profile = () => {
               </div>
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
                 <h2 className="text-4xl font-extrabold text-white mb-2">
-                  {profile?.name || "N/A"}
+                  {user?.name || "N/A"}
                 </h2>
                 <p className="text-gray-300 text-base mb-2">
-                  {profile?.email || "N/A"}
+                  {user?.email || "N/A"}
                 </p>
                 <p className="text-gray-400 text-sm mb-2">
-                  Member since:{" "}
-                  {profile?.registrationDate
-                    ? new Date(profile.registrationDate).toLocaleDateString()
+                  Last Updated:{" "}
+                  {user?.updated_at
+                    ? new Date(user.updated_at).toLocaleDateString()
                     : "N/A"}
                 </p>
-                <p className="text-gray-400 text-sm mb-6">
-                  Gender: {profile?.gender || "N/A"}
+                <p className="text-gray-400 text-sm mb-2">
+                  Email Verified: {user?.email_verified ? "Yes" : "No"}
                 </p>
-                <div className="flex flex-col space-y-4">
+
+                <div className="flex flex-col space-y-4 mt-4">
                   {/* <Button color="primary" variant="shadow">
                     Edit Profile
                   </Button> */}
