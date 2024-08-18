@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 import toast from "react-hot-toast";
 import useApiClient from "../hooks/useApiClient";
-import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
 
 import playlistSvg from "../assets/img/playlist.svg";
 import neutralAvatar from "../assets/img/neutral-avatar.svg";
@@ -23,7 +22,6 @@ const Profile = () => {
   const { user, isLoading } = useAuth0();
   const { recentlyPlayed, loading: recentlyPlayedLoading } =
     useRecentlyPlayedSongs();
-  const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,26 +82,6 @@ const Profile = () => {
                 <p className="text-gray-400 text-sm mb-2">
                   Email Verified: {user?.email_verified ? "Yes" : "No"}
                 </p>
-
-                <div className="flex flex-col space-y-4 mt-4">
-                  {/* <Button color="primary" variant="shadow">
-                    Edit Profile
-                  </Button> */}
-                  <Button
-                    onClick={() => setIsUpdatePasswordOpen(true)}
-                    color="secondary"
-                    variant="shadow"
-                  >
-                    Change Password
-                  </Button>
-                  <UpdatePasswordModal
-                    isOpen={isUpdatePasswordOpen}
-                    onOpenChange={() => setIsUpdatePasswordOpen(false)}
-                  />
-                  {/* <Button color="danger" variant="shadow">
-                    Delete Account
-                  </Button> */}
-                </div>
               </div>
             </div>
           )}
