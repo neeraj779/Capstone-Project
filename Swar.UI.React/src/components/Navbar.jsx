@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -8,16 +7,13 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import UpdatePasswordModal from "../components/modals/UpdatePasswordModal";
 
 import logo from "../assets/img/logo.png";
 import profile from "../assets/img/profile.svg";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth0();
-  const [isUpdatePasswordOpen, setIsUpdatePasswordOpen] = useState(false);
-  const userEmail = localStorage.getItem("email") || "User";
+  const { user, isAuthenticated, logout } = useAuth0();
 
   return (
     <>
@@ -65,9 +61,8 @@ const Navbar = () => {
                 <DropdownTrigger>
                   <Avatar
                     as="button"
-                    className="transition-transform bg-gray-800"
-                    size="sm"
-                    src={profile}
+                    size="md"
+                    src={user ? user?.picture : profile}
                   />
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Profile Actions" variant="shadow">
@@ -78,16 +73,10 @@ const Navbar = () => {
                     href="/profile"
                   >
                     <p className="font-semibold">Signed in as</p>
-                    <p className="font-semibold">{userEmail}</p>
+                    <p className="font-semibold">{user?.nickname}</p>
                   </DropdownItem>
                   <DropdownItem key="profile" href="/profile">
                     Profile
-                  </DropdownItem>
-                  <DropdownItem
-                    key="change-password"
-                    onClick={() => setIsUpdatePasswordOpen(true)}
-                  >
-                    Change Password
                   </DropdownItem>
                   <DropdownItem key="logout" color="danger" onClick={logout}>
                     Log Out
@@ -95,10 +84,6 @@ const Navbar = () => {
                 </DropdownMenu>
               </Dropdown>
             )}
-            <UpdatePasswordModal
-              isOpen={isUpdatePasswordOpen}
-              onOpenChange={() => setIsUpdatePasswordOpen(false)}
-            />
           </div>
         </div>
       </nav>
