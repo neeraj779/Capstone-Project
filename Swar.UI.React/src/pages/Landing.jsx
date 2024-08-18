@@ -88,10 +88,10 @@ function LandingPage() {
             color="primary"
             variant="shadow"
             size="md"
-            endContent={<FaPlay className="mr-2 text-lg" />}
             onClick={() => setIsButtonLoading(true)}
           >
-            Get Started
+            {!isButtonLoading && <FaPlay className="mr-2 text-lg" />} Get
+            Started
           </Button>
         </div>
       </nav>
@@ -124,10 +124,10 @@ function LandingPage() {
               variant="shadow"
               className="py-3 px-8"
               size="md"
-              endContent={<FaPlay className="mr-2 text-lg" />}
               onClick={() => setIsButtonLoading(true)}
             >
-              Start Listening
+              {!isButtonLoading && <FaPlay className="mr-2 text-lg" />} Start
+              Listening
             </Button>
           </div>
         </div>
