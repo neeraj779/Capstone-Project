@@ -7,8 +7,6 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Player from "./pages/Player";
 import Search from "./pages/Search";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import Playlist from "./pages/Playlist";
@@ -25,8 +23,6 @@ const App = () => {
         <PlayerProvider>
           <Layout>
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/song/:id" element={<Player />} />
