@@ -5,7 +5,7 @@ const MobileNav = () => {
   return (
     <div className="fixed bottom-0 inset-x-0 bg-gray-800 text-white md:hidden z-20">
       <div className="flex justify-around items-center py-2">
-        <Link to="/" className="flex flex-col items-center">
+        <Link to="/home" className="flex flex-col items-center">
           <House />
           <span className="text-xs">Home</span>
         </Link>

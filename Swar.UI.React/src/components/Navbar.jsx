@@ -21,14 +21,14 @@ const Navbar = () => {
         <div className="container mx-auto flex items-center justify-between px-4 md:px-8">
           {/* Logo and Navigation Links */}
           <div className="flex items-center space-x-6">
-            <Link to="/" className="flex items-center">
+            <Link to="/home" className="flex items-center">
               <img src={logo} alt="Logo" className="h-10 w-auto" />
             </Link>
             <div className="hidden md:flex space-x-6">
               {isAuthenticated && (
                 <>
                   <Link
-                    to="/"
+                    to="/home"
                     className="hover:text-gray-400 transition-colors"
                   >
                     Home
