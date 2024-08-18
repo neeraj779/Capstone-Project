@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { Button } from "@nextui-org/button";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Button } from "@nextui-org/react";
 import { FaPlay, FaListUl, FaCloudDownloadAlt, FaLaptop } from "react-icons/fa";
 import Typewriter from "typewriter-effect";
 import logo from "../assets/img/logo.png";
@@ -23,6 +25,24 @@ FeatureCard.propTypes = {
 };
 
 function LandingPage() {
+  const navigate = useNavigate();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && isButtonLoading) {
+      if (isAuthenticated) navigate("/home");
+      else loginWithRedirect();
+      setIsButtonLoading(false);
+    }
+  }, [
+    isAuthenticated,
+    isButtonLoading,
+    isLoading,
+    loginWithRedirect,
+    navigate,
+  ]);
+
   const features = [
     {
       icon: (
@@ -63,16 +83,16 @@ function LandingPage() {
               <img src={logo} alt="Logo" className="h-10 w-auto" />
             </p>
           </div>
-          <Link to="home">
-            <Button
-              color="primary"
-              variant="shadow"
-              size="md"
-              startContent={<FaPlay className="mr-2 text-xl md:text-xl" />}
-            >
-              Get Started
-            </Button>
-          </Link>
+          <Button
+            isLoading={isButtonLoading}
+            color="primary"
+            variant="shadow"
+            size="md"
+            endContent={<FaPlay className="mr-2 text-lg" />}
+            onClick={() => setIsButtonLoading(true)}
+          >
+            Get Started
+          </Button>
         </div>
       </nav>
       <div className="relative h-screen bg-cover bg-center bg-[url('/path/to/your/image.jpg')]">
@@ -98,17 +118,17 @@ function LandingPage() {
             sound at your fingertips.
           </p>
           <div className="flex gap-4">
-            <Link to="home">
-              <Button
-                color="primary"
-                variant="shadow"
-                className="py-3 px-8"
-                size="md"
-                startContent={<FaPlay className="mr-2 text-xl md:text-xl" />}
-              >
-                Start Listening
-              </Button>
-            </Link>
+            <Button
+              isLoading={isButtonLoading}
+              color="primary"
+              variant="shadow"
+              className="py-3 px-8"
+              size="md"
+              endContent={<FaPlay className="mr-2 text-lg" />}
+              onClick={() => setIsButtonLoading(true)}
+            >
+              Start Listening
+            </Button>
           </div>
         </div>
       </div>
