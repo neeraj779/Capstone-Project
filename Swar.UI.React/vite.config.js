@@ -56,7 +56,7 @@ const manifestForPlugin = {
       },
     ],
     description:
-      "Swar UI | Your one-stop solution for amazing music experiences.",
+      "Swar | Your one-stop solution for amazing music experiences.",
     display: "standalone",
     theme_color: "#111828",
     background_color: "#111828",
