@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Spinner } from "@nextui-org/react";
-import Logout from "../components/Logout";
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
   if (isLoading) {
     return (
@@ -14,7 +13,10 @@ const ProtectedRoute = () => {
     );
   }
 
-  if (!isAuthenticated) return <Logout />;
+  if (!isAuthenticated) {
+    loginWithRedirect();
+    return null;
+  }
 
   return <Outlet />;
 };

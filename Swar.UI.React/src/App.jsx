@@ -10,6 +10,7 @@ import Search from "./pages/Search";
 import Profile from "./pages/Profile";
 import Library from "./pages/Library";
 import Playlist from "./pages/Playlist";
+import Landing from "./pages/Landing";
 
 import { PlayerProvider } from "./contexts/PlayerContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -23,8 +24,9 @@ const App = () => {
         <PlayerProvider>
           <Layout>
             <Routes>
+              <Route path="/" element={<Landing />} />
               <Route element={<ProtectedRoute />}>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/song/:id" element={<Player />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/profile" element={<Profile />} />
