@@ -150,7 +150,7 @@ PlaylistCard.propTypes = {
     publicId: PropTypes.string.isRequired,
     ownerName: PropTypes.string,
     playlistName: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     isPrivate: PropTypes.bool,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
