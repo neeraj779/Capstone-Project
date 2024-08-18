@@ -69,7 +69,7 @@ const Profile = () => {
                 </span>
               </div>
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
-                <h2 className="text-4xl font-extrabold text-white mb-2">
+                <h2 className="text-lg font-extrabold text-white mb-2">
                   {user?.name || "N/A"}
                 </h2>
                 <p className="text-gray-300 text-base mb-2">
