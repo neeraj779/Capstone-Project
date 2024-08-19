@@ -61,7 +61,7 @@ const manifestForPlugin = {
     theme_color: "#111828",
     background_color: "#111828",
     scope: "/",
-    start_url: "/",
+    start_url: "/home",
     orientation: "portrait",
   },
 };
