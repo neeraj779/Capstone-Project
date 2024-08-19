@@ -6,6 +6,7 @@ import usePlayer from "../hooks/usePlayer";
 import Navbar from "./Navbar";
 import MobileNav from "./MobileNav";
 import MiniPlayer from "./MiniPlayer";
+import InstallPWA from "./InstallPWA";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const Layout = ({ children }) => {
 
       <main className="flex-grow">{children}</main>
 
+      <InstallPWA />
       <MiniPlayer />
       {showNavbar && isAuthenticated && <MobileNav />}
     </div>

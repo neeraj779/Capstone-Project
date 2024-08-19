@@ -3,7 +3,6 @@ import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
 import SearchBar from "../components/SearchBar";
 import SongSkeleton from "../components/SongSkeleton";
-import InstallPWA from "../components/InstallPWA";
 
 const categoryInfo = {
   history: {
@@ -103,7 +102,6 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <InstallPWA />
       </div>
     </div>
   );
