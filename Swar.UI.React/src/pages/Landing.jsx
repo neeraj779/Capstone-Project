@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 import { FaPlay, FaListUl, FaCloudDownloadAlt, FaLaptop } from "react-icons/fa";
 import Typewriter from "typewriter-effect";
 import logo from "../assets/img/logo.png";
+import InstallPWA from "../components/InstallPWA";
 
 const FeatureCard = ({ icon, title, description }) => (
   <div
@@ -146,6 +147,8 @@ function LandingPage() {
           ))}
         </div>
       </div>
+
+      <InstallPWA />
 
       <footer>
         <div className="max-w-7xl mx-auto px-6 text-center">
