@@ -27,6 +27,9 @@ namespace Swar.API.Services
             var user = await _userRepo.GetByEmail(loginDTO.Email);
             ValidateUser(user);
 
+            if (user.HashedPassword == null || user.PasswordHashKey == null)
+                throw new ExternalServiceLoginException();
+
             if (!IsPasswordCorrect(loginDTO.Password, user.PasswordHashKey, user.HashedPassword))
                 throw new InvalidCredentialsException();
 
@@ -51,34 +54,12 @@ namespace Swar.API.Services
                 throw new EntityAlreadyExistsException("You are already registered. Please login");
             }
 
-            if (!IsPasswordStrong(userDTO.Password))
+            if (!string.IsNullOrEmpty(userDTO.Password) && !IsPasswordStrong(userDTO.Password))
                 throw new WeakPasswordException();
 
             User newUser = await CreateUser(userDTO, UserRoleEnum.UserRole.User);
 
             return MapUserToReturnDTO(newUser);
-        }
-
-        public async Task<RegisteredUserDTO> RegisterExternal(UserRegisterExternalDTO userDTO)
-        {
-            var user = await _userRepo.GetByEmail(userDTO.Email);
-
-            if (user != null)
-            {
-                _logger.LogWarning("Registration attempt for already registered userid {UserId}", user.UserId);
-                throw new EntityAlreadyExistsException("You are already registered. Please login");
-            }
-
-            User newUser = new User
-            {
-                ExternalId = userDTO.ExternalId,
-                Name = userDTO.Name,
-                Email = userDTO.Email,
-                RegistrationDate = userDTO.createdAt,
-            };
-
-            User registeredUser = await _userRepo.Add(newUser);
-            return MapUserToReturnDTO(registeredUser);
         }
 
         public async Task<AccessTokenDTO> RefreshToken(int userId)
@@ -99,11 +80,16 @@ namespace Swar.API.Services
         {
             User newUser = new User();
 
-            HMACSHA512 hMACSHA = new HMACSHA512();
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                HMACSHA512 hMACSHA = new HMACSHA512();
+                newUser.PasswordHashKey = hMACSHA.Key;
+                newUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
+            }
+
+            newUser.ExternalId = user.ExternalId;
             newUser.Name = user.Name;
             newUser.Email = user.Email;
-            newUser.PasswordHashKey = hMACSHA.Key;
-            newUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
             newUser.UserStatus = UserStatusEnum.UserStatus.Active;
             newUser.Role = role;
             newUser.RegistrationDate = DateTime.UtcNow;
@@ -297,6 +283,7 @@ namespace Swar.API.Services
             RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO
             {
                 UserId = user.UserId,
+                ExternalId = user.ExternalId,
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role.ToString(),

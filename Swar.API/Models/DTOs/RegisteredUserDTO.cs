@@ -3,6 +3,7 @@
     public class RegisteredUserDTO
     {
         public int UserId { get; set; }
+        public string? ExternalId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;

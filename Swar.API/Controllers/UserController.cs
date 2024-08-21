@@ -43,6 +43,10 @@ namespace Swar.API.Controllers
             {
                 return NotFound(new ErrorModel { Status = StatusCodes.Status404NotFound, Message = ex.Message });
             }
+            catch (ExternalServiceLoginException ex)
+            {
+                return Unauthorized(new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
             catch (InvalidCredentialsException ex)
             {
                 return Unauthorized(new ErrorModel { Status = StatusCodes.Status401Unauthorized, Message = ex.Message });
@@ -92,36 +96,6 @@ namespace Swar.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Registers a new user.
-        /// </summary>
-        /// <param name="userDTO">User registration details.</param>
-        /// <returns>Returns the registered user details.</returns>
-        [HttpPost("register/external")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(RegisteredUserDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RegisterExternal([FromBody] UserRegisterExternalDTO userDTO)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            try
-            {
-                var registeredUser = await _userService.RegisterExternal(userDTO);
-                return Ok(registeredUser);
-            }
-            catch (EntityAlreadyExistsException ex)
-            {
-                return Conflict(new ErrorModel { Status = StatusCodes.Status409Conflict, Message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
 
         /// <summary>
         /// Refreshes the user's access token.
@@ -163,7 +137,6 @@ namespace Swar.API.Controllers
         /// </summary>
         /// <returns>Returns the list of users.</returns>
         [HttpGet("GetAllUsers")]
-        [Authorize(Roles = "Admin")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<RegisteredUserDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]

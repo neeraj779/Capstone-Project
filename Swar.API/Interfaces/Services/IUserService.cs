@@ -6,7 +6,6 @@ namespace Swar.API.Interfaces.Services
     {
         public Task<LoginResultDTO> Login(UserLoginDTO user);
         public Task<RegisteredUserDTO> Register(UserRegisterDTO user);
-        public Task<RegisteredUserDTO> RegisterExternal(UserRegisterExternalDTO user);
         public Task<AccessTokenDTO> RefreshToken(int userId);
         public Task<RegisteredUserDTO> GetUserById(int userId);
         public Task<IEnumerable<RegisteredUserDTO>> GetAllUsers();
