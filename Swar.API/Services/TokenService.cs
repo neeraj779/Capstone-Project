@@ -35,8 +35,8 @@ namespace Swar.API.Services
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                issuer: null,
-                audience: null,
+                issuer: "https://go-swar.us.auth0.com/",
+                audience: "https://swarapi.azurewebsites.net/api/v1/",
                 claims: claims,
                 expires: DateTime.UtcNow.Add(expiration),
                 signingCredentials: credentials
