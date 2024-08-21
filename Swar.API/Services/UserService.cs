@@ -54,8 +54,14 @@ namespace Swar.API.Services
                 throw new EntityAlreadyExistsException("You are already registered. Please login");
             }
 
-            if (!string.IsNullOrEmpty(userDTO.Password) && !IsPasswordStrong(userDTO.Password))
-                throw new WeakPasswordException();
+            if (string.IsNullOrEmpty(userDTO.ExternalId))
+            {
+                if (string.IsNullOrEmpty(userDTO.Password))
+                    throw new ArgumentException("Password is required for internal registration.");
+
+                if (!IsPasswordStrong(userDTO.Password))
+                    throw new WeakPasswordException();
+            }
 
             User newUser = await CreateUser(userDTO, UserRoleEnum.UserRole.User);
 

@@ -86,6 +86,10 @@ namespace Swar.API.Controllers
             {
                 return Conflict(new ErrorModel { Status = StatusCodes.Status409Conflict, Message = ex.Message });
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
+            }
             catch (WeakPasswordException ex)
             {
                 return BadRequest(new ErrorModel { Status = StatusCodes.Status400BadRequest, Message = ex.Message });
@@ -137,7 +141,6 @@ namespace Swar.API.Controllers
         /// </summary>
         /// <returns>Returns the list of users.</returns>
         [HttpGet("GetAllUsers")]
-        [Authorize(Roles = "Admin")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<RegisteredUserDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
