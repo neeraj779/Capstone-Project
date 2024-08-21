@@ -141,6 +141,7 @@ namespace Swar.API.Controllers
         /// </summary>
         /// <returns>Returns the list of users.</returns>
         [HttpGet("GetAllUsers")]
+        [Authorize(Roles = "Admin")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<RegisteredUserDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
