@@ -10,7 +10,6 @@ namespace Swar.API.Models.DBModels
         public string? ExternalId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string? Gender { get; set; } = string.Empty;
         public byte[]? HashedPassword { get; set; }
         public byte[]? PasswordHashKey { get; set; }
         public UserStatusEnum.UserStatus UserStatus { get; set; }

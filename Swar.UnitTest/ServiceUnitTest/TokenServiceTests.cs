@@ -42,7 +42,6 @@ namespace Swar.UnitTest.ServiceUnitTest
                 UserId = 123,
                 Name = "Test User",
                 Email = "user@example.com",
-                Gender = "Male",
             };
 
             // Act

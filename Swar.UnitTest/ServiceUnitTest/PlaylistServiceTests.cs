@@ -428,7 +428,6 @@ namespace Swar.UnitTest.ServiceUnitTest
                 HashedPassword = new byte[64],
                 Role = UserRoleEnum.UserRole.User,
                 RegistrationDate = DateTime.Now,
-                Gender = "Male",
                 Email = "user@gmail.com"
             };
         }

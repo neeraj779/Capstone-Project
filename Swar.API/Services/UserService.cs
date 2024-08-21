@@ -102,7 +102,6 @@ namespace Swar.API.Services
             HMACSHA512 hMACSHA = new HMACSHA512();
             newUser.Name = user.Name;
             newUser.Email = user.Email;
-            newUser.Gender = user.Gender;
             newUser.PasswordHashKey = hMACSHA.Key;
             newUser.HashedPassword = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
             newUser.UserStatus = UserStatusEnum.UserStatus.Active;
@@ -290,11 +289,6 @@ namespace Swar.API.Services
             {
                 user.Email = userUpdateDto.Email;
             }
-
-            if (!string.IsNullOrWhiteSpace(userUpdateDto.Gender))
-            {
-                user.Gender = userUpdateDto.Gender;
-            }
         }
 
 
@@ -305,7 +299,6 @@ namespace Swar.API.Services
                 UserId = user.UserId,
                 Name = user.Name,
                 Email = user.Email,
-                Gender = user.Gender,
                 Role = user.Role.ToString(),
                 Status = user.UserStatus.ToString(),
                 RegistrationDate = user.RegistrationDate
