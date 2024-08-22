@@ -116,7 +116,6 @@ namespace Swar.UnitTest.ServiceUnitTest
                 Name = "Test User",
                 Email = "test@example.com",
                 Password = "StrongPassword1!",
-                Gender = "Male"
             };
 
             // Act
@@ -142,7 +141,6 @@ namespace Swar.UnitTest.ServiceUnitTest
                 Name = "New User",
                 Email = existingUser.Email,
                 Password = "StrongPassword1!",
-                Gender = "Male"
             };
 
             // Act & Assert
@@ -158,7 +156,6 @@ namespace Swar.UnitTest.ServiceUnitTest
                 Name = "Test User",
                 Email = "test@example.com",
                 Password = "weak",
-                Gender = "Male"
             };
 
             // Act & Assert
