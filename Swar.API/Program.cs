@@ -152,7 +152,6 @@ namespace Swar.API
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseUserMiddleware();
 
 
             app.MapControllers();

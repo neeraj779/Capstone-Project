@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swar.API.Exceptions;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
+using System.Security.Claims;
 
 namespace Swar.API.Controllers
 {
@@ -28,8 +29,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 await _playHistoryService.LogSongHistory(userId, songId);
                 return Ok(new { Message = "Song history logged successfully." });
             }
@@ -58,8 +58,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playHistoryService.GetSongHistory(userId, unique);
                 return Ok(result);
             }

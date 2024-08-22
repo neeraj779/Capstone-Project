@@ -4,6 +4,7 @@ using Swar.API.Exceptions;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
 using Swar.API.Models.DTOs;
+using System.Security.Claims;
 
 namespace Swar.API.Controllers
 {
@@ -116,9 +117,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
-
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var accessToken = await _userService.RefreshToken(userId);
                 return Ok(accessToken);
             }
@@ -177,10 +176,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
-                    throw new EntityNotFoundException("User does not exist");
-
-                var user = await _userService.GetUserById(id);
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var user = await _userService.GetUserById(userId);
                 return Ok(user);
             }
             catch (EntityNotFoundException ex)
@@ -213,9 +210,8 @@ namespace Swar.API.Controllers
 
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
-                    throw new EntityNotFoundException("User does not exist");
-                var user = await _userService.UpdateUser(id, userUpdateDTO);
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var user = await _userService.UpdateUser(userId, userUpdateDTO);
                 return Ok(user);
             }
             catch (EntityNotFoundException ex)
@@ -256,9 +252,8 @@ namespace Swar.API.Controllers
 
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
-                    throw new EntityNotFoundException("User does not exist");
-                var user = await _userService.UpdateUserPassword(id, userPasswordUpdateDTO);
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var user = await _userService.UpdateUserPassword(userId, userPasswordUpdateDTO);
                 return Ok(user);
             }
             catch (EntityNotFoundException ex)
@@ -297,9 +292,8 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int id)
-                    throw new EntityNotFoundException("User does not exist");
-                var user = await _userService.DeleteUser(id);
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var user = await _userService.DeleteUser(userId);
                 return Ok(user);
             }
             catch (EntityNotFoundException ex)
@@ -328,8 +322,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int adminId)
-                    throw new EntityNotFoundException("User does not exist");
+                int adminId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var user = await _userService.DeactivateUser(id, adminId);
                 return Ok(user);
             }
@@ -363,8 +356,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int adminId)
-                    throw new EntityNotFoundException("User does not exist");
+                int adminId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var user = await _userService.ActivateUser(id, adminId);
                 return Ok(user);
             }

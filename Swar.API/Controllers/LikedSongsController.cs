@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swar.API.Exceptions;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
+using System.Security.Claims;
 
 namespace Swar.API.Controllers
 {
@@ -31,8 +32,7 @@ namespace Swar.API.Controllers
 
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _likedSongsService.AddSongToLikedSongs(userId, songId);
 
                 return Ok(result);
@@ -66,8 +66,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _likedSongsService.RemoveSongFromLikedSongs(userId, songId);
 
                 return Ok(result);
@@ -92,8 +91,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _likedSongsService.GetAllLikedSongs(userId);
 
                 return Ok(result);
@@ -119,8 +117,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _likedSongsService.IsSongLikedByUser(userId, songId);
 
                 return Ok(result);

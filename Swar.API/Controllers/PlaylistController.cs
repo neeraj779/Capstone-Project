@@ -4,6 +4,7 @@ using Swar.API.Exceptions;
 using Swar.API.Interfaces.Services;
 using Swar.API.Models;
 using Swar.API.Models.DTOs;
+using System.Security.Claims;
 
 namespace Swar.API.Controllers
 {
@@ -32,8 +33,7 @@ namespace Swar.API.Controllers
 
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.AddPlaylist(userId, addPlaylistDTO);
 
                 return Ok(result);
@@ -59,8 +59,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.DeletePlaylist(userId, playlistId);
 
                 return Ok(result);
@@ -112,8 +111,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.GetAllPlaylistsByUserId(userId);
 
                 return Ok(result);
@@ -139,8 +137,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.GetPlaylistById(userId, playlistId);
 
                 return Ok(result);
@@ -171,8 +168,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.UpdatePlaylist(userId, playlistId, updatePlaylistDTO);
 
                 return Ok(result);
@@ -203,8 +199,7 @@ namespace Swar.API.Controllers
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserId", out var userIdObj) || userIdObj is not int userId)
-                    throw new EntityNotFoundException("User does not exist");
+                int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var result = await _playlistService.UpdatePlaylistPrivacy(userId, playlistId, updatePlaylistPrivacyDTO.IsPrivate);
 
                 return Ok(result);
