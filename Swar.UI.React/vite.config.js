@@ -27,36 +27,35 @@ const manifestForPlugin = {
     ],
     screenshots: [
       {
-        src: "/Screenshot1.png",
+        src: "/mockup-dark.png",
         sizes: "640x320",
         type: "image/png",
         form_factor: "wide",
         label: "swar UI",
       },
       {
-        src: "/Screenshot2.png",
+        src: "/mockup-light.png",
         sizes: "640x320",
         type: "image/png",
         form_factor: "wide",
         label: "swar UI",
       },
       {
-        src: "/Screenshot1.png",
+        src: "/mockup-dark.png",
         sizes: "640x320",
         type: "image/png",
         form_factor: "narrow",
         label: "swar UI",
       },
       {
-        src: "/Screenshot2.png",
+        src: "/mockup-light.png",
         sizes: "640x320",
         type: "image/png",
         form_factor: "narrow",
         label: "swar UI",
       },
     ],
-    description:
-      "Swar | Your one-stop solution for amazing music experiences.",
+    description: "Swar | Your one-stop solution for amazing music experiences.",
     display: "standalone",
     theme_color: "#111828",
     background_color: "#111828",
@@ -66,7 +65,6 @@ const manifestForPlugin = {
   },
 };
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA(manifestForPlugin)],
 });
