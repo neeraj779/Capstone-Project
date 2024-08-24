@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaHome, FaUser } from "react-icons/fa";
-import { LuLibrary } from "react-icons/lu";
+import { IoLibrary } from "react-icons/io5";
 
 const MobileNav = () => {
   return (
@@ -11,7 +11,7 @@ const MobileNav = () => {
           <span className="text-xs">Home</span>
         </Link>
         <Link to="/library" className="flex flex-col items-center">
-          <LuLibrary className="text-xl" />
+          <IoLibrary className="text-xl" />
           <span className="text-xs">Library</span>
         </Link>
         <Link to="/profile" className="flex flex-col items-center">
