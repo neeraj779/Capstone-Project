@@ -15,6 +15,9 @@ export default {
       colors: {
         "custom-dark": "#1a202c;",
       },
+      backgroundImage: {
+        "custom-bg": "url('/bg.png')",
+      },
     },
   },
   darkMode: "class",

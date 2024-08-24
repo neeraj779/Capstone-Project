@@ -96,7 +96,7 @@ function LandingPage() {
           </Button>
         </div>
       </nav>
-      <div className="relative h-screen bg-cover bg-center bg-[url('../../public/bg.png')]">
+      <div className="relative h-screen bg-cover bg-center bg-custom-bg">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black flex flex-col justify-center items-center text-center p-6">
           <h1 className="text-4xl md:text-6xl text-white font-extrabold mb-6 shadow-lg drop-shadow-md">
             <Typewriter
