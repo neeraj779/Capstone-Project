@@ -5,8 +5,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@nextui-org/react";
 import { FaPlay, FaListUl, FaCloudDownloadAlt, FaLaptop } from "react-icons/fa";
 import Typewriter from "typewriter-effect";
-import logo from "../assets/img/logo.png";
 import InstallPWA from "../components/InstallPWA";
+import logo from "../assets/img/logo.png";
 
 const FeatureCard = ({ icon, title, description }) => (
   <div
@@ -96,7 +96,7 @@ function LandingPage() {
           </Button>
         </div>
       </nav>
-      <div className="relative h-screen">
+      <div className="relative h-screen bg-cover bg-center bg-[url('../../public/bg.png')]">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black flex flex-col justify-center items-center text-center p-6">
           <h1 className="text-4xl md:text-6xl text-white font-extrabold mb-6 shadow-lg drop-shadow-md">
             <Typewriter
