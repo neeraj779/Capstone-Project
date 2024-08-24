@@ -86,9 +86,10 @@ export const PlayerProvider = ({ children }) => {
           }
         }
       } catch {
-        toast.error("Opps! We couldn't load the song.", {
-          icon: "😥",
-        });
+        if (!isFromPlayer)
+          toast.error("Opps! We couldn't load the song.", {
+            icon: "😥",
+          });
         navigate("/", { replace: true });
       } finally {
         setIsLoadingSong(false);
