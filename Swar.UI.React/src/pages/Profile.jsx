@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Image } from "@nextui-org/react";
 import { CustomScroll } from "react-custom-scroll";
 import toast from "react-hot-toast";
 import useApiClient from "../hooks/useApiClient";
@@ -10,7 +10,6 @@ import playlistSvg from "../assets/img/playlist.svg";
 import neutralAvatar from "../assets/img/neutral-avatar.svg";
 import ProfileSkeleton from "../components/ProfileSkeleton";
 import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
-import { LuBadgeCheck } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
@@ -60,11 +59,8 @@ const Profile = () => {
               <div className="relative mb-8">
                 <Avatar
                   src={user ? user?.picture : neutralAvatar}
-                  className="w-36 h-36 rounded-full border-4 border-gradient-to-r from-blue-500 to-teal-400 shadow-xl"
+                  className="w-24 h-24 rounded-full border-4 border-gradient-to-r from-blue-500 to-teal-400 shadow-xl"
                 />
-                <span className="absolute bottom-0 right-0 bg-green-500 text-white text-xs font-bold rounded-full px-3 py-1 shadow-md">
-                  <LuBadgeCheck className="w-5 h-5" />
-                </span>
               </div>
               <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full">
                 <h2 className="text-lg font-extrabold text-white mb-2">
@@ -148,18 +144,22 @@ const Profile = () => {
                           key={activity.id}
                           to="/player"
                           state={{ songId: activity.id }}
-                          className="bg-gray-700 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 min-w-[250px] mr-4"
+                          className="flex items-center gap-4 min-w-[250px] mr-4"
                         >
-                          <img
-                            src={activity.image}
-                            alt={activity.song}
-                            className="w-12 h-12 rounded-full"
+                          <Image
+                            isBlurred
+                            radius="sm"
+                            src={activity.image || playlistSvg}
+                            alt="Album Cover"
+                            className="w-12 h-12 min-w-12"
                           />
-                          <div>
-                            <h3 className="text-xl font-semibold text-white">
+                          <div className="ml-4 flex-grow flex flex-col justify-center overflow-hidden">
+                            <h3 className="text-base sm:text-lg font-semibold text-white mb-1">
                               {activity.song}
                             </h3>
-                            {activity.primary_artists}
+                            <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                              {activity.primary_artists}
+                            </p>
                           </div>
                         </Link>
                       ))

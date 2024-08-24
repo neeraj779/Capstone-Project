@@ -9,26 +9,28 @@ const Footer = () => {
             Neeraj
           </a>
         </p>
-        <Link
-          isBlock
-          showAnchorIcon
-          href="https://github.com/neeraj779"
-          target="_blank"
-          color="primary"
-          size="sm"
-        >
-          Github
-        </Link>
-        <Link
-          isBlock
-          showAnchorIcon
-          href="https://instagram.com/neeraj779_"
-          target="_blank"
-          color="primary"
-          size="sm"
-        >
-          Instagram
-        </Link>
+        <div className="ml-2">
+          <Link
+            isBlock
+            showAnchorIcon
+            href="https://github.com/neeraj779"
+            target="_blank"
+            color="primary"
+            size="sm"
+          >
+            Github
+          </Link>
+          <Link
+            isBlock
+            showAnchorIcon
+            href="https://instagram.com/neeraj779_"
+            target="_blank"
+            color="primary"
+            size="sm"
+          >
+            Instagram
+          </Link>
+        </div>
       </div>
     </footer>
   );
