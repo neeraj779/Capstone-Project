@@ -7,6 +7,7 @@ const MiniPlayer = () => {
   const { isAuthenticated } = useAuth0();
   const { currentSong, isPlaying, togglePlayPause } = usePlayer();
   const isSongPlayerPage = useMatch("/player");
+  const isLandingPage = useMatch("/");
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -15,7 +16,8 @@ const MiniPlayer = () => {
     }
   };
 
-  if (!isAuthenticated || !currentSong || isSongPlayerPage) return null;
+  if (!isAuthenticated || !currentSong || isSongPlayerPage || isLandingPage)
+    return null;
 
   return (
     <div className="fixed bottom-14 mb-1 md:bottom-0 left-1 right-1 bg-gray-800 text-white flex items-center p-2 shadow-lg border-t border-gray-700 rounded-lg z-20">
