@@ -31,7 +31,8 @@ const Playlist = () => {
     setSongs(playlistSongs);
   }, [playlistSongs]);
 
-  const handleSongClick = (songId) => navigate(`/song/${songId}`);
+  const handleSongClick = (songId) =>
+    navigate("/player", { state: { songId } });
 
   const handleRemoveSong = async (songId) => {
     const updatedSongs = songs.filter((song) => song.id !== songId);

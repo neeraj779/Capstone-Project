@@ -89,7 +89,7 @@ export const PlayerProvider = ({ children }) => {
         toast.error("Opps! We couldn't load the song.", {
           icon: "😥",
         });
-        return navigate("/");
+        navigate("/", { replace: true });
       } finally {
         setIsLoadingSong(false);
       }

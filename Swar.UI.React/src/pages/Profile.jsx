@@ -146,7 +146,8 @@ const Profile = () => {
                       recentlyPlayed.map((activity) => (
                         <Link
                           key={activity.id}
-                          to={`/song/${activity.id}`}
+                          to="/player"
+                          state={{ songId: activity.id }}
                           className="bg-gray-700 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-4 min-w-[250px] mr-4"
                         >
                           <img

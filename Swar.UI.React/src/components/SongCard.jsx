@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { Image } from "@nextui-org/react";
 
 const SongCard = ({ id, title, image, song, primary_artists }) => (
-  <Link to={`/song/${id}`} className="cursor-pointer" title={title}>
+  <Link
+    to="/player"
+    state={{ songId: id }}
+    className="cursor-pointer"
+    title={title}
+  >
     <div className="grid gap-2 min-w-[200px] max-w-[200px]">
       <div>
         <Image isZoomed width={240} src={image} alt={title} className="z-0" />

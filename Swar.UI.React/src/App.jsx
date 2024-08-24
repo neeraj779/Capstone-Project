@@ -27,7 +27,7 @@ const App = () => {
               <Route path="/" element={<Landing />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/home" element={<Home />} />
-                <Route path="/song/:id" element={<Player />} />
+                <Route path="/player" element={<Player />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/library" element={<Library />} />

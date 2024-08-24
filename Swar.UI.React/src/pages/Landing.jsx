@@ -32,7 +32,7 @@ function LandingPage() {
 
   useEffect(() => {
     if (!isLoading && isButtonLoading) {
-      if (isAuthenticated) navigate("/home");
+      if (isAuthenticated) navigate("/home", { replace: true });
       else loginWithRedirect();
       setIsButtonLoading(false);
     }

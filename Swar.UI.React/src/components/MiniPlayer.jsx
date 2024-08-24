@@ -6,12 +6,12 @@ import { Pause, Play } from "lucide-react";
 const MiniPlayer = () => {
   const { isAuthenticated } = useAuth0();
   const { currentSong, isPlaying, togglePlayPause } = usePlayer();
-  const isSongPlayerPage = useMatch("/song/:id");
+  const isSongPlayerPage = useMatch("/player");
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     if (currentSong) {
-      navigate(`/song/${currentSong.id}`);
+      navigate("/player", { state: { songId: currentSong.id } });
     }
   };
 

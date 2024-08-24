@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   Image,
   Slider,
@@ -27,7 +27,8 @@ import LikeButton from "../components/LikeButton/LikeButton";
 import usePlayer from "../hooks/usePlayer";
 
 const SongPlayer = () => {
-  const { id } = useParams();
+  const { state } = useLocation();
+  const id = state?.songId || "None";
   const {
     currentSong: song,
     isPlaying,
