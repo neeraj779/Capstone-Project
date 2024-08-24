@@ -3,6 +3,7 @@ import usePlaylistSongs from "../hooks/usePlaylistSongs";
 import useRecentlyPlayedSongs from "../hooks/useRecentlyPlayedSongs";
 import SearchBar from "../components/SearchBar";
 import SongSkeleton from "../components/SongSkeleton";
+import Footer from "../components/Footer";
 
 const categoryInfo = {
   history: {
@@ -55,7 +56,7 @@ const Home = () => {
           <SearchBar />
         </div>
 
-        <div id="content">
+        <div>
           {Object.keys(categoryInfo).map((category) => (
             <div key={category} className="-mb-[3px]">
               {category === "history" && (
@@ -102,6 +103,7 @@ const Home = () => {
             </div>
           ))}
         </div>
+        <Footer />
       </div>
     </div>
   );
