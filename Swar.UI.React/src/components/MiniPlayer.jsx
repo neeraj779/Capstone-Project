@@ -1,7 +1,7 @@
 import { useNavigate, useMatch } from "react-router-dom";
 import usePlayer from "../hooks/usePlayer";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Pause, Play } from "lucide-react";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 const MiniPlayer = () => {
   const { isAuthenticated } = useAuth0();
@@ -41,10 +41,10 @@ const MiniPlayer = () => {
       </div>
       <button
         onClick={togglePlayPause}
-        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 ml-1 sm:ml-2 mr-3 bg-gray-700 text-white rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500"
+        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 ml-1 sm:ml-2 mr-3 bg-gray-700 text-white rounded-full shadow-md transition-transform transform hover:scale-105"
         title={isPlaying ? "Pause" : "Play"}
       >
-        {isPlaying ? <Pause /> : <Play />}
+        {isPlaying ? <FaPause /> : <FaPlay />}
       </button>
     </div>
   );
