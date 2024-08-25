@@ -65,7 +65,7 @@ const Home = () => {
                     <div className="flex items-center gap-6 pb-4 mb-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
                       <SongSkeleton cards={5} />
                     </div>
-                  ) : recentlyPlayed.length > 0 ? (
+                  ) : recentlyPlayed.count > 0 ? (
                     <>
                       <h1 className="text-lg font-bold">
                         {categoryInfo[category].title}
@@ -74,7 +74,7 @@ const Home = () => {
                         {categoryInfo[category].description}
                       </p>
                       <div className="flex items-center gap-6 pb-4 mb-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
-                        {recentlyPlayed.map((song) => (
+                        {recentlyPlayed.songs.map((song) => (
                           <SongCard
                             key={song.id}
                             id={song.id}

@@ -4,7 +4,7 @@ import useApiClient from "../hooks/useApiClient";
 const useRecentlyPlayedSongs = () => {
   const swarApiClient = useApiClient();
   const songApiClient = useApiClient(true);
-  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+  const [recentlyPlayed, setRecentlyPlayed] = useState({ songs: [], count: 0 });
   const [loading, setLoading] = useState(true);
 
   const fetchSong = useCallback(
@@ -41,9 +41,12 @@ const useRecentlyPlayedSongs = () => {
         const songsToFetch = songs.slice(0, 10);
         const fetchPromises = songsToFetch.map((songId) => fetchSong(songId));
         const result = await Promise.all(fetchPromises);
-        setRecentlyPlayed(result.filter(Boolean));
+        setRecentlyPlayed({
+          songs: result.filter(Boolean),
+          count: data?.songsCount || 0,
+        });
       } catch {
-        setRecentlyPlayed([]);
+        setRecentlyPlayed({ songs: [], count: 0 });
       } finally {
         setLoading(false);
       }
