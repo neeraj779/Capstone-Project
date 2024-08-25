@@ -41,9 +41,18 @@ const PlaylistModal = ({
     if (!playlistName.trim()) {
       setIsInvalid(true);
     } else {
-      handlePlaylistOperation();
+      handlePlaylistOperation().then(() => {
+        setIsInvalid(false);
+        setPlaylistName("");
+        setPlaylistDescription("");
+      });
     }
-  }, [playlistName, handlePlaylistOperation]);
+  }, [
+    playlistName,
+    handlePlaylistOperation,
+    setPlaylistName,
+    setPlaylistDescription,
+  ]);
 
   return (
     <Modal
