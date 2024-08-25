@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Spinner } from "@nextui-org/react";
+import toast from "react-hot-toast";
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading, user } = useAuth0();
 
   if (isLoading) {
     return (
@@ -17,6 +18,7 @@ const ProtectedRoute = () => {
     return <Navigate to="/" replace />;
   }
 
+  toast(`Hello, ${user?.name}!`, { icon: "👏" });
   return <Outlet />;
 };
 
