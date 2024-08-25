@@ -80,6 +80,7 @@ namespace Swar.API.Services
             return new SongsListDTO
             {
                 UserId = userId,
+                songsCount = userPlayHistory.Count,
                 Songs = userPlayHistory.Select(p => p.SongId).ToList()
             };
         }
