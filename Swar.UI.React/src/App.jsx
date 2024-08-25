@@ -38,7 +38,7 @@ const App = () => {
             <Toaster
               toastOptions={{
                 style: {
-                  background: "#1e293b",
+                  background: "#5c5470",
                   color: "#fff",
                 },
               }}
