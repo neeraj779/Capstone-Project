@@ -95,7 +95,7 @@ const Profile = () => {
                   Your Playlists
                 </h2>
                 <CustomScroll>
-                  <div className="grid grid-cols-1 gap-4 mr-4 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-4 mr-4 lg:grid-cols-3 max-h-[calc(3*5rem)]">
                     {playlists.length > 0 ? (
                       playlists.map((playlist) => (
                         <Link
