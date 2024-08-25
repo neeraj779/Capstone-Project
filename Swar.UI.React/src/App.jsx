@@ -35,7 +35,14 @@ const App = () => {
               </Route>
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                style: {
+                  background: "#1e293b",
+                  color: "#fff",
+                },
+              }}
+            />
           </Layout>
         </PlayerProvider>
       </SkeletonTheme>
