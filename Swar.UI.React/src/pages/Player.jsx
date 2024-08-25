@@ -220,9 +220,8 @@ const SongPlayer = () => {
                         { label: "Language", value: song.language },
                         {
                           label: "Song Duration",
-                          value: `${song.duration} seconds`,
+                          value: formatTime(song.duration),
                         },
-                        { label: "Play Count", value: song.play_count },
                         {
                           label: "Lyrics",
                           value:
@@ -232,7 +231,7 @@ const SongPlayer = () => {
                         },
                       ].map(({ label, value }) => (
                         <div key={label}>
-                          <h3 className="text-xl font-semibold text-gray-200">
+                          <h3 className="text-lg font-semibold text-gray-200">
                             {label}
                           </h3>
                           <p className="text-gray-300">{value}</p>
