@@ -20,7 +20,7 @@ const MiniPlayer = () => {
     return null;
 
   return (
-    <div className="fixed z-20 flex items-center p-2 text-white bg-gray-800 border-t border-gray-700 rounded-lg shadow-lg bottom-14 md:bottom-0 left-1 right-1">
+    <div className="fixed z-20 flex items-center p-2 mb-1 text-white bg-gray-800 border-t border-gray-700 rounded-lg shadow-lg bottom-14 md:bottom-0 left-1 right-1">
       <div
         className="flex items-center flex-grow space-x-2 cursor-pointer"
         onClick={handleCardClick}
