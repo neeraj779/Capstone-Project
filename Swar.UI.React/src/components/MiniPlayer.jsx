@@ -65,8 +65,10 @@ const MiniPlayer = () => {
         isIndeterminate={isLoadingSong}
         aria-label="Song progress"
         className="fixed left-0 right-0 z-20 bg-gray-800 bottom-14 md:bottom-0"
-        color="primary"
         value={progressPercentage}
+        classNames={{
+          indicator: "bg-white",
+        }}
       />
     </>
   );
