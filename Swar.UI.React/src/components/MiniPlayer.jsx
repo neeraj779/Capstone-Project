@@ -31,7 +31,7 @@ const MiniPlayer = () => {
           className="object-cover w-10 h-10 rounded-lg shadow-md"
         />
         <div className="flex flex-col justify-center overflow-hidden max-w-[calc(100% - 3rem)]">
-          <div className="relative w-40 overflow-hidden sm:w-48">
+          <div className="relative w-48 overflow-hidden md:w-96">
             <p className="font-bold truncate">{currentSong.song}</p>
             <p className="text-sm text-gray-300 truncate">
               {currentSong.singers ||
