@@ -214,6 +214,7 @@ export const PlayerProvider = ({ children }) => {
   const value = {
     currentSong,
     isPlaying,
+    isLoadingSong,
     duration,
     currentTime,
     loop,
