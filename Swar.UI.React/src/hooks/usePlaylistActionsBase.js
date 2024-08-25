@@ -5,15 +5,19 @@ import useApiClient from "../hooks/useApiClient";
 const usePlaylistActionsBase = () => {
   const swarApiClient = useApiClient();
 
-  const handleApiAction = useCallback(async (apiCall, errorMessage) => {
-    try {
-      await apiCall();
-    } catch (error) {
-      if (error.response?.status === 409)
-        return toast.error("Song already exists in the playlist.");
-      else toast.error(errorMessage);
-    }
-  }, []);
+  const handleApiAction = useCallback(
+    async (apiCall, successMessage, errorMessage) => {
+      try {
+        await apiCall();
+        toast.success(successMessage);
+      } catch (error) {
+        if (error.response?.status === 409)
+          return toast.error("Song already exists in the playlist.");
+        else toast.error(errorMessage);
+      }
+    },
+    []
+  );
 
   const handleAddToPlaylist = useCallback(
     async (playlistId, songId) => {
@@ -23,6 +27,7 @@ const usePlaylistActionsBase = () => {
             playlistId,
             songId,
           }),
+        "Song added to playlist.",
         "Failed to add song to playlist."
       );
     },
@@ -38,6 +43,7 @@ const usePlaylistActionsBase = () => {
 
       await handleApiAction(
         () => swarApiClient.delete(url),
+        "Song removed from playlist.",
         "Failed to remove song from playlist."
       );
     },

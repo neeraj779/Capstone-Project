@@ -17,7 +17,6 @@ import PlaylistsSkeleton from "../components/PlaylistsSkeleton";
 import playlistSvg from "../assets/img/playlist.svg";
 import ErrorMessage from "../components/Error/ErrorMessage";
 import { IoMdMore, IoMdList, IoMdGlobe, IoMdCalendar } from "react-icons/io";
-import toast from "react-hot-toast";
 
 const Playlist = () => {
   const navigate = useNavigate();
@@ -35,13 +34,11 @@ const Playlist = () => {
     navigate("/player", { state: { songId } });
 
   const handleRemoveSong = async (songId) => {
-    const updatedSongs = songs.filter((song) => song.id !== songId);
-    setSongs(updatedSongs);
-    playlistInfo.songsCount -= 1;
-    toast.success("Song removed from playlist successfully.");
-
     try {
       await handleRemoveFromPlaylist(playlistInfo.playlistId, songId);
+      const updatedSongs = songs.filter((song) => song.id !== songId);
+      setSongs(updatedSongs);
+      playlistInfo.songsCount -= 1;
     } catch {
       setSongs(playlistSongs);
       playlistInfo.songsCount += 1;
