@@ -17,25 +17,25 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-gray-800 py-4 shadow-md">
-        <div className="container mx-auto flex items-center justify-between px-4 md:px-8">
+      <nav className="py-4 bg-gray-800 shadow-md">
+        <div className="container flex items-center justify-between px-4 mx-auto md:px-8">
           {/* Logo and Navigation Links */}
           <div className="flex items-center space-x-6">
             <Link to="/home" className="flex items-center">
-              <img src={logo} alt="Logo" className="h-10 w-auto" />
+              <img src={logo} alt="Logo" className="w-auto h-10" />
             </Link>
-            <div className="hidden md:flex space-x-6">
+            <div className="hidden space-x-6 md:flex">
               {isAuthenticated && (
                 <>
                   <Link
                     to="/home"
-                    className="hover:text-gray-400 transition-colors"
+                    className="transition-colors hover:text-gray-400"
                   >
                     Home
                   </Link>
                   <Link
                     to="/library"
-                    className="hover:text-gray-400 transition-colors"
+                    className="transition-colors hover:text-gray-400"
                   >
                     Your Library
                   </Link>
@@ -56,7 +56,7 @@ const Navbar = () => {
             {isAuthenticated && (
               <Dropdown
                 placement="bottom-end"
-                className="bg-gray-800 text-white"
+                className="text-white bg-gray-800"
               >
                 <DropdownTrigger>
                   <Avatar
@@ -69,7 +69,7 @@ const Navbar = () => {
                   <DropdownItem
                     textValue="profile"
                     key="user"
-                    className="h-14 gap-2"
+                    className="gap-2 h-14"
                     href="/profile"
                   >
                     <p className="font-semibold">Signed in as</p>

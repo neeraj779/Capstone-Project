@@ -71,9 +71,9 @@ const Library = () => {
   };
 
   return (
-    <div className="mx-auto px-6 py-12">
+    <div className="px-6 py-12 mx-auto">
       <div className="flex flex-col gap-8">
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl shadow-lg border border-gray-700 mb-8">
+        <div className="p-8 mb-8 border border-gray-700 shadow-lg bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl">
           {loading ? (
             <PlaylistsSkeleton />
           ) : error ? (
@@ -90,7 +90,7 @@ const Library = () => {
                   color="primary"
                   variant="shadow"
                 >
-                  <FaPlus className="text-white text-xl" />
+                  <FaPlus className="text-xl text-white" />
                 </Button>
               </div>
               <div className="space-y-4">

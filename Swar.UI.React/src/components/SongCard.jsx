@@ -13,7 +13,7 @@ const SongCard = ({ id, title, image, song, primary_artists }) => (
       <div>
         <Image isZoomed width={240} src={image} alt={title} className="z-0" />
       </div>
-      <div className="grid place-content-center text-center">
+      <div className="grid text-center place-content-center">
         <h1 className="text-sm text-ellipsis overflow-hidden max-w-[200px] font-bold">
           {song}
         </h1>

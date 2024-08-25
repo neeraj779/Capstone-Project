@@ -1,5 +1,5 @@
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css'
+import "react-loading-skeleton/dist/skeleton.css";
 
 const SongSkeleton = ({ cards }) => {
   return Array(cards)
@@ -9,7 +9,7 @@ const SongSkeleton = ({ cards }) => {
         <div className="song-skeleton__image">
           <Skeleton height={200} width={200} />
         </div>
-        <div className="song-skeleton__details flex flex-col items-center">
+        <div className="flex flex-col items-center song-skeleton__details">
           <Skeleton height={10} width={180} />
           <Skeleton height={10} width={160} />
         </div>

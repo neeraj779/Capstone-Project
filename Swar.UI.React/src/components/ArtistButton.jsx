@@ -5,7 +5,7 @@ const ArtistButton = ({ artist }) => {
   return (
     <Link
       to={`/search?q=${encodeURIComponent(artist)}`}
-      className="bg-gray-700 text-white text-xs font-semibold py-3 px-4 rounded-full hover:bg-gray-600 transition duration-300"
+      className="px-4 py-3 text-xs font-semibold text-white transition duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
     >
       {artist}
     </Link>

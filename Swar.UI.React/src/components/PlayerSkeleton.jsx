@@ -6,11 +6,11 @@ const skeletonCircleProps = { circle: true, height: 40, width: 40 };
 const PlayerSkeleton = () => {
   return (
     <div className="grid gap-6 px-6 mt-5">
-      <div className="block md:hidden mb-6 mx-6">
+      <div className="block mx-6 mb-6 md:hidden">
         <Skeleton height={40} width="100%" borderRadius={12} />
       </div>
 
-      <div className="grid text-center place-content-center gap-3">
+      <div className="grid gap-3 text-center place-content-center">
         <Skeleton height={208} width={208} />
         <Skeleton height={24} width="75%" />
         <Skeleton height={16} width="50%" />
@@ -36,7 +36,7 @@ const PlayerSkeleton = () => {
       </div>
 
       <div className="lyrics-container">
-        <h2 className="text-xl font-semibold mb-2">Lyrics</h2>
+        <h2 className="mb-2 text-xl font-semibold">Lyrics</h2>
         <div className="space-y-2">
           <Skeleton height={16} count={5} />
         </div>

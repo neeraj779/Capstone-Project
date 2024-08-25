@@ -34,7 +34,7 @@ const Home = () => {
     useRecentlyPlayedSongs();
 
   const renderSongs = (category) => (
-    <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
+    <div className="flex items-center gap-6 pb-4 mb-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
       {playlistLoading && <SongSkeleton cards={5} />}
       {playlistSongs[category].map((song) => (
         <SongCard
@@ -51,8 +51,8 @@ const Home = () => {
 
   return (
     <div>
-      <div className="container mx-auto px-6 md:px-20 py-10">
-        <div className="block md:hidden mb-6">
+      <div className="container px-6 py-10 mx-auto md:px-20">
+        <div className="block mb-6 md:hidden">
           <SearchBar />
         </div>
 
@@ -62,18 +62,18 @@ const Home = () => {
               {category === "history" && (
                 <>
                   {recentlyPlayedLoading ? (
-                    <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
+                    <div className="flex items-center gap-6 pb-4 mb-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
                       <SongSkeleton cards={5} />
                     </div>
                   ) : recentlyPlayed.length > 0 ? (
                     <>
-                      <h1 className="font-bold text-lg">
+                      <h1 className="text-lg font-bold">
                         {categoryInfo[category].title}
                       </h1>
-                      <p className="text-xs mb-4">
+                      <p className="mb-4 text-xs">
                         {categoryInfo[category].description}
                       </p>
-                      <div className="hide-scrollbar mb-3 pb-4 flex gap-6 items-center overflow-x-auto whitespace-nowrap">
+                      <div className="flex items-center gap-6 pb-4 mb-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
                         {recentlyPlayed.map((song) => (
                           <SongCard
                             key={song.id}
@@ -91,10 +91,10 @@ const Home = () => {
               )}
               {category !== "history" && (
                 <>
-                  <h1 className="font-bold text-lg">
+                  <h1 className="text-lg font-bold">
                     {categoryInfo[category].title}
                   </h1>
-                  <p className="text-xs mb-4">
+                  <p className="mb-4 text-xs">
                     {categoryInfo[category].description}
                   </p>
                   {renderSongs(category)}

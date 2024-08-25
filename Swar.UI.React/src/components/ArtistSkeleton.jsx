@@ -6,7 +6,7 @@ const ArtistSkeleton = ({ cards }) => {
     .fill(0)
     .map((_, index) => (
       <div key={index} className="song-skeleton">
-        <Skeleton height={22} width={62} borderRadius={12} />
+        <Skeleton height={27} width={75} borderRadius={12} />
       </div>
     ));
 };

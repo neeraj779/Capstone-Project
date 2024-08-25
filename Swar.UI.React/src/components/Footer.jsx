@@ -2,7 +2,7 @@ import { Link } from "@nextui-org/react";
 const Footer = () => {
   return (
     <footer>
-      <div className="max-w-7xl mx-auto px-6 text-center">
+      <div className="px-6 mx-auto text-center max-w-7xl">
         <p className="text-sm">
           Made with ❤️ by{" "}
           <a href="https://github.com/neeraj779" target="_blank">

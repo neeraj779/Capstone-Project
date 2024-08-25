@@ -4,8 +4,8 @@ import { IoLibrary } from "react-icons/io5";
 
 const MobileNav = () => {
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-gray-800 text-white md:hidden z-20">
-      <div className="flex justify-around items-center py-2">
+    <div className="fixed inset-x-0 bottom-0 z-20 text-white bg-gray-800 md:hidden">
+      <div className="flex items-center justify-around py-2">
         <Link to="/home" className="flex flex-col items-center">
           <FaHome className="text-xl" />
           <span className="text-xs">Home</span>

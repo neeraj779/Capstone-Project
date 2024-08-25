@@ -45,7 +45,7 @@ const PlaylistInfoModal = ({ songId }) => {
   return (
     <>
       <button onClick={onOpen}>
-        <LuPlusCircle className="text-white text-3xl" />
+        <LuPlusCircle className="text-3xl text-white" />
       </button>
       <Modal isOpen={isOpen} onClose={onClose} placement="center">
         <ModalContent>

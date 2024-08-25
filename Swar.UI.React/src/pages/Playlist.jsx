@@ -56,15 +56,15 @@ const Playlist = () => {
   }
 
   return (
-    <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="px-4 py-12 mx-auto sm:px-6 lg:px-8">
       {loading ? (
         <PlaylistsSkeleton />
       ) : (
         <>
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl shadow-lg border border-gray-700 mb-8 flex flex-row items-start items-center">
+          <div className="flex flex-row items-start p-6 mb-8 border border-gray-700 shadow-lg bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl">
             <div className="flex-shrink-0 mr-6">
               {playlistSongs.length >= 4 ? (
-                <div className="grid grid-cols-2 grid-rows-2 w-32 h-32 overflow-hidden rounded-xl">
+                <div className="grid w-32 h-32 grid-cols-2 grid-rows-2 overflow-hidden rounded-xl">
                   {playlistSongs.slice(0, 4).map((song, index) => (
                     <Image
                       key={index}
@@ -90,7 +90,7 @@ const Playlist = () => {
                   {playlistInfo?.playlistName}
                 </p>
                 {id && (
-                  <p className="text-gray-300 text-lg truncate">
+                  <p className="text-lg text-gray-300 truncate">
                     {playlistInfo?.ownerName}{" "}
                     {`${
                       playlistInfo?.description
@@ -100,29 +100,29 @@ const Playlist = () => {
                   </p>
                 )}
               </div>
-              <div className="text-gray-300 mb-2 flex flex-col sm:flex-row sm:items-center">
+              <div className="flex flex-col mb-2 text-gray-300 sm:flex-row sm:items-center">
                 <div className="flex items-center mb-2 sm:mb-0 sm:mr-6">
-                  <IoMdGlobe className="text-white text-xl mr-1" />
+                  <IoMdGlobe className="mr-1 text-xl text-white" />
                   <p>{playlistInfo?.isPrivate ? "Private" : "Public"}</p>
                 </div>
                 {playlistInfo?.createdAt && (
                   <div className="flex items-center mb-2 sm:mb-0 sm:mr-6">
-                    <IoMdCalendar className="text-white text-xl mr-1" />
+                    <IoMdCalendar className="mr-1 text-xl text-white" />
                     <p>
                       {new Date(playlistInfo?.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                 )}
                 <div className="flex items-center">
-                  <IoMdList className="text-white text-xl mr-1" />
+                  <IoMdList className="mr-1 text-xl text-white" />
                   <p>Total Tracks: {playlistInfo?.songsCount || "0"}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-700">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
+          <div className="p-6 border border-gray-700 shadow-lg bg-gradient-to-br from-gray-800 to-gray-900 sm:p-8 rounded-2xl">
+            <h2 className="mb-6 text-2xl font-bold text-white sm:text-3xl">
               Playlist Songs
             </h2>
             <div>
@@ -130,7 +130,7 @@ const Playlist = () => {
                 songs.map((song) => (
                   <div
                     key={song.id}
-                    className="p-2 flex items-start items-center"
+                    className="flex items-start p-2"
                     onClick={() => handleSongClick(song.id)}
                   >
                     <div className="flex items-center flex-grow min-w-0">
@@ -141,23 +141,23 @@ const Playlist = () => {
                         alt="Album Cover"
                         className="w-12 h-12 min-w-12"
                       />
-                      <div className="ml-4 flex-grow flex flex-col justify-center overflow-hidden mr-6">
-                        <h3 className="text-base sm:text-lg font-semibold text-white mb-1 truncate">
+                      <div className="flex flex-col justify-center flex-grow ml-4 mr-6 overflow-hidden">
+                        <h3 className="mb-1 text-base font-semibold text-white truncate sm:text-lg">
                           {song.song}
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-400 truncate mb-1">
+                        <p className="mb-1 text-xs text-gray-400 truncate sm:text-sm">
                           {song.primary_artists}
                         </p>
                       </div>
                     </div>
-                    <Dropdown className="bg-gray-800 text-white">
+                    <Dropdown className="text-white bg-gray-800">
                       <DropdownTrigger>
                         <Button
                           isIconOnly
                           className="bg-transparent"
                           aria-label="More options"
                         >
-                          <IoMdMore className="text-white text-2xl" />
+                          <IoMdMore className="text-2xl text-white" />
                         </Button>
                       </DropdownTrigger>
                       <DropdownMenu

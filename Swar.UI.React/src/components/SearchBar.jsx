@@ -16,10 +16,10 @@ const MobileSearchBar = () => {
         <input
           type="text"
           name="searchInput"
-          className="bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 px-4 pl-10 w-full"
+          className="w-full px-4 py-2 pl-10 text-white placeholder-gray-400 bg-gray-700 rounded-full"
           placeholder="Search songs, artists..."
         />
-        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <FaSearch className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
       </form>
     </>
   );

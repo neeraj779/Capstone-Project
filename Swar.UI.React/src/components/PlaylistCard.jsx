@@ -53,18 +53,18 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center">
+    <div className="flex items-center p-6 transition-shadow duration-300 bg-gray-800 rounded-lg shadow-md hover:shadow-xl">
       <div onClick={handleCardClick} className="flex items-center flex-grow">
         <img
           src={playlistIcon}
           alt="Playlist Thumbnail"
-          className="w-16 h-16 object-cover rounded-md"
+          className="object-cover w-16 h-16 rounded-md"
         />
-        <div className="flex-grow flex flex-col ml-4 overflow-hidden">
-          <h3 className="text-lg font-bold text-white mb-1 truncate">
+        <div className="flex flex-col flex-grow ml-4 overflow-hidden">
+          <h3 className="mb-1 text-lg font-bold text-white truncate">
             {playlist.playlistName}
           </h3>
-          <p className="text-sm text-gray-300 truncate mb-1">
+          <p className="mb-1 text-sm text-gray-300 truncate">
             {playlist.description}
           </p>
           <p className="text-xs text-gray-400 truncate">
@@ -74,14 +74,14 @@ const PlaylistCard = ({ playlist, onUpdate }) => {
       </div>
       {!isDefaultPlaylist && (
         <>
-          <Dropdown className="bg-gray-800 text-white">
+          <Dropdown className="text-white bg-gray-800">
             <DropdownTrigger>
               <Button
                 isIconOnly
                 className="bg-transparent"
                 aria-label="More options"
               >
-                <IoMdMore className="text-white text-2xl" />
+                <IoMdMore className="text-2xl text-white" />
               </Button>
             </DropdownTrigger>
             <DropdownMenu variant="faded" aria-label="Playlist options">

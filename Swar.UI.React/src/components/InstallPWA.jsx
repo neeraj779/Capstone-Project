@@ -41,7 +41,7 @@ const InstallPWA = () => {
 
   return (
     <button
-      className="fixed bottom-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-lg z-50"
+      className="fixed z-50 p-4 text-white bg-gray-700 rounded-lg shadow-lg bottom-6 right-6 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
       onClick={installApp}
     >
       <FaDownload />
