@@ -7,24 +7,24 @@ import Footer from "../components/Footer";
 
 const categoryInfo = {
   history: {
-    title: "🚀 Recently played",
-    description: "Songs you've listened to recently",
+    title: "🚀 Recently Played",
+    description: "Songs you’ve recently enjoyed.",
   },
   trending: {
-    title: "🔥 Trending",
-    description: "Trending songs in India",
+    title: "🔥 Trending Now",
+    description: "Hottest tracks in India.",
   },
   relaxing: {
-    title: "🎧 Relaxing",
-    description: "Top relaxing songs for peace",
+    title: "🎧 Chill Vibes",
+    description: "Soothing melodies for relaxation.",
   },
   romance: {
-    title: "💞 Romance",
-    description: "Top romantic songs for love",
+    title: "💞 Love Songs",
+    description: "Romantic tracks for date nights.",
   },
   lofi: {
-    title: "💤 Lofi",
-    description: "Top lofi songs for relaxation",
+    title: "💤 Lofi Beats",
+    description: "Best lofi tunes to relax.",
   },
 };
 
