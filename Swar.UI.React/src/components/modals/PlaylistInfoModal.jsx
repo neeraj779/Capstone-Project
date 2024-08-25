@@ -8,8 +8,8 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Select,
-  SelectItem,
+  RadioGroup,
+  Radio,
   Spinner,
 } from "@nextui-org/react";
 import usePlaylistInfo from "../../hooks/usePlaylistInfo";
@@ -47,7 +47,19 @@ const PlaylistInfoModal = ({ songId }) => {
       <button onClick={onOpen}>
         <LuPlusCircle className="text-3xl text-white" />
       </button>
-      <Modal isOpen={isOpen} onClose={onClose} placement="center">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="center"
+        classNames={{
+          body: "py-6",
+          backdrop: "blur",
+          base: "bg-gradient-to-br from-gray-800 to-gray-900 p-2 shadow-2xl text-white",
+          header: "border-b-[1px] border-[#292f46]",
+          footer: "border-t-[1px] border-[#292f46]",
+          closeButton: "hover:bg-white/5 active:bg-white/10",
+        }}
+      >
         <ModalContent>
           <>
             <ModalHeader>Select Playlist</ModalHeader>
@@ -65,25 +77,23 @@ const PlaylistInfoModal = ({ songId }) => {
                   You don&apos;t have any playlists. Please create one first.
                 </p>
               ) : (
-                <Select
-                  isRequired
-                  variant="filled"
-                  color="success"
+                <RadioGroup
                   label="Select Playlist"
-                  placeholder="Select a playlist"
-                  description="Select a playlist to add the song to."
                   value={selectedPlaylistId}
-                  onChange={(e) => setSelectedPlaylistId(e.target.value)}
+                  onValueChange={setSelectedPlaylistId}
                 >
                   {playlistInfo.map((playlist) => (
-                    <SelectItem
+                    <Radio
                       key={playlist.playlistId}
                       value={playlist.playlistId}
+                      classNames={{
+                        label: "text-white",
+                      }}
                     >
                       {playlist.playlistName}
-                    </SelectItem>
+                    </Radio>
                   ))}
-                </Select>
+                </RadioGroup>
               )}
             </ModalBody>
             <ModalFooter>
