@@ -32,10 +32,24 @@ export const PlayerProvider = ({ children }) => {
     audioRef.current.play().then(() => setIsPlaying(true));
   }, []);
 
-  const seek = useCallback((time) => {
-    audioRef.current.currentTime = time;
-    setCurrentTime(audioRef.current.currentTime);
+  const updateMediaSessionPositionState = useCallback(() => {
+    if ("setPositionState" in navigator.mediaSession) {
+      navigator.mediaSession.setPositionState({
+        duration: audioRef.current.duration,
+        playbackRate: audioRef.current.playbackRate,
+        position: audioRef.current.currentTime,
+      });
+    }
   }, []);
+
+  const seek = useCallback(
+    (time) => {
+      audioRef.current.currentTime = time;
+      setCurrentTime(audioRef.current.currentTime);
+      updateMediaSessionPositionState();
+    },
+    [updateMediaSessionPositionState]
+  );
 
   const loadSong = useCallback(
     async (songId, isFromPlayer) => {
@@ -185,7 +199,10 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => {
     const audio = audioRef.current;
 
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      updateMediaSessionPositionState();
+    };
     const handleLoadedMetadata = () => setDuration(audio.duration);
     const handleEnded = () => {
       setIsPlaying(false);
@@ -205,7 +222,7 @@ export const PlayerProvider = ({ children }) => {
       audio.removeEventListener("pause", () => setIsPlaying(false));
       audio.removeEventListener("ended", handleEnded);
     };
-  }, []);
+  }, [updateMediaSessionPositionState]);
 
   useEffect(() => {
     audioRef.current.loop = loop;
