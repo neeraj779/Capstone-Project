@@ -70,6 +70,7 @@ export const PlayerProvider = ({ children }) => {
         );
 
         playSong();
+        updateMediaSessionPositionState();
         if (isFromPlayer) setCurrentSongId(songData.id);
         swarApiClient.post("PlayHistory/LogSongHistory", songData.id);
 
@@ -111,13 +112,12 @@ export const PlayerProvider = ({ children }) => {
     },
     [
       currentSong?.id,
-      playSong,
-      swarApiClient,
       songApiClient,
+      playSong,
+      updateMediaSessionPositionState,
+      swarApiClient,
       suggestedSongs.length,
       suggestedSongIndex,
-      setSuggestedSongs,
-      setSuggestedSongIndex,
       navigate,
     ]
   );
@@ -174,8 +174,11 @@ export const PlayerProvider = ({ children }) => {
         goToPreviousSong
       );
       navigator.mediaSession.setActionHandler("nexttrack", goToNextSong);
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        seek(details.seekTime);
+      });
     },
-    [goToNextSong, goToPreviousSong, pauseSong, playSong]
+    [goToNextSong, goToPreviousSong, pauseSong, playSong, seek]
   );
 
   useEffect(() => {
@@ -199,10 +202,7 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => {
     const audio = audioRef.current;
 
-    const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
-      updateMediaSessionPositionState();
-    };
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration);
     const handleEnded = () => {
       setIsPlaying(false);
@@ -222,7 +222,7 @@ export const PlayerProvider = ({ children }) => {
       audio.removeEventListener("pause", () => setIsPlaying(false));
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [updateMediaSessionPositionState]);
+  }, []);
 
   useEffect(() => {
     audioRef.current.loop = loop;
