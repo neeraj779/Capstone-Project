@@ -50,6 +50,7 @@ const PlaylistInfoModal = ({ songId }) => {
         isOpen={isOpen}
         onClose={onClose}
         placement="center"
+        scrollBehavior="inside"
         classNames={{
           body: "py-6",
           backdrop: "blur",
