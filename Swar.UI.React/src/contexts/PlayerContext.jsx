@@ -160,6 +160,11 @@ export const PlayerProvider = ({ children }) => {
         goToPreviousSong
       );
       navigator.mediaSession.setActionHandler("nexttrack", goToNextSong);
+      navigator.mediaSession.setPositionState({
+        duration: data.duration,
+        playbackRate: 1,
+        position: audioRef.current.currentTime,
+      });
     },
     [goToNextSong, goToPreviousSong, pauseSong, playSong]
   );
