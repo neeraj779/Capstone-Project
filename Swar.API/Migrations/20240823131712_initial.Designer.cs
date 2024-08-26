@@ -12,7 +12,7 @@ using Swar.API.Contexts;
 namespace Swar.API.Migrations
 {
     [DbContext(typeof(SwarContext))]
-    [Migration("20240823060447_initial")]
+    [Migration("20240823131712_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
