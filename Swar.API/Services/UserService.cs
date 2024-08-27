@@ -51,7 +51,7 @@ namespace Swar.API.Services
             if (user != null)
             {
                 _logger.LogWarning("Registration attempt for already registered userid {UserId}", user.UserId);
-                throw new EntityAlreadyExistsException("You are already registered. Please login");
+                throw new EntityAlreadyExistsException("You are already registered. Please login", user.UserId);
             }
 
             if (string.IsNullOrEmpty(userDTO.ExternalId))

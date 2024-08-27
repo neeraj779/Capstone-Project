@@ -85,7 +85,13 @@ namespace Swar.API.Controllers
             }
             catch (EntityAlreadyExistsException ex)
             {
-                return Conflict(new ErrorModel { Status = StatusCodes.Status409Conflict, Message = ex.Message });
+                var errorModel = new
+                {
+                    Status = StatusCodes.Status409Conflict,
+                    ex.Message,
+                    ex.UserId
+                };
+                return Conflict(errorModel);
             }
             catch (ArgumentException ex)
             {

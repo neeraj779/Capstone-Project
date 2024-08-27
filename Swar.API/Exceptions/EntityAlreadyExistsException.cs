@@ -3,6 +3,7 @@
     public class EntityAlreadyExistsException : Exception
     {
         string _message;
+        public int UserId { get; }
 
         public EntityAlreadyExistsException()
         {
@@ -12,6 +13,12 @@
         public EntityAlreadyExistsException(string message)
         {
             _message = message;
+        }
+
+        public EntityAlreadyExistsException(string message, int userId) : base(message)
+        {
+            _message = message;
+            UserId = userId;
         }
 
         public override string Message => _message;
