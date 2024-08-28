@@ -70,8 +70,7 @@ Swar is a music streaming platform that provides users with a wide range of musi
     ├── .github
     │   └── workflows
     │       ├── SongServiceAPI.yml
-    │       ├── SwarAPI.yml
-    │       └── SwarUI.yml
+    │       └── SwarAPI.yml
     ├── LICENSE
     ├── README.md
     ├── SongService.API
@@ -110,16 +109,15 @@ Swar is a music streaming platform that provides users with a wide range of musi
     │   ├── Exceptions
     │   │   ├── EntityAlreadyExistsException.cs
     │   │   ├── EntityNotFoundException.cs
+    │   │   ├── ExternalServiceLoginException.cs
     │   │   ├── InactiveAccountException.cs
     │   │   ├── InvalidCredentialsException.cs
     │   │   ├── InvalidRefreshTokenException.cs
-    │   │   ├── MaxLimitException.cs
     │   │   ├── UnableToAddException.cs
     │   │   └── WeakPasswordException.cs
-    │   ├── Helpers
-    │   │   └── UserHelper.cs
     │   ├── Interfaces
     │   │   ├── Repositories
+    │   │   │   ├── IPlaylistRepository.cs
     │   │   │   ├── IPlaylistSongsRepository.cs
     │   │   │   ├── IRepository.cs
     │   │   │   └── IUserRepository.cs
@@ -131,8 +129,8 @@ Swar is a music streaming platform that provides users with a wide range of musi
     │   │       ├── ITokenService.cs
     │   │       └── IUserService.cs
     │   ├── Migrations
-    │   │   ├── 20240729153442_initial.Designer.cs
-    │   │   ├── 20240729153442_initial.cs
+    │   │   ├── 20240823131712_initial.Designer.cs
+    │   │   ├── 20240823131712_initial.cs
     │   │   └── SwarContextModelSnapshot.cs
     │   ├── Models
     │   │   ├── DBModels
@@ -147,6 +145,7 @@ Swar is a music streaming platform that provides users with a wide range of musi
     │   │   │   ├── AddSongToPlaylistDTO.cs
     │   │   │   ├── LikedSongsReturnDTO.cs
     │   │   │   ├── LoginResultDTO.cs
+    │   │   │   ├── PlaylistInfoDTO.cs
     │   │   │   ├── PlaylistSongsDTO.cs
     │   │   │   ├── PlaylistSongsReturnDTO.cs
     │   │   │   ├── RegisteredUserDTO.cs
@@ -180,7 +179,6 @@ Swar is a music streaming platform that provides users with a wide range of musi
     │   │   ├── TokenService.cs
     │   │   └── UserService.cs
     │   ├── Swar.API.csproj
-    │   ├── Swar.API.sln
     │   ├── Swar.API.xml
     │   ├── appsettings.Development.json
     │   ├── appsettings.json
@@ -247,6 +245,100 @@ Swar is a music streaming platform that provides users with a wide range of musi
     │           ├── search.js
     │           ├── searchBox.js
     │           └── validation.js
+    ├── Swar.UI.React
+    │   ├── .gitignore
+    │   ├── eslint.config.js
+    │   ├── index.html
+    │   ├── package-lock.json
+    │   ├── package.json
+    │   ├── postcss.config.cjs
+    │   ├── public
+    │   │   ├── android-chrome-192x192.png
+    │   │   ├── android-chrome-512x512.png
+    │   │   ├── apple-touch-icon-180x180.png
+    │   │   ├── apple-touch-icon.png
+    │   │   ├── bg.png
+    │   │   ├── browserconfig.xml
+    │   │   ├── favicon-16x16.png
+    │   │   ├── favicon-32x32.png
+    │   │   ├── favicon.ico
+    │   │   ├── icons-vector.svg
+    │   │   ├── mockup-dark.png
+    │   │   ├── mockup-light.png
+    │   │   ├── mstile-150x150.png
+    │   │   └── robots.txt
+    │   ├── src
+    │   │   ├── App.jsx
+    │   │   ├── api
+    │   │   │   └── axios.js
+    │   │   ├── assets
+    │   │   │   └── img
+    │   │   │       ├── error-bad-request.svg
+    │   │   │       ├── female-avatar.svg
+    │   │   │       ├── heart.svg
+    │   │   │       ├── lib-btn.svg
+    │   │   │       ├── likedSong.png
+    │   │   │       ├── logo.png
+    │   │   │       ├── male-avatar.svg
+    │   │   │       ├── neutral-avatar.svg
+    │   │   │       ├── no-results.svg
+    │   │   │       ├── playlist.svg
+    │   │   │       ├── profile.svg
+    │   │   │       └── songLogo.avif
+    │   │   ├── components
+    │   │   │   ├── ArtistButton.jsx
+    │   │   │   ├── ArtistSkeleton.jsx
+    │   │   │   ├── Error
+    │   │   │   │   ├── BadRequestError.jsx
+    │   │   │   │   ├── ErrorMessage.jsx
+    │   │   │   │   └── NotResultError.jsx
+    │   │   │   ├── Footer.jsx
+    │   │   │   ├── Icons.jsx
+    │   │   │   ├── InstallPWA.jsx
+    │   │   │   ├── Layout.jsx
+    │   │   │   ├── LikeButton
+    │   │   │   │   ├── LikeButton.jsx
+    │   │   │   │   └── likebutton.css
+    │   │   │   ├── MiniPlayer.jsx
+    │   │   │   ├── MobileNav.jsx
+    │   │   │   ├── Navbar.jsx
+    │   │   │   ├── PlayerSkeleton.jsx
+    │   │   │   ├── PlaylistCard.jsx
+    │   │   │   ├── PlaylistsSkeleton.jsx
+    │   │   │   ├── ProfileSkeleton.jsx
+    │   │   │   ├── SearchBar.jsx
+    │   │   │   ├── SongCard.jsx
+    │   │   │   ├── SongSkeleton.jsx
+    │   │   │   └── modals
+    │   │   │       ├── PlaylistInfoModal.jsx
+    │   │   │       └── PlaylistModal.jsx
+    │   │   ├── contexts
+    │   │   │   └── PlayerContext.jsx
+    │   │   ├── hooks
+    │   │   │   ├── useApiClient.js
+    │   │   │   ├── usePlayer.js
+    │   │   │   ├── usePlaylistActions.js
+    │   │   │   ├── usePlaylistActionsBase.js
+    │   │   │   ├── usePlaylistInfo.js
+    │   │   │   ├── usePlaylistSongs.js
+    │   │   │   ├── useRecentlyPlayedSongs.js
+    │   │   │   ├── useSearchData.js
+    │   │   │   └── useUserPlaylistSongs.js
+    │   │   ├── index.css
+    │   │   ├── main.jsx
+    │   │   ├── pages
+    │   │   │   ├── Home.jsx
+    │   │   │   ├── Landing.jsx
+    │   │   │   ├── Library.jsx
+    │   │   │   ├── Player.jsx
+    │   │   │   ├── Playlist.jsx
+    │   │   │   ├── Profile.jsx
+    │   │   │   └── Search.jsx
+    │   │   └── routes
+    │   │       └── ProtectedRoute.jsx
+    │   ├── tailwind.config.js
+    │   ├── vercel.json
+    │   └── vite.config.js
     ├── Swar.UnitTest
     │   ├── RepositoryUnitTest
     │   │   ├── LikedSongsRepositoryTests.cs
